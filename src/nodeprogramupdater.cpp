@@ -84,10 +84,19 @@ void gst::NodeProgramUpdater::visit(ModelNode & node)
     program->uniform(program->uniform("mv"), mv);
     program->uniform(program->uniform("mvp"), mvp);
     program->uniform(program->uniform("nm"), nm);
+
+    if (!surface.receive_light) {
+        program = nullptr;
+    }
 }
 
 void gst::NodeProgramUpdater::visit(LightNode & node)
 {
+    // surface is flagged for not receiving any light
+    if (!program) {
+        return;
+    }
+
     const std::string prefix = node.light->location.prefix(node.lights_index);
 
     glm::vec4 light_position_es = view * glm::vec4(node.position, 1.0f);

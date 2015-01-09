@@ -20,6 +20,8 @@ namespace gst
         bool depth_mask;
         bool depth_test;
 
+        bool receive_light;
+
         float opacity;
 
         Texture color_map;

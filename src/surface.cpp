@@ -5,6 +5,7 @@ gst::Surface::Surface(Material & material, std::shared_ptr<Program> program)
       cull_face(CullFace::NONE),
       depth_mask(true),
       depth_test(false),
+      receive_light(true),
       opacity(1.0f),
       material(material),
       program(program)
