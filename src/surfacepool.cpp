@@ -1,5 +1,6 @@
 #include "surfacepool.hpp"
 
+#include "basicshading.hpp"
 #include "blinnphongshading.hpp"
 #include "logger.hpp"
 #include "material.hpp"
@@ -7,6 +8,23 @@
 gst::SurfacePool::SurfacePool(ProgramPool & programs)
     : programs(programs)
 {
+}
+
+gst::Surface gst::SurfacePool::create_basic(
+    std::string const & vs_path,
+    std::string const & fs_path)
+{
+    auto program = programs.create(vs_path, fs_path);
+
+    if (!basic_shading) {
+        BasicUniform uniforms;
+        uniforms.diffuse = program.uniform("material.diffuse");
+        basic_shading = std::make_shared<BasicShading>(uniforms);
+    }
+
+    auto material = Material(basic_shading);
+
+    return Surface(material, program);
 }
 
 gst::Surface gst::SurfacePool::create_blinn_phong(

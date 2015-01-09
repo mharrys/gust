@@ -6,16 +6,21 @@
 
 namespace gst
 {
+    class BasicShading;
     class BlinnPhongShading;
 
     class SurfacePool {
     public:
         SurfacePool(ProgramPool & programs);
+        Surface create_basic(
+            std::string const & vs_path,
+            std::string const & fs_path);
         Surface create_blinn_phong(
             std::string const & vs_path,
             std::string const & fs_path);
     private:
         ProgramPool programs;
+        std::shared_ptr<BasicShading> basic_shading;
         std::shared_ptr<BlinnPhongShading> blinn_phong_shading;
     };
 }
