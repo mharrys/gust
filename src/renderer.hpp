@@ -18,7 +18,7 @@ namespace gst
             std::shared_ptr<Logger> logger,
             std::shared_ptr<RenderState> render_state);
 
-        void clear(bool color, bool depth);
+        void clear(bool color = true, bool depth = true);
         void render(Scene & scene);
         void render(Scene & scene, RenderTarget & target);
         void check_errors();
