@@ -29,6 +29,7 @@ void gst::NodeProgramUpdater::visit(EffectNode & node)
     auto & effect = *node.effect.get();
 
     program = effect.program;
+    render_state->set_blend_mode(BlendMode::NONE);
     render_state->set_cull_face(CullFace::BACK);
     render_state->set_depth_mask(true);
     render_state->set_depth_test(false);
@@ -54,11 +55,14 @@ void gst::NodeProgramUpdater::visit(ModelNode & node)
     auto & mesh = node.model->mesh;
 
     program = surface.program;
+    render_state->set_blend_mode(surface.blend_mode);
     render_state->set_cull_face(surface.cull_face);
     render_state->set_depth_mask(surface.depth_mask);
     render_state->set_depth_test(surface.depth_test);
     render_state->set_program(program);
     render_state->set_vertex_array(mesh.vertex_array);
+
+    program.uniform(program.uniform("opacity"), surface.opacity);
 
     if (surface.color_map) {
         render_state->set_texture(surface.color_map, 0);

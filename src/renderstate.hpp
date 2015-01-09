@@ -1,6 +1,7 @@
 #ifndef RENDERSTATE_HPP_INCLUDED
 #define RENDERSTATE_HPP_INCLUDED
 
+#include "blendmode.hpp"
 #include "buffer.hpp"
 #include "color.hpp"
 #include "cullface.hpp"
@@ -25,6 +26,7 @@ namespace gst
 
     struct StateSet {
         Color clear_color;
+        BlendMode blend_mode;
         CullFace cull_face;
         bool depth_mask;
         bool depth_test;
@@ -49,6 +51,7 @@ namespace gst
         void clear_buffers(bool color, bool depth);
 
         void set_clear_color(Color const & clear_color);
+        void set_blend_mode(BlendMode blend_mode);
         void set_cull_face(CullFace cull_face);
         void set_depth_mask(bool depth_mask);
         void set_depth_test(bool depth_test);
@@ -67,6 +70,7 @@ namespace gst
         std::shared_ptr<RenderStateImpl> impl;
         StateStack stack;
         Color clear_color;
+        BlendMode blend_mode;
         CullFace cull_face;
         bool depth_mask;
         bool depth_test;

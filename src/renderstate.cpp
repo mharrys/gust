@@ -6,12 +6,14 @@
 gst::RenderState::RenderState(Viewport viewport)
     : impl(std::make_shared<RenderStateImpl>()),
       clear_color(0.0f, 0.0f, 0.0f, 0.0f),
+      blend_mode(BlendMode::NONE),
       cull_face(CullFace::NONE),
       depth_mask(true),
       depth_test(false),
       viewport(viewport)
 {
     impl->set_clear_color(clear_color);
+    impl->set_blend_mode(blend_mode);
     impl->set_cull_face(cull_face);
     impl->set_depth_mask(depth_mask);
     impl->set_depth_test(depth_test);
@@ -28,6 +30,7 @@ void gst::RenderState::push()
     auto texture = textures.count(0) > 0 ? textures[0] : Texture();
     stack.push({
         clear_color,
+        blend_mode,
         cull_face,
         depth_mask,
         depth_test,
@@ -47,6 +50,7 @@ void gst::RenderState::pop()
         auto state = stack.top();
         stack.pop();
         set_clear_color(state.clear_color);
+        set_blend_mode(state.blend_mode);
         set_cull_face(state.cull_face);
         set_depth_mask(state.depth_mask);
         set_depth_test(state.depth_test);
@@ -70,6 +74,14 @@ void gst::RenderState::set_clear_color(Color const & clear_color)
     if (this->clear_color != clear_color) {
         this->clear_color = clear_color;
         impl->set_clear_color(clear_color);
+    }
+}
+
+void gst::RenderState::set_blend_mode(BlendMode blend_mode)
+{
+    if (this->blend_mode != blend_mode) {
+        this->blend_mode = blend_mode;
+        impl->set_blend_mode(blend_mode);
     }
 }
 

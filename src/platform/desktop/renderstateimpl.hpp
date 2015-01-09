@@ -1,6 +1,7 @@
 #ifndef RENDERSTATEIMPL_HPP_INCLUDED
 #define RENDERSTATEIMPL_HPP_INCLUDED
 
+#include "blendmode.hpp"
 #include "translator.hpp"
 
 #include <vector>
@@ -20,6 +21,7 @@ namespace gst
     public:
         void clear_buffers(bool color, bool depth);
         void set_clear_color(Color const & clear_color);
+        void set_blend_mode(BlendMode blend_mode);
         void set_cull_face(CullFace cull_face);
         void set_depth_mask(bool depth_mask);
         void set_depth_test(bool depth_test);

@@ -27,6 +27,28 @@ void gst::RenderStateImpl::set_clear_color(Color const & clear_color)
     );
 }
 
+void gst::RenderStateImpl::set_blend_mode(BlendMode blend_mode)
+{
+    if (blend_mode == BlendMode::NONE) {
+        glDisable(GL_BLEND);
+    } else {
+        glEnable(GL_BLEND);
+        switch (blend_mode) {
+        case BlendMode::NONE:
+            break;
+        case BlendMode::ADDITIVE:
+            glBlendFunc(GL_ONE, GL_ONE);
+            break;
+        case BlendMode::MULTIPLICATIVE:
+            glBlendFunc(GL_DST_COLOR, GL_ZERO);
+            break;
+        case BlendMode::INTERPOLATIVE:
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            break;
+        }
+    }
+}
+
 void gst::RenderStateImpl::set_cull_face(CullFace cull_face)
 {
     if (cull_face == CullFace::NONE) {
