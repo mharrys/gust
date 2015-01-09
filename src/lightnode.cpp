@@ -4,7 +4,6 @@
 
 gst::LightNode::LightNode(std::shared_ptr<Light> light)
     : light(light),
-      enabled(true),
       lights_index(0)
 {
 }

@@ -17,8 +17,10 @@ namespace gst
         Node(std::string name);
         virtual void accept(NodeVisitor & visitor);
 
-        std::string name;
         std::weak_ptr<Node> parent;
+
+        std::string name;
+        bool enabled;
     };
 }
 
