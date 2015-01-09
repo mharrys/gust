@@ -13,6 +13,6 @@ Examples
 ========
 Following are projects that depends on this engine.
 
-### [Arcball Rotation Control](https:://github.com/mharrys/arcball)
+### [Arcball Rotation Control](https://github.com/mharrys/arcball)
 
 ![arcball](https://github.com/mharrys/arcball/raw/master/scrot.png)
