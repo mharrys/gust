@@ -17,12 +17,20 @@ gst::NodeRenderer::NodeRenderer(
 
 void gst::NodeRenderer::visit(EffectNode & node)
 {
+    if (!node.enabled) {
+        return;
+    }
+
     node.accept(*updater.get());
     node.effect->quad.draw();
 }
 
 void gst::NodeRenderer::visit(ModelNode & node)
 {
+    if (!node.enabled) {
+        return;
+    }
+
     node.accept(*updater.get());
     for (unsigned int i = 0; i < lights.size(); i++) {
         lights[i].lights_index = i;
