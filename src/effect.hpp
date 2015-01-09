@@ -14,11 +14,11 @@ namespace gst
 
     class Effect {
     public:
-        Effect(Mesh & quad, RenderTarget & read, Program & program);
+        Effect(Mesh & quad, RenderTarget & read, std::shared_ptr<Program> program);
 
         Mesh quad;
         RenderTarget read;
-        Program program;
+        std::shared_ptr<Program> program;
         std::function<void(RenderState &)> bind_callback;
     };
 }

@@ -3,7 +3,7 @@
 #include "effect.hpp"
 #include "renderstate.hpp"
 
-gst::Pass::Pass(Program & program)
+gst::Pass::Pass(std::shared_ptr<Program> program)
     : program(program)
 {
 }

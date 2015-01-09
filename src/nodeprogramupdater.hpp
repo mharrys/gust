@@ -22,7 +22,7 @@ namespace gst
         virtual void visit(LightNode & node);
     private:
         std::shared_ptr<RenderState> render_state;
-        Program program;
+        std::shared_ptr<Program> program;
         glm::mat4 view;
         glm::mat4 projection;
     };

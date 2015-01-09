@@ -13,7 +13,7 @@ namespace gst
 {
     class Surface {
     public:
-        Surface(Material & material, Program & program);
+        Surface(Material & material, std::shared_ptr<Program> program);
 
         BlendMode blend_mode;
         CullFace cull_face;
@@ -26,7 +26,7 @@ namespace gst
         Texture normal_map;
 
         Material material;
-        Program program;
+        std::shared_ptr<Program> program;
     };
 }
 

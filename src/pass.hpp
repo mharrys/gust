@@ -14,13 +14,13 @@ namespace gst
     class Pass {
     public:
         Pass() = default;
-        Pass(Program & program);
+        Pass(std::shared_ptr<Program> program);
         virtual ~Pass() = default;
         virtual void prepare(Effect & effect);
         virtual void run(RenderState & state);
         virtual void run();
     protected:
-        Program program;
+        std::shared_ptr<Program> program;
     };
 }
 
