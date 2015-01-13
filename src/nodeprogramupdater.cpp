@@ -37,16 +37,16 @@ void gst::NodeProgramUpdater::visit(EffectNode & node)
     render_state->set_vertex_array(effect.quad.vertex_array);
 
     render_state->set_texture(effect.read, 0);
-    program->uniform(program->uniform("read"), 0);
+    program->uniform("read", 0);
 
     auto size = effect.read.get_size();
     auto resolution = glm::vec2(size.get_width(), size.get_height());
-    program->uniform(program->uniform("resolution"), resolution);
+    program->uniform("resolution", resolution);
 
     glm::mat4 m = node.world_transform;
     glm::mat4 mv = view * m;
-    program->uniform(program->uniform("model_view"), mv);
-    program->uniform(program->uniform("projection"), projection);
+    program->uniform("model_view", mv);
+    program->uniform("projection", projection);
 
     if (effect.bind_callback) {
         effect.bind_callback(*render_state.get());
@@ -66,13 +66,13 @@ void gst::NodeProgramUpdater::visit(ModelNode & node)
     render_state->set_program(*program.get());
     render_state->set_vertex_array(mesh.vertex_array);
 
-    program->uniform(program->uniform("opacity"), surface.opacity);
+    program->uniform("opacity", surface.opacity);
 
     render_state->set_texture(surface.color_map, 0);
-    program->uniform(program->uniform("color_map"), 0);
+    program->uniform("color_map", 0);
 
     render_state->set_texture(surface.normal_map, 1);
-    program->uniform(program->uniform("normal_map"), 1);
+    program->uniform("normal_map", 1);
 
     surface.material.shading->apply(*program.get(), surface.material);
 
@@ -80,9 +80,9 @@ void gst::NodeProgramUpdater::visit(ModelNode & node)
     glm::mat4 mv = view * m;
     glm::mat3 nm = glm::inverseTranspose(glm::mat3(mv));
 
-    program->uniform(program->uniform("model_view"), mv);
-    program->uniform(program->uniform("projection"), projection);
-    program->uniform(program->uniform("nm"), nm);
+    program->uniform("model_view", mv);
+    program->uniform("projection", projection);
+    program->uniform("nm", nm);
 
     if (!surface.receive_light) {
         program = nullptr;
@@ -99,8 +99,8 @@ void gst::NodeProgramUpdater::visit(LightNode & node)
     const std::string prefix = node.light->location.prefix(node.lights_index);
 
     glm::vec4 light_position_es = view * glm::vec4(node.position, 1.0f);
-    program->uniform(program->uniform(prefix + "enabled"), node.enabled);
-    program->uniform(program->uniform(prefix + "position"), light_position_es);
+    program->uniform(prefix + "enabled", node.enabled);
+    program->uniform(prefix + "position", light_position_es);
 
     auto updater = LightProgramUpdater(*program.get(), prefix);
     node.light->accept(updater);

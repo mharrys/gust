@@ -24,7 +24,52 @@ gst::Program::operator bool() const
     return impl != nullptr;
 }
 
-gst::Uniform gst::Program::uniform(std::string const & name)
+void gst::Program::uniform(std::string const & name, bool value)
+{
+    impl->uniform1i(uniform(name), static_cast<int>(value));
+}
+
+void gst::Program::uniform(std::string const & name, int value)
+{
+    impl->uniform1i(uniform(name), value);
+}
+
+void gst::Program::uniform(std::string const & name, float value)
+{
+    impl->uniform1f(uniform(name), value);
+}
+
+void gst::Program::uniform(std::string const & name, glm::mat3 const & value)
+{
+    impl->uniform_matrix3fv(uniform(name), 1, false, glm::value_ptr(value));
+}
+
+void gst::Program::uniform(std::string const & name, glm::mat4 const & value)
+{
+    impl->uniform_matrix4fv(uniform(name), 1, false, glm::value_ptr(value));
+}
+
+void gst::Program::uniform(std::string const & name, glm::vec2 const & value)
+{
+    impl->uniform2f(uniform(name), value[0], value[1]);
+}
+
+void gst::Program::uniform(std::string const & name, glm::vec3 const & value)
+{
+    impl->uniform3f(uniform(name), value[0], value[1], value[2]);
+}
+
+void gst::Program::uniform(std::string const & name, glm::vec4 const & value)
+{
+    impl->uniform4f(uniform(name), value[0], value[1], value[2], value[3]);
+}
+
+void gst::Program::uniform(std::string const & name, std::vector<float> const & value)
+{
+    impl->uniform1fv(uniform(name), value.size(), &value[0]);
+}
+
+int gst::Program::uniform(std::string const & name)
 {
     if (uniforms.count(name) == 0) {
         uniforms[name] = impl->get_uniform_location(name);
@@ -33,49 +78,4 @@ gst::Uniform gst::Program::uniform(std::string const & name)
         }
     }
     return uniforms.at(name);
-}
-
-void gst::Program::uniform(Uniform location, bool value)
-{
-    impl->uniform1i(location, static_cast<int>(value));
-}
-
-void gst::Program::uniform(Uniform location, int value)
-{
-    impl->uniform1i(location, value);
-}
-
-void gst::Program::uniform(Uniform location, float value)
-{
-    impl->uniform1f(location, value);
-}
-
-void gst::Program::uniform(Uniform location, glm::mat3 const & value)
-{
-    impl->uniform_matrix3fv(location, 1, false, glm::value_ptr(value));
-}
-
-void gst::Program::uniform(Uniform location, glm::mat4 const & value)
-{
-    impl->uniform_matrix4fv(location, 1, false, glm::value_ptr(value));
-}
-
-void gst::Program::uniform(Uniform location, glm::vec2 const & value)
-{
-    impl->uniform2f(location, value[0], value[1]);
-}
-
-void gst::Program::uniform(Uniform location, glm::vec3 const & value)
-{
-    impl->uniform3f(location, value[0], value[1], value[2]);
-}
-
-void gst::Program::uniform(Uniform location, glm::vec4 const & value)
-{
-    impl->uniform4f(location, value[0], value[1], value[2], value[3]);
-}
-
-void gst::Program::uniform(Uniform location, std::vector<float> const & value)
-{
-    impl->uniform1fv(location, value.size(), &value[0]);
 }
