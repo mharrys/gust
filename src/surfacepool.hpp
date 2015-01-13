@@ -36,7 +36,7 @@ gst::Surface gst::SurfacePool::create(
 
     const std::string key = vs_path + fs_path;
     if (cache.count(key) == 0) {
-        cache[key] = std::make_shared<T>(program);
+        cache[key] = std::make_shared<T>();
     }
     auto material = Material(cache.at(key));
 

@@ -42,7 +42,11 @@ void gst::NodeProgramUpdater::visit(EffectNode & node)
     auto size = effect.read.get_size();
     auto resolution = glm::vec2(size.get_width(), size.get_height());
     program->uniform(program->uniform("resolution"), resolution);
-    program->uniform(program->uniform("mvp"), projection * view * node.world_transform);
+
+    glm::mat4 m = node.world_transform;
+    glm::mat4 mv = view * m;
+    program->uniform(program->uniform("model_view"), mv);
+    program->uniform(program->uniform("projection"), projection);
 
     if (effect.bind_callback) {
         effect.bind_callback(*render_state.get());
@@ -70,15 +74,14 @@ void gst::NodeProgramUpdater::visit(ModelNode & node)
     render_state->set_texture(surface.normal_map, 1);
     program->uniform(program->uniform("normal_map"), 1);
 
-    surface.material.shading->apply(surface.material);
+    surface.material.shading->apply(*program.get(), surface.material);
 
     glm::mat4 m = node.world_transform;
     glm::mat4 mv = view * m;
-    glm::mat4 mvp = projection * mv;
     glm::mat3 nm = glm::inverseTranspose(glm::mat3(mv));
 
-    program->uniform(program->uniform("mv"), mv);
-    program->uniform(program->uniform("mvp"), mvp);
+    program->uniform(program->uniform("model_view"), mv);
+    program->uniform(program->uniform("projection"), projection);
     program->uniform(program->uniform("nm"), nm);
 
     if (!surface.receive_light) {
