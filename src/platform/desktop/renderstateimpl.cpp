@@ -113,6 +113,12 @@ void gst::RenderStateImpl::set_texture(TextureImpl & texture, int unit)
     texture.bind(unit);
 }
 
+void gst::RenderStateImpl::set_texture_none(int unit)
+{
+    glActiveTexture(GL_TEXTURE0 + unit);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 void gst::RenderStateImpl::set_vertex_array(VertexArrayImpl & vertex_array)
 {
     vertex_array.bind();

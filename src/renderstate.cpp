@@ -20,6 +20,7 @@ gst::RenderState::RenderState(Viewport viewport)
     impl->set_framebuffer_none();
     impl->set_renderbuffer_none();
     impl->set_program_none();
+    impl->set_texture_none();
     impl->set_viewport(viewport);
     impl->set_vertex_array_none();
 }
@@ -161,11 +162,6 @@ void gst::RenderState::set_program(Program & program)
 
 void gst::RenderState::set_texture(Texture & texture, int unit)
 {
-    // do not bother rebinding empty textures
-    if (!texture) {
-        return;
-    }
-
     Texture current;
     if (textures.count(unit) > 0) {
         current = textures.at(unit);
@@ -173,7 +169,11 @@ void gst::RenderState::set_texture(Texture & texture, int unit)
 
     if (current != texture) {
         textures[unit] = texture;
-        impl->set_texture(*texture.impl.get(), unit);
+        if (texture) {
+            impl->set_texture(*texture.impl.get(), unit);
+        } else {
+            impl->set_texture_none(unit);
+        }
     }
 }
 

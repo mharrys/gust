@@ -64,15 +64,11 @@ void gst::NodeProgramUpdater::visit(ModelNode & node)
 
     program->uniform(program->uniform("opacity"), surface.opacity);
 
-    if (surface.color_map) {
-        render_state->set_texture(surface.color_map, 0);
-        program->uniform(program->uniform("color_map"), 0);
-    }
+    render_state->set_texture(surface.color_map, 0);
+    program->uniform(program->uniform("color_map"), 0);
 
-    if (surface.normal_map) {
-        render_state->set_texture(surface.normal_map, 1);
-        program->uniform(program->uniform("normal_map"), 1);
-    }
+    render_state->set_texture(surface.normal_map, 1);
+    program->uniform(program->uniform("normal_map"), 1);
 
     surface.material.shading->apply(*program.get(), surface.material);
 

@@ -33,6 +33,7 @@ namespace gst
         void set_program(ProgramImpl & program);
         void set_program_none();
         void set_texture(TextureImpl & texture, int unit = 0);
+        void set_texture_none(int unit = 0);
         void set_vertex_array(VertexArrayImpl & vertex_array);
         void set_vertex_array_none();
         void set_viewport(Viewport const & viewport);
