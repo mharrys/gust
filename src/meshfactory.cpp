@@ -32,6 +32,19 @@ gst::Mesh gst::MeshFactory::create_quad(float width, float height)
     mesh.positions.buffer_data();
     vertex_array.set(mesh.positions);
 
+    mesh.tex_coords = {
+        render_state,
+        { AttribIndex::TEX_COORD, 2, DataType::FLOAT }
+    };
+    mesh.tex_coords.data = {
+        glm::vec2(0.0f, 1.0f),
+        glm::vec2(1.0f, 1.0f),
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(1.0f, 0.0f),
+    };
+    mesh.tex_coords.buffer_data();
+    vertex_array.set(mesh.tex_coords);
+
     mesh.indices = { render_state, DataType::UNSIGNED_INT };
     mesh.indices.data = {
         0, 1, 2,
