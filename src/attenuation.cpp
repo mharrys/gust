@@ -12,17 +12,17 @@ gst::Attenuation::Attenuation(float constant, float linear, float quadratic)
 {
 }
 
-float gst::Attenuation::get_constant()
+float gst::Attenuation::get_constant() const
 {
     return constant;
 }
 
-float gst::Attenuation::get_linear()
+float gst::Attenuation::get_linear() const
 {
     return linear;
 }
 
-float gst::Attenuation::get_quadratic()
+float gst::Attenuation::get_quadratic() const
 {
     return quadratic;
 }

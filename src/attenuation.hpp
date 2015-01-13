@@ -7,9 +7,9 @@ namespace gst
     public:
         Attenuation();
         Attenuation(float constant, float linear, float quadratic);
-        float get_constant();
-        float get_linear();
-        float get_quadratic();
+        float get_constant() const;
+        float get_linear() const;
+        float get_quadratic() const;
     private:
         float constant;
         float linear;
