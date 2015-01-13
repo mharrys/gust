@@ -11,17 +11,22 @@
 namespace gst
 {
     class Logger;
-    class RenderState;
     class ProgramImpl;
+    class RenderState;
+    class Shader;
 
+    typedef std::pair<int, std::string> AttribLocation;
     typedef std::unordered_map<std::string, int> UniformCache;
 
-    // TODO: state handling with render state
     class Program {
         friend RenderState;
     public:
         Program() = default;
-        Program(std::shared_ptr<ProgramImpl> impl, std::shared_ptr<Logger> logger);
+        Program(
+            std::shared_ptr<RenderState> render_state,
+            std::shared_ptr<Logger> logger,
+            std::vector<Shader> shaders = {},
+            std::vector<AttribLocation> const & locations = {});
 
         bool operator==(Program const & other);
         bool operator!=(Program const & other);
@@ -39,7 +44,11 @@ namespace gst
     private:
         int uniform(std::string const & name);
 
+        void push();
+        void pop();
+
         std::shared_ptr<ProgramImpl> impl;
+        std::shared_ptr<RenderState> render_state;
         std::shared_ptr<Logger> logger;
         UniformCache uniforms;
     };

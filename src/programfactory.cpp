@@ -1,17 +1,17 @@
 #include "programfactory.hpp"
 
-#include "buffer.hpp"
 #include "logger.hpp"
-#include "program.hpp"
-#include "programimpl.hpp"
+#include "renderstate.hpp"
 #include "shader.hpp"
-#include "shaderimpl.hpp"
 
 #include <fstream>
 #include <sstream>
 
-gst::ProgramFactory::ProgramFactory(std::shared_ptr<Logger> logger)
-    : logger(logger)
+gst::ProgramFactory::ProgramFactory(
+    std::shared_ptr<RenderState> render_state,
+    std::shared_ptr<Logger> logger)
+    : render_state(render_state),
+      logger(logger)
 {
 }
 
@@ -59,42 +59,6 @@ gst::Program gst::ProgramFactory::create_from_source(
     if (!vs || !fs) {
         return Program();
     } else {
-        return create_from_shader(vs, fs, locations);
+        return Program(render_state, logger, { vs, fs }, locations);
     }
-}
-
-gst::Program gst::ProgramFactory::create_from_shader(
-    Shader & vs,
-    Shader & fs,
-    std::vector<AttribLocation> const & locations)
-{
-    auto impl = std::make_shared<ProgramImpl>();
-
-    impl->attach(*vs.impl.get());
-    impl->attach(*fs.impl.get());
-
-    if (locations.empty()) {
-        // default
-        impl->bind_attrib_location(AttribIndex::POSITION,  "vertex_position");
-        impl->bind_attrib_location(AttribIndex::NORMAL,    "vertex_normal");
-        impl->bind_attrib_location(AttribIndex::COLOR,     "vertex_color");
-        impl->bind_attrib_location(AttribIndex::TEX_COORD, "vertex_tex_coord");
-    } else {
-        // custom
-        for (auto location : locations) {
-            impl->bind_attrib_location(location.first, location.second);
-        }
-    }
-
-    if (!impl->link()) {
-        logger->log(TRACE("could not link program: " + impl->get_error_log()));
-        return Program();
-    }
-
-    impl->detach(*vs.impl.get());
-    impl->detach(*fs.impl.get());
-
-    // shaders may be deleted now, attached shaders will remain unaffected
-
-    return Program(impl, logger);
 }

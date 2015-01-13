@@ -5,7 +5,7 @@
 
 namespace gst
 {
-    class ProgramFactory;
+    class Program;
     class ShaderImpl;
 
     enum class ShaderType {
@@ -14,7 +14,7 @@ namespace gst
     };
 
     class Shader {
-        friend ProgramFactory;
+        friend Program;
     public:
         Shader() = default;
         Shader(ShaderType type, std::string const & source);
