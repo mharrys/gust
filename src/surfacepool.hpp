@@ -6,9 +6,6 @@
 
 namespace gst
 {
-    class BasicShading;
-    class BlinnPhongShading;
-
     typedef std::unordered_map<std::string, std::shared_ptr<MaterialShading>> MaterialCache;
 
     class SurfacePool {
