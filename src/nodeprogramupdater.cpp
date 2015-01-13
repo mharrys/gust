@@ -102,6 +102,6 @@ void gst::NodeProgramUpdater::visit(LightNode & node)
     program->uniform(prefix + "enabled", node.enabled);
     program->uniform(prefix + "position", light_position_es);
 
-    auto updater = LightProgramUpdater(*program.get(), prefix);
+    auto updater = LightProgramUpdater(program, prefix);
     node.light->accept(updater);
 }
