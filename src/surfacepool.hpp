@@ -9,9 +9,15 @@ namespace gst
     class BasicShading;
     class BlinnPhongShading;
 
+    typedef std::unordered_map<std::string, std::shared_ptr<MaterialShading>> MaterialCache;
+
     class SurfacePool {
     public:
         SurfacePool(ProgramPool & programs);
+        template<typename T>
+        Surface create(
+            std::string const & vs_path,
+            std::string const & fs_path);
         Surface create_basic(
             std::string const & vs_path,
             std::string const & fs_path);
@@ -20,9 +26,24 @@ namespace gst
             std::string const & fs_path);
     private:
         ProgramPool programs;
-        std::shared_ptr<BasicShading> basic_shading;
-        std::shared_ptr<BlinnPhongShading> blinn_phong_shading;
+        MaterialCache cache;
     };
+}
+
+template<typename T>
+gst::Surface gst::SurfacePool::create(
+    std::string const & vs_path,
+    std::string const & fs_path)
+{
+    auto program = programs.create(vs_path, fs_path);
+
+    const std::string key = vs_path + fs_path;
+    if (cache.count(key) == 0) {
+        cache[key] = std::make_shared<T>(program);
+    }
+    auto material = Material(cache.at(key));
+
+    return Surface(material, program);
 }
 
 #endif

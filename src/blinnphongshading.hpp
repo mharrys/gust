@@ -6,20 +6,17 @@
 
 namespace gst
 {
-    struct BlinnPhongUniform {
+    class BlinnPhongShading : public MaterialShading {
+    public:
+        BlinnPhongShading(std::shared_ptr<Program> program);
+        void apply(Material & material) override;
+    private:
+        std::shared_ptr<Program> program;
         Uniform ambient;
         Uniform diffuse;
         Uniform specular;
         Uniform emission;
         Uniform shininess;
-    };
-
-    class BlinnPhongShading : public MaterialShading {
-    public:
-        BlinnPhongShading(BlinnPhongUniform uniforms);
-        virtual void apply(Program & program, Material & material) override;
-    private:
-        BlinnPhongUniform uniforms;
     };
 }
 

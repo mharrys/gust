@@ -4,12 +4,11 @@
 namespace gst
 {
     class Material;
-    class Program;
 
     class MaterialShading {
     public:
         virtual ~MaterialShading() = default;
-        virtual void apply(Program & program, Material & material) = 0;
+        virtual void apply(Material & material) = 0;
     };
 }
 

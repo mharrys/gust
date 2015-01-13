@@ -6,16 +6,13 @@
 
 namespace gst
 {
-    struct BasicUniform {
-        Uniform diffuse;
-    };
-
     class BasicShading : public MaterialShading {
     public:
-        BasicShading(BasicUniform uniforms);
-        void apply(Program & program, Material & material) override;
+        BasicShading(std::shared_ptr<Program> program);
+        void apply(Material & material) override;
     private:
-        BasicUniform uniforms;
+        std::shared_ptr<Program> program;
+        Uniform diffuse;
     };
 }
 

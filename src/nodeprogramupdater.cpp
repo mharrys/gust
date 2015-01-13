@@ -70,7 +70,7 @@ void gst::NodeProgramUpdater::visit(ModelNode & node)
     render_state->set_texture(surface.normal_map, 1);
     program->uniform(program->uniform("normal_map"), 1);
 
-    surface.material.shading->apply(*program.get(), surface.material);
+    surface.material.shading->apply(surface.material);
 
     glm::mat4 m = node.world_transform;
     glm::mat4 mv = view * m;

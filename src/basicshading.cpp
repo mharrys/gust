@@ -2,12 +2,13 @@
 
 #include "material.hpp"
 
-gst::BasicShading::BasicShading(BasicUniform uniforms)
-    : uniforms(uniforms)
+gst::BasicShading::BasicShading(std::shared_ptr<Program> program)
+    : program(program),
+      diffuse(program->uniform("material.diffuse"))
 {
 }
 
-void gst::BasicShading::apply(Program & program, Material & material)
+void gst::BasicShading::apply(Material & material)
 {
-    program.uniform(uniforms.diffuse, material.diffuse);
+    program->uniform(diffuse, material.diffuse);
 }
