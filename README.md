@@ -5,7 +5,7 @@ graphics.
 
 Dependencies
 ============
-This project uses [SCons](http://www.scons.org) as a software cosntruction
+This project uses [SCons](http://www.scons.org) as a software construction
 tool. You will need a C++11 compiler, GLM, GLEW, AssImp and SDL2. Consult
 SConscript for details.
 
