@@ -3,8 +3,7 @@
 #include "nodevisitor.hpp"
 
 gst::LightNode::LightNode(std::shared_ptr<Light> light)
-    : light(light),
-      lights_index(0)
+    : light(light)
 {
 }
 
