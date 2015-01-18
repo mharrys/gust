@@ -1,7 +1,7 @@
 #include "model.hpp"
 
-gst::Model::Model(Mesh mesh, Surface surface)
+gst::Model::Model(Mesh mesh, Effect effect)
     : mesh(mesh),
-      surface(surface)
+      effect(effect)
 {
 }
