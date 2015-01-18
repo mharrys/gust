@@ -1,25 +1,21 @@
 #ifndef EFFECT_HPP_INCLUDED
 #define EFFECT_HPP_INCLUDED
 
-#include "mesh.hpp"
-#include "rendertarget.hpp"
-#include "program.hpp"
+#include "uniform.hpp"
+#include "texture.hpp"
 
-#include <functional>
 #include <memory>
+#include <vector>
 
 namespace gst
 {
-    class RenderState;
+    class Technique;
 
     class Effect {
     public:
-        Effect(Mesh & quad, RenderTarget & read, std::shared_ptr<Program> program);
-
-        Mesh quad;
-        RenderTarget read;
-        std::shared_ptr<Program> program;
-        std::function<void(RenderState &)> bind_callback;
+        std::vector<Uniform> uniforms;
+        std::vector<Texture> textures;
+        std::vector<std::shared_ptr<Technique>> techniques;
     };
 }
 
