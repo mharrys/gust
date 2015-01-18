@@ -9,10 +9,10 @@
 
 namespace gst
 {
-    class NodeProgramUpdater;
+    class NodeRenderer;
 
     class Mesh {
-        friend NodeProgramUpdater;
+        friend NodeRenderer;
     public:
         Mesh() = default;
         Mesh(VertexArray & vertex_array);
