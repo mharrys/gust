@@ -1,5 +1,8 @@
 #include "uniform.hpp"
 
+#include <array>
+#include <cstring>
+
 gst::Uniform::Uniform(std::string name)
     : name(name),
       array_name(""),

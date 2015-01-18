@@ -3,8 +3,6 @@
 
 #include "glm.hpp"
 
-#include <array>
-#include <cstring>
 #include <memory>
 #include <vector>
 
