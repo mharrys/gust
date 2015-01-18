@@ -4,6 +4,7 @@
 #include "programimpl.hpp"
 #include "renderstate.hpp"
 #include "shader.hpp"
+#include "uniform.hpp"
 
 gst::Program::Program(
     std::shared_ptr<RenderState> render_state,
@@ -55,70 +56,61 @@ gst::Program::operator bool() const
     return impl != nullptr;
 }
 
-void gst::Program::uniform(std::string const & name, bool value)
+void gst::Program::update(Uniform const & uniform)
 {
-    push();
-    impl->uniform1i(uniform(name), static_cast<int>(value));
-    pop();
+    if (!uniform.shadowed_data) {
+        logger->log(TRACE("attempted to update uniform \"" + uniform.get_array_name() + "\" with no allocated data"));
+        return;
+    }
+
+    int l = location(uniform.get_array_name());
+    float * data;
+
+    switch (uniform.type) {
+    case UniformType::BOOL:
+        impl->uniform1i(l, *std::static_pointer_cast<bool>(uniform.shadowed_data).get());
+        break;
+    case UniformType::INT:
+        impl->uniform1i(l, *std::static_pointer_cast<int>(uniform.shadowed_data).get());
+        break;
+    case UniformType::FLOAT:
+        impl->uniform1f(l, *std::static_pointer_cast<float>(uniform.shadowed_data).get());
+        break;
+    case UniformType::FLOAT_ARRAY:
+        data = std::static_pointer_cast<float>(uniform.shadowed_data).get();
+        impl->uniform1fv(l, uniform.count, data);
+        break;
+    case UniformType::VEC2:
+        data = std::static_pointer_cast<float>(uniform.shadowed_data).get();
+        impl->uniform2f(l, data[0], data[1]);
+        break;
+    case UniformType::VEC3:
+        data = std::static_pointer_cast<float>(uniform.shadowed_data).get();
+        impl->uniform3f(l, data[0], data[1], data[2]);
+        break;
+    case UniformType::VEC4:
+        data = std::static_pointer_cast<float>(uniform.shadowed_data).get();
+        impl->uniform4f(l, data[0], data[1], data[2], data[3]);
+        break;
+    case UniformType::MAT3:
+        data = std::static_pointer_cast<float>(uniform.shadowed_data).get();
+        impl->uniform_matrix3fv(l, 1, false, data);
+        break;
+    case UniformType::MAT4:
+        data = std::static_pointer_cast<float>(uniform.shadowed_data).get();
+        impl->uniform_matrix4fv(l, 1, false, data);
+        break;
+    }
 }
 
-void gst::Program::uniform(std::string const & name, int value)
+void gst::Program::update(std::vector<Uniform> const & uniforms)
 {
-    push();
-    impl->uniform1i(uniform(name), value);
-    pop();
+    for (auto & uniform : uniforms) {
+        update(uniform);
+    }
 }
 
-void gst::Program::uniform(std::string const & name, float value)
-{
-    push();
-    impl->uniform1f(uniform(name), value);
-    pop();
-}
-
-void gst::Program::uniform(std::string const & name, glm::mat3 const & value)
-{
-    push();
-    impl->uniform_matrix3fv(uniform(name), 1, false, glm::value_ptr(value));
-    pop();
-}
-
-void gst::Program::uniform(std::string const & name, glm::mat4 const & value)
-{
-    push();
-    impl->uniform_matrix4fv(uniform(name), 1, false, glm::value_ptr(value));
-    pop();
-}
-
-void gst::Program::uniform(std::string const & name, glm::vec2 const & value)
-{
-    push();
-    impl->uniform2f(uniform(name), value[0], value[1]);
-    pop();
-}
-
-void gst::Program::uniform(std::string const & name, glm::vec3 const & value)
-{
-    push();
-    impl->uniform3f(uniform(name), value[0], value[1], value[2]);
-    pop();
-}
-
-void gst::Program::uniform(std::string const & name, glm::vec4 const & value)
-{
-    push();
-    impl->uniform4f(uniform(name), value[0], value[1], value[2], value[3]);
-    pop();
-}
-
-void gst::Program::uniform(std::string const & name, std::vector<float> const & value)
-{
-    push();
-    impl->uniform1fv(uniform(name), value.size(), &value[0]);
-    pop();
-}
-
-int gst::Program::uniform(std::string const & name)
+int gst::Program::location(std::string const & name)
 {
     if (uniforms.count(name) == 0) {
         uniforms[name] = impl->get_uniform_location(name);
