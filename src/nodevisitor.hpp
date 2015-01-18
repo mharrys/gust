@@ -4,7 +4,6 @@
 namespace gst
 {
     class CameraNode;
-    class EffectNode;
     class GroupNode;
     class LightNode;
     class ModelNode;
@@ -14,7 +13,6 @@ namespace gst
     public:
         virtual ~NodeVisitor() = default;
         virtual void visit(CameraNode & node);
-        virtual void visit(EffectNode & node);
         virtual void visit(GroupNode & node);
         virtual void visit(LightNode & node);
         virtual void visit(ModelNode & node);
