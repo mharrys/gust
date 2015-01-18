@@ -2,17 +2,15 @@
 
 #include "logger.hpp"
 #include "programimpl.hpp"
-#include "renderstate.hpp"
 #include "shader.hpp"
 #include "uniform.hpp"
+#include "vertexattrib.hpp"
 
 gst::Program::Program(
-    std::shared_ptr<RenderState> render_state,
     std::shared_ptr<Logger> logger,
     std::vector<Shader> shaders,
     std::vector<AttribLocation> const & locations)
     : impl(std::make_shared<ProgramImpl>()),
-      render_state(render_state),
       logger(logger)
 {
     for (auto & shader : shaders) {
@@ -119,15 +117,4 @@ int gst::Program::location(std::string const & name)
         }
     }
     return uniforms.at(name);
-}
-
-void gst::Program::push()
-{
-    render_state->push();
-    render_state->set_program(*this);
-}
-
-void gst::Program::pop()
-{
-    render_state->pop();
 }

@@ -24,7 +24,6 @@ namespace gst
     public:
         Program() = default;
         Program(
-            std::shared_ptr<RenderState> render_state,
             std::shared_ptr<Logger> logger,
             std::vector<Shader> shaders = {},
             std::vector<AttribLocation> const & locations = {});
@@ -38,11 +37,7 @@ namespace gst
     private:
         int location(std::string const & name);
 
-        void push();
-        void pop();
-
         std::shared_ptr<ProgramImpl> impl;
-        std::shared_ptr<RenderState> render_state;
         std::shared_ptr<Logger> logger;
         UniformCache uniforms;
     };
