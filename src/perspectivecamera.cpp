@@ -5,6 +5,12 @@ gst::PerspectiveCamera::PerspectiveCamera()
 {
 }
 
+
+gst::PerspectiveCamera::PerspectiveCamera(float fov, Resolution resolution, float near, float far)
+    : PerspectiveCamera(fov, resolution.get_width() / static_cast<float>(resolution.get_height()), near, far)
+{
+}
+
 gst::PerspectiveCamera::PerspectiveCamera(float fov, float aspect_ratio, float near, float far)
     : Camera(glm::perspective(fov, aspect_ratio, near, far)),
       fov(fov),
