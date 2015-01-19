@@ -9,17 +9,20 @@
 
 namespace gst
 {
+    class CameraNode;
     class LightNode;
+    class RenderState;
 
     class NodeRenderer : public NodeVisitor {
     public:
         NodeRenderer(
-            std::shared_ptr<NodeVisitor> updater,
+            std::shared_ptr<RenderState> render_state,
+            std::shared_ptr<CameraNode> eye,
             std::vector<LightNode> lights);
-        void visit(EffectNode & node);
         void visit(ModelNode & node);
     private:
-        std::shared_ptr<NodeVisitor> updater;
+        std::shared_ptr<RenderState> render_state;
+        std::shared_ptr<CameraNode> eye;
         std::vector<LightNode> lights;
     };
 }

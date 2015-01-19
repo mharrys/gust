@@ -1,24 +1,18 @@
 #ifndef LIGHT_HPP_INCLUDED
 #define LIGHT_HPP_INCLUDED
 
-#include "attenuation.hpp"
-#include "glm.hpp"
-#include "uniformarraylocation.hpp"
+#include "uniformarrayelement.hpp"
+
+#include <vector>
 
 namespace gst
 {
-    class LightVisitor;
-    class NodeProgramUpdater;
-
     class Light {
-        friend NodeProgramUpdater;
     public:
-        Light();
-        Light(UniformArrayLocation location);
-        virtual ~Light() = default;
-        virtual void accept(LightVisitor & visitor);
-    private:
-        UniformArrayLocation location;
+        Light(std::string const & array_name);
+        Light(UniformArrayElement const & uniforms);
+
+        UniformArrayElement uniforms;
     };
 }
 

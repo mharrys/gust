@@ -1,28 +1,24 @@
 #include "noderenderer.hpp"
 
+#include "camera.hpp"
+#include "cameranode.hpp"
 #include "effect.hpp"
-#include "effectnode.hpp"
 #include "lightnode.hpp"
 #include "mesh.hpp"
 #include "model.hpp"
 #include "modelnode.hpp"
+#include "pass.hpp"
+#include "renderstate.hpp"
+#include "technique.hpp"
 
 gst::NodeRenderer::NodeRenderer(
-    std::shared_ptr<NodeVisitor> updater,
+    std::shared_ptr<RenderState> render_state,
+    std::shared_ptr<CameraNode> eye,
     std::vector<LightNode> lights)
-    : updater(updater),
+    : render_state(render_state),
+      eye(eye),
       lights(std::move(lights))
 {
-}
-
-void gst::NodeRenderer::visit(EffectNode & node)
-{
-    if (!node.enabled) {
-        return;
-    }
-
-    node.accept(*updater.get());
-    node.effect->quad.draw();
 }
 
 void gst::NodeRenderer::visit(ModelNode & node)
@@ -31,10 +27,39 @@ void gst::NodeRenderer::visit(ModelNode & node)
         return;
     }
 
-    node.accept(*updater.get());
+    MatrixState matrices;
+    matrices.model = node.world_transform;
+    matrices.view = eye->get_view();
+    matrices.model_view = matrices.view * matrices.model;
+    matrices.projection = eye->get_projection();
+    matrices.normal = glm::inverseTranspose(glm::mat3(matrices.model_view));
+
     for (unsigned int i = 0; i < lights.size(); i++) {
-        lights[i].lights_index = i;
-        lights[i].accept(*updater.get());
+        auto light = lights[i].light;
+        light->uniforms = i;
+        // special uniforms
+        light->uniforms("enabled") = lights[i].enabled;
+        light->uniforms("position") = matrices.view * glm::vec4(lights[i].position, 1.0f);
     }
-    node.model->mesh.draw();
+
+    auto & mesh = node.model->mesh;
+    render_state->set_vertex_array(mesh.vertex_array);
+
+    auto & effect = node.model->effect;
+    for (unsigned int i = 0; i < effect.textures.size(); i++) {
+        render_state->set_texture(effect.textures[i], i);
+    }
+
+    for (auto technique : effect.techniques) {
+        for (auto pass : technique->passes) {
+            render_state->set_blend_mode(pass->blend_mode);
+            render_state->set_cull_face(pass->cull_face);
+            render_state->set_depth_mask(pass->depth_mask);
+            render_state->set_depth_test(pass->depth_test);
+            render_state->set_program(*pass->program.get());
+            pass->program->update(effect.uniforms);
+            pass->apply(matrices, lights);
+            mesh.draw();
+        }
+    }
 }

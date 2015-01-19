@@ -1,17 +1,17 @@
 #ifndef MODEL_HPP_INCLUDED
 #define MODEL_HPP_INCLUDED
 
+#include "effect.hpp"
 #include "mesh.hpp"
-#include "surface.hpp"
 
 namespace gst
 {
     class Model {
     public:
-        Model(Mesh mesh, Surface surface);
+        Model(Mesh mesh, Effect effect);
 
         Mesh mesh;
-        Surface surface;
+        Effect effect;
     };
 }
 

@@ -9,7 +9,6 @@ namespace gst
     class NodeTransformUpdater : public NodeVisitor {
     public:
         void visit(CameraNode & node);
-        void visit(EffectNode & node);
         void visit(GroupNode & node);
         void visit(LightNode & node);
         void visit(ModelNode & node);

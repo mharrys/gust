@@ -1,17 +1,12 @@
 #include "nodevisitor.hpp"
 
 #include "cameranode.hpp"
-#include "effectnode.hpp"
 #include "groupnode.hpp"
 #include "lightnode.hpp"
 #include "modelnode.hpp"
 #include "node.hpp"
 
 void gst::NodeVisitor::visit(CameraNode &)
-{
-}
-
-void gst::NodeVisitor::visit(EffectNode &)
 {
 }
 

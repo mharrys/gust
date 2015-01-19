@@ -13,7 +13,6 @@ namespace gst
         virtual void accept(NodeVisitor & visitor) override;
 
         std::shared_ptr<Light> light;
-        unsigned int lights_index;
     };
 }
 

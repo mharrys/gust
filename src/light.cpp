@@ -1,18 +1,11 @@
 #include "light.hpp"
 
-#include "lightvisitor.hpp"
-
-gst::Light::Light()
-    : location("lights")
+gst::Light::Light(std::string const & array_name)
+    : uniforms(array_name)
 {
 }
 
-gst::Light::Light(UniformArrayLocation location)
-    : location(location)
+gst::Light::Light(UniformArrayElement const & uniforms)
+    : uniforms(uniforms)
 {
-}
-
-void gst::Light::accept(LightVisitor & visitor)
-{
-    visitor.visit(*this);
 }

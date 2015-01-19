@@ -5,7 +5,6 @@
 #include "framebuffer.hpp"
 #include "lightnodecollector.hpp"
 #include "logger.hpp"
-#include "nodeprogramupdater.hpp"
 #include "noderenderer.hpp"
 #include "renderstate.hpp"
 #include "rendertarget.hpp"
@@ -33,16 +32,10 @@ void gst::Renderer::render(Scene & scene)
         clear(auto_clear_color, auto_clear_depth);
     }
 
-    auto updater = std::make_shared<NodeProgramUpdater>(
-        render_state,
-        scene.eye->get_view(),
-        scene.eye->get_projection()
-    );
-
     LightNodeCollector collector;
     scene.traverse(collector);
 
-    NodeRenderer renderer(updater, std::move(collector.lights));
+    NodeRenderer renderer(render_state, scene.eye, std::move(collector.lights));
     scene.traverse(renderer);
 }
 

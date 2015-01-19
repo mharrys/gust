@@ -1,17 +1,13 @@
 #include "programfactory.hpp"
 
 #include "logger.hpp"
-#include "renderstate.hpp"
 #include "shader.hpp"
 
 #include <fstream>
 #include <sstream>
 
-gst::ProgramFactory::ProgramFactory(
-    std::shared_ptr<RenderState> render_state,
-    std::shared_ptr<Logger> logger)
-    : render_state(render_state),
-      logger(logger)
+gst::ProgramFactory::ProgramFactory(std::shared_ptr<Logger> logger)
+    : logger(logger)
 {
 }
 
@@ -59,6 +55,6 @@ gst::Program gst::ProgramFactory::create_from_source(
     if (!vs || !fs) {
         return Program();
     } else {
-        return Program(render_state, logger, { vs, fs }, locations);
+        return Program(logger, { vs, fs }, locations);
     }
 }

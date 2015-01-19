@@ -1,17 +1,11 @@
 #include "nodetransformupdater.hpp"
 
 #include "cameranode.hpp"
-#include "effectnode.hpp"
 #include "lightnode.hpp"
 #include "groupnode.hpp"
 #include "modelnode.hpp"
 
 void gst::NodeTransformUpdater::visit(CameraNode & node)
-{
-    update(node);
-}
-
-void gst::NodeTransformUpdater::visit(EffectNode & node)
 {
     update(node);
 }
