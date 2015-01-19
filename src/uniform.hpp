@@ -26,38 +26,38 @@ namespace gst
         friend Program;
     public:
         Uniform() = default;
-        Uniform(bool value);
-        Uniform(int value);
-        Uniform(float value);
-        Uniform(std::vector<float> const & value);
-        Uniform(glm::vec2 const & value);
-        Uniform(glm::vec3 const & value);
-        Uniform(glm::vec4 const & value);
-        Uniform(glm::mat3 const & value);
-        Uniform(glm::mat4 const & value);
+        Uniform(bool data);
+        Uniform(int data);
+        Uniform(float data);
+        Uniform(std::vector<float> const & data);
+        Uniform(glm::vec2 const & data);
+        Uniform(glm::vec3 const & data);
+        Uniform(glm::vec4 const & data);
+        Uniform(glm::mat3 const & data);
+        Uniform(glm::mat4 const & data);
 
         bool operator==(Uniform const & other);
         bool operator!=(Uniform const & other);
 
-        Uniform & operator=(bool value);
-        Uniform & operator=(int value);
-        Uniform & operator=(float value);
-        Uniform & operator=(std::vector<float> const & value);
-        Uniform & operator=(glm::vec2 const & value);
-        Uniform & operator=(glm::vec3 const & value);
-        Uniform & operator=(glm::vec4 const & value);
-        Uniform & operator=(glm::mat3 const & value);
-        Uniform & operator=(glm::mat4 const & value);
+        Uniform & operator=(bool data);
+        Uniform & operator=(int data);
+        Uniform & operator=(float data);
+        Uniform & operator=(std::vector<float> const & data);
+        Uniform & operator=(glm::vec2 const & data);
+        Uniform & operator=(glm::vec3 const & data);
+        Uniform & operator=(glm::vec4 const & data);
+        Uniform & operator=(glm::mat3 const & data);
+        Uniform & operator=(glm::mat4 const & data);
 
-        void set_data(bool value);
-        void set_data(int value);
-        void set_data(float value);
-        void set_data(std::vector<float> const & value);
-        void set_data(glm::vec2 const & value);
-        void set_data(glm::vec3 const & value);
-        void set_data(glm::vec4 const & value);
-        void set_data(glm::mat3 const & value);
-        void set_data(glm::mat4 const & value);
+        void set_data(bool data);
+        void set_data(int data);
+        void set_data(float data);
+        void set_data(std::vector<float> const & data);
+        void set_data(glm::vec2 const & data);
+        void set_data(glm::vec3 const & data);
+        void set_data(glm::vec4 const & data);
+        void set_data(glm::mat3 const & data);
+        void set_data(glm::mat4 const & data);
     private:
         bool need_new_storage(UniformType type, size_t count);
 
