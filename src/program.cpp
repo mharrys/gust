@@ -4,6 +4,8 @@
 #include "programimpl.hpp"
 #include "shader.hpp"
 #include "uniform.hpp"
+#include "uniformarrayelement.hpp"
+#include "uniformgroup.hpp"
 #include "vertexattrib.hpp"
 
 gst::Program::Program(
@@ -54,14 +56,14 @@ gst::Program::operator bool() const
     return impl != nullptr;
 }
 
-void gst::Program::update(Uniform const & uniform)
+void gst::Program::update(std::string const & name, Uniform const & uniform)
 {
     if (!uniform.shadowed_data) {
-        logger->log(TRACE("attempted to update uniform \"" + uniform.get_array_name() + "\" with no allocated data"));
+        logger->log(TRACE("attempted to update uniform \"" + name + "\" with no allocated data"));
         return;
     }
 
-    int l = location(uniform.get_array_name());
+    int l = location(name);
     float * data;
 
     switch (uniform.type) {
@@ -101,10 +103,17 @@ void gst::Program::update(Uniform const & uniform)
     }
 }
 
-void gst::Program::update(std::vector<Uniform> const & uniforms)
+void gst::Program::update(UniformArrayElement const & element)
 {
-    for (auto & uniform : uniforms) {
-        update(uniform);
+    for (auto & uniform : element.uniforms) {
+        update(element.get_array_name(uniform.first), uniform.second);
+    }
+}
+
+void gst::Program::update(UniformGroup const & group)
+{
+    for (auto & uniform : group.uniforms) {
+        update(group.get_name(uniform.first), uniform.second);
     }
 }
 

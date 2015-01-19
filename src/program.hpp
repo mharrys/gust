@@ -15,6 +15,8 @@ namespace gst
     class RenderState;
     class Shader;
     class Uniform;
+    class UniformArrayElement;
+    class UniformGroup;
 
     typedef std::pair<int, std::string> AttribLocation;
     typedef std::unordered_map<std::string, int> UniformCache;
@@ -32,8 +34,9 @@ namespace gst
         bool operator!=(Program const & other);
         explicit operator bool() const;
 
-        void update(Uniform const & uniform);
-        void update(std::vector<Uniform> const & uniforms);
+        void update(std::string const & name, Uniform const & uniform);
+        void update(UniformArrayElement const & element);
+        void update(UniformGroup const & group);
     private:
         int location(std::string const & name);
 

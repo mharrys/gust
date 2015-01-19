@@ -26,16 +26,15 @@ namespace gst
         friend Program;
     public:
         Uniform() = default;
-        Uniform(std::string name);
-        Uniform(std::string name, bool value);
-        Uniform(std::string name, int value);
-        Uniform(std::string name, float value);
-        Uniform(std::string name, std::vector<float> const & value);
-        Uniform(std::string name, glm::vec2 const & value);
-        Uniform(std::string name, glm::vec3 const & value);
-        Uniform(std::string name, glm::vec4 const & value);
-        Uniform(std::string name, glm::mat3 const & value);
-        Uniform(std::string name, glm::mat4 const & value);
+        Uniform(bool value);
+        Uniform(int value);
+        Uniform(float value);
+        Uniform(std::vector<float> const & value);
+        Uniform(glm::vec2 const & value);
+        Uniform(glm::vec3 const & value);
+        Uniform(glm::vec4 const & value);
+        Uniform(glm::mat3 const & value);
+        Uniform(glm::mat4 const & value);
 
         bool operator==(Uniform const & other);
         bool operator!=(Uniform const & other);
@@ -59,19 +58,8 @@ namespace gst
         void set_data(glm::vec4 const & value);
         void set_data(glm::mat3 const & value);
         void set_data(glm::mat4 const & value);
-
-        void set_name(std::string name);
-        void set_array_name(std::string array_name);
-        void set_array_index(unsigned int array_index);
-
-        std::string get_name() const;
-        std::string get_array_name() const;
     private:
         bool need_new_storage(UniformType type, size_t count);
-
-        std::string name;
-        std::string array_name;
-        unsigned int array_index;
 
         UniformType type;
         std::shared_ptr<void> shadowed_data;

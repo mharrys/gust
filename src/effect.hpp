@@ -1,7 +1,7 @@
 #ifndef EFFECT_HPP_INCLUDED
 #define EFFECT_HPP_INCLUDED
 
-#include "uniform.hpp"
+#include "uniformgroup.hpp"
 #include "texture.hpp"
 
 #include <memory>
@@ -13,7 +13,7 @@ namespace gst
 
     class Effect {
     public:
-        std::vector<Uniform> uniforms;
+        UniformGroup uniforms;
         std::vector<Texture> textures;
         std::vector<std::shared_ptr<Technique>> techniques;
     };

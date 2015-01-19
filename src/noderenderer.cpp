@@ -36,15 +36,10 @@ void gst::NodeRenderer::visit(ModelNode & node)
 
     for (unsigned int i = 0; i < lights.size(); i++) {
         auto light = lights[i].light;
-        for (auto & uniform : light->uniforms) {
-            uniform.set_array_index(i);
-            // special uniform names
-            if (uniform.get_name() == "enabled") {
-                uniform = lights[i].enabled;
-            } else if (uniform.get_name() == "position") {
-                uniform = matrices.view * glm::vec4(lights[i].position, 1.0f);
-            }
-        }
+        light->uniforms = i;
+        // special uniforms
+        light->uniforms("enabled") = lights[i].enabled;
+        light->uniforms("position") = matrices.view * glm::vec4(lights[i].position, 1.0f);
     }
 
     auto & mesh = node.model->mesh;

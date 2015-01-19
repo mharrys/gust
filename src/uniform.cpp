@@ -3,94 +3,54 @@
 #include <array>
 #include <cstring>
 
-gst::Uniform::Uniform(std::string name)
-    : name(name),
-      array_name(""),
-      array_index(0),
-      type(UniformType::BOOL),
-      shadowed_data(nullptr),
-      count(0),
-      bytes(0)
-{
-}
-
-gst::Uniform::Uniform(std::string name, bool value)
-    : name(name),
-      array_name(""),
-      array_index(0)
+gst::Uniform::Uniform(bool value)
 {
     set_data(value);
 }
 
-gst::Uniform::Uniform(std::string name, int value)
-    : name(name),
-      array_name(""),
-      array_index(0)
+gst::Uniform::Uniform(int value)
 {
     set_data(value);
 }
 
-gst::Uniform::Uniform(std::string name, float value)
-    : name(name),
-      array_name(""),
-      array_index(0)
+gst::Uniform::Uniform(float value)
 {
     set_data(value);
 }
 
-gst::Uniform::Uniform(std::string name, std::vector<float> const & value)
-    : name(name),
-      array_name(""),
-      array_index(0)
+gst::Uniform::Uniform(std::vector<float> const & value)
 {
     set_data(value);
 }
 
-gst::Uniform::Uniform(std::string name, glm::vec2 const & value)
-    : name(name),
-      array_name(""),
-      array_index(0)
+gst::Uniform::Uniform(glm::vec2 const & value)
 {
     set_data(value);
 }
 
-gst::Uniform::Uniform(std::string name, glm::vec3 const & value)
-    : name(name),
-      array_name(""),
-      array_index(0)
+gst::Uniform::Uniform(glm::vec3 const & value)
 {
     set_data(value);
 }
 
-gst::Uniform::Uniform(std::string name, glm::vec4 const & value)
-    : name(name),
-      array_name(""),
-      array_index(0)
+gst::Uniform::Uniform(glm::vec4 const & value)
 {
     set_data(value);
 }
 
-gst::Uniform::Uniform(std::string name, glm::mat3 const & value)
-    : name(name),
-      array_name(""),
-      array_index(0)
+gst::Uniform::Uniform(glm::mat3 const & value)
 {
     set_data(value);
 }
 
-gst::Uniform::Uniform(std::string name, glm::mat4 const & value)
-    : name(name),
-      array_name(""),
-      array_index(0)
+gst::Uniform::Uniform(glm::mat4 const & value)
 {
     set_data(value);
 }
 
 bool gst::Uniform::operator==(Uniform const & other)
 {
-    return name == other.name &&
-           type == other.type &&
-           shadowed_data == other.shadowed_data;
+    return type == other.type && shadowed_data == other.shadowed_data;
 }
 
 bool gst::Uniform::operator!=(Uniform const & other)
@@ -249,35 +209,6 @@ void gst::Uniform::set_data(glm::mat4 const & value)
         shadowed_data = std::make_shared<std::array<float, 16>>();
     }
     std::memcpy(shadowed_data.get(), glm::value_ptr(value), bytes);
-}
-
-void gst::Uniform::set_name(std::string name)
-{
-    this->name = name;
-}
-
-void gst::Uniform::set_array_name(std::string array_name)
-{
-    this->array_name = array_name;
-}
-
-void gst::Uniform::set_array_index(unsigned int array_index)
-{
-    this->array_index= array_index;
-}
-
-std::string gst::Uniform::get_name() const
-{
-    return name;
-}
-
-std::string gst::Uniform::get_array_name() const
-{
-    if (array_name.empty()) {
-        return name;
-    } else {
-        return array_name + "[" + std::to_string(array_index) + "]." + name;
-    }
 }
 
 bool gst::Uniform::need_new_storage(UniformType type, size_t count)
