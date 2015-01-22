@@ -5,6 +5,12 @@ gst::Resolution::Resolution()
 {
 }
 
+gst::Resolution::Resolution(unsigned int size)
+    : width(size),
+      height(size)
+{
+}
+
 gst::Resolution::Resolution(unsigned int width, unsigned int height)
     : width(width),
       height(height)

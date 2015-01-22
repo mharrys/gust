@@ -6,6 +6,7 @@ namespace gst
     class Resolution {
     public:
         Resolution();
+        Resolution(unsigned int size);
         Resolution(unsigned int width, unsigned int height);
 
         bool operator==(Resolution const & other);
