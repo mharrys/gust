@@ -1,28 +1,23 @@
 #include "texture.hpp"
 
-#include "image.hpp"
-#include "renderstate.hpp"
 #include "textureimpl.hpp"
 
 gst::Texture::Texture(
-    std::shared_ptr<RenderState> render_state,
     Resolution size,
     std::vector<unsigned char> const & data,
     TextureParam const & param)
-    : impl(std::make_shared<TextureImpl>(param.target)),
-      render_state(render_state)
+    : Texture({ size, data }, param)
 {
-    push();
-    impl->parameter(param);
-    impl->image2D(size, data);
-    pop();
 }
 
 gst::Texture::Texture(
-    std::shared_ptr<RenderState> render_state,
     Image const & image,
     TextureParam const & param)
-    : Texture(render_state, image.get_size(), image.get_data(), param)
+    : impl(std::make_shared<TextureImpl>(param.target)),
+      image(image),
+      param(param),
+      image_dirty(true),
+      param_dirty(true)
 {
 }
 
@@ -41,27 +36,108 @@ gst::Texture::operator bool() const
     return impl != nullptr;
 }
 
-void gst::Texture::update(Resolution size, std::vector<unsigned char> const & data)
+void gst::Texture::set_image(Resolution size, std::vector<unsigned char> const & data)
 {
-    push();
-    impl->image2D(size, data);
-    pop();
+    set_image({ size, data });
 }
 
-void gst::Texture::update(TextureParam const & param)
+void gst::Texture::set_image(Image const & image)
 {
-    push();
-    impl->parameter(param);
-    pop();
+    this->image = image;
+    image_dirty = true;
 }
 
-void gst::Texture::push()
+void gst::Texture::set_param(TextureParam const & param)
 {
-    render_state->push();
-    render_state->set_texture(*this);
+    this->param = param;
+    param_dirty = true;
 }
 
-void gst::Texture::pop()
+void gst::Texture::set_internal_format(TextureFormat internal_format)
 {
-    render_state->pop();
+    param.internal_format = internal_format;
+    param_dirty = true;
+}
+
+void gst::Texture::set_source_format(PixelFormat source_format)
+{
+    param.source_format = source_format;
+    param_dirty = true;
+}
+
+void gst::Texture::set_min_filter(FilterMode min_filter)
+{
+    param.min_filter = min_filter;
+    param_dirty = true;
+}
+
+void gst::Texture::set_mag_filter(FilterMode mag_filter)
+{
+    param.mag_filter = mag_filter;
+    param_dirty = true;
+}
+
+void gst::Texture::set_wrap_s(WrapMode wrap_s)
+{
+    param.wrap_s = wrap_s;
+    param_dirty = true;
+}
+
+void gst::Texture::set_wrap_t(WrapMode wrap_t)
+{
+    param.wrap_t = wrap_t;
+    param_dirty = true;
+}
+
+gst::Image gst::Texture::get_image() const
+{
+    return image;
+}
+
+gst::TextureParam gst::Texture::get_param() const
+{
+    return param;
+}
+
+gst::TextureFormat gst::Texture::get_internal_format() const
+{
+    return param.internal_format;
+}
+
+gst::PixelFormat gst::Texture::get_source_format() const
+{
+    return param.source_format;
+}
+
+gst::FilterMode gst::Texture::get_min_filter() const
+{
+    return param.min_filter;
+}
+
+gst::FilterMode gst::Texture::get_mag_filter() const
+{
+    return param.mag_filter;
+}
+
+gst::WrapMode gst::Texture::get_wrap_s() const
+{
+    return param.wrap_t;
+}
+
+gst::WrapMode gst::Texture::get_wrap_t() const
+{
+    return param.wrap_t;
+}
+
+void gst::Texture::refresh()
+{
+    if (param_dirty) {
+        param_dirty = false;
+        impl->parameter(param);
+    }
+
+    if (image_dirty) {
+        image_dirty = false;
+        impl->image2D(image);
+    }
 }
