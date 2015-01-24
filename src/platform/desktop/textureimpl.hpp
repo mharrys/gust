@@ -1,6 +1,7 @@
 #ifndef TEXTUREIMPL_HPP_INCLUDED
 #define TEXTUREIMPL_HPP_INCLUDED
 
+#include "image.hpp"
 #include "resolution.hpp"
 #include "translator.hpp"
 
@@ -19,7 +20,7 @@ namespace gst
     public:
         TextureImpl(TextureTarget target);
         ~TextureImpl();
-        void image2D(Resolution size, std::vector<unsigned char> const & data);
+        void image2D(Image const & image);
         void parameter(TextureParam const & param);
     private:
         void bind(int unit = 0);
