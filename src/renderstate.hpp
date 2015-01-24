@@ -34,7 +34,7 @@ namespace gst
         Framebuffer framebuffer;
         Renderbuffer renderbuffer;
         Program program;
-        Texture texture; // only texture unit 0
+        Texture texture0;
         VertexArray vertex_array;
         Viewport viewport;
     };
