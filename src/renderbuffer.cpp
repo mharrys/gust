@@ -1,16 +1,15 @@
 #include "renderbuffer.hpp"
 
 #include "renderbufferimpl.hpp"
-#include "renderstate.hpp"
 
 gst::Renderbuffer::Renderbuffer(
-    std::shared_ptr<RenderState> render_state,
     Resolution size,
     RenderbufferFormat format)
     : impl(std::make_shared<RenderbufferImpl>()),
-      render_state(render_state)
+      size(size),
+      format(format),
+      dirty(true)
 {
-    update(size, format);
 }
 
 bool gst::Renderbuffer::operator==(Renderbuffer const & other)
@@ -28,34 +27,37 @@ gst::Renderbuffer::operator bool() const
     return impl != nullptr;
 }
 
-void gst::Renderbuffer::update(Resolution size)
+void gst::Renderbuffer::set_storage(Resolution size)
 {
-    push();
-    impl->storage(size);
-    pop();
+    set_storage(size, format);
 }
 
-void gst::Renderbuffer::update(RenderbufferFormat format)
+void gst::Renderbuffer::set_storage(RenderbufferFormat format)
 {
-    push();
-    impl->storage(format);
-    pop();
+    set_storage(size, format);
 }
 
-void gst::Renderbuffer::update(Resolution size, RenderbufferFormat format)
+void gst::Renderbuffer::set_storage(Resolution size, RenderbufferFormat format)
 {
-    push();
-    impl->storage(size, format);
-    pop();
+    this->size = size;
+    this->format = format;
+    dirty = true;
 }
 
-void gst::Renderbuffer::push()
+gst::Resolution gst::Renderbuffer::get_size() const
 {
-    render_state->push();
-    render_state->set_renderbuffer(*this);
+    return size;
 }
 
-void gst::Renderbuffer::pop()
+gst::RenderbufferFormat gst::Renderbuffer::get_format() const
 {
-    render_state->pop();
+    return format;
+}
+
+void gst::Renderbuffer::refresh()
+{
+    if (dirty) {
+        dirty = false;
+        impl->storage(size, format);
+    }
 }
