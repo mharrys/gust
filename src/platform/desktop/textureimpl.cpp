@@ -11,8 +11,10 @@ gst::TextureImpl::~TextureImpl()
     glDeleteTextures(1, &id);
 }
 
-void gst::TextureImpl::image2D(Resolution size, std::vector<unsigned char> const & data)
+void gst::TextureImpl::image2D(Image const & image)
 {
+    auto size = image.get_size();
+
     glTexImage2D(
         target,
         0,
@@ -22,7 +24,7 @@ void gst::TextureImpl::image2D(Resolution size, std::vector<unsigned char> const
         0,
         source_format,
         GL_UNSIGNED_BYTE,
-        &data[0]
+        &image.get_data()[0]
     );
 }
 

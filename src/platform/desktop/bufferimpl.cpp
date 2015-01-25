@@ -21,19 +21,6 @@ void gst::BufferImpl::buffer_sub_data(int64_t offset, int64_t size, void const *
     glBufferSubData(target, offset, size, data);
 }
 
-void gst::BufferImpl::define(VertexAttrib const & attrib)
-{
-    glEnableVertexAttribArray(attrib.index);
-    glVertexAttribPointer(
-        attrib.index,
-        attrib.components,
-        translator.translate(attrib.type),
-        attrib.normalized ? GL_TRUE : GL_FALSE,
-        attrib.stride_bytes,
-        (GLvoid const *)(attrib.offset_bytes)
-    );
-}
-
 void gst::BufferImpl::bind()
 {
     glBindBuffer(target, id);

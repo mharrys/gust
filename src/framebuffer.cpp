@@ -1,21 +1,16 @@
 #include "framebuffer.hpp"
 
 #include "framebufferimpl.hpp"
-#include "renderstate.hpp"
 
 gst::Framebuffer::Framebuffer(
-        std::shared_ptr<RenderState> render_state,
-        Texture & color,
-        Renderbuffer & depth)
+    Texture & color,
+    Renderbuffer & depth)
     : impl(std::make_shared<FramebufferImpl>()),
-      render_state(render_state),
       color(color),
-      depth(depth)
+      depth(depth),
+      color_dirty(true),
+      depth_dirty(true)
 {
-    push();
-    impl->attach(*color.impl.get());
-    impl->attach(*depth.impl.get());
-    pop();
 }
 
 bool gst::Framebuffer::operator==(Framebuffer const & other)
@@ -33,31 +28,42 @@ gst::Framebuffer::operator bool() const
     return impl != nullptr;
 }
 
-gst::Texture & gst::Framebuffer::get_color()
+void gst::Framebuffer::attach(Texture & color)
+{
+    this->color = color;
+    color_dirty = true;
+}
+
+void gst::Framebuffer::attach(Renderbuffer & depth)
+{
+    this->depth = depth;
+    depth_dirty = true;
+}
+
+gst::Texture gst::Framebuffer::get_color() const
 {
     return color;
 }
 
-gst::Renderbuffer & gst::Framebuffer::get_depth()
+gst::Renderbuffer gst::Framebuffer::get_depth() const
 {
     return depth;
 }
 
-std::vector<std::string> gst::Framebuffer::check_status()
+std::vector<std::string> gst::Framebuffer::get_status() const
 {
-    push();
-    auto errors = impl->check_status();
-    pop();
-    return errors;
+    return status;
 }
 
-void gst::Framebuffer::push()
+void gst::Framebuffer::refresh()
 {
-    render_state->push();
-    render_state->set_framebuffer(*this);
-}
+    if (color_dirty) {
+        impl->attach(*color.impl.get());
+    }
 
-void gst::Framebuffer::pop()
-{
-    render_state->pop();
+    if (depth_dirty) {
+        impl->attach(*depth.impl.get());
+    }
+
+    status = impl->check_status();
 }

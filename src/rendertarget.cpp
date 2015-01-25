@@ -12,8 +12,8 @@ void gst::RenderTarget::set_size(Resolution size)
 {
     if (this->size != size) {
         this->size = size;
-        framebuffer.get_color().update(size);
-        framebuffer.get_depth().update(size);
+        framebuffer.get_color().set_image(size);
+        framebuffer.get_depth().set_storage(size);
     }
 }
 

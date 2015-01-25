@@ -3,55 +3,35 @@
 #include "assimp.hpp"
 #include "logger.hpp"
 #include "mesh.hpp"
-#include "renderstate.hpp"
 #include "vertexarray.hpp"
 
-gst::MeshFactory::MeshFactory(
-    std::shared_ptr<Logger> logger,
-    std::shared_ptr<RenderState> render_state)
-    : logger(logger),
-      render_state(render_state)
+gst::MeshFactory::MeshFactory(std::shared_ptr<Logger> logger)
+    : logger(logger)
 {
 }
 
 gst::Mesh gst::MeshFactory::create_quad(float width, float height)
 {
-    auto vertex_array = VertexArray(render_state);
+    auto vertex_array = std::make_shared<VertexArray>();
     auto mesh = Mesh(vertex_array);
 
-    mesh.positions = {
-        render_state,
-        { AttribIndex::POSITION, 3, DataType::FLOAT }
-    };
-    mesh.positions.data = {
+    mesh.make_positions({
         glm::vec3(-width, -height, 0.0f),
-        glm::vec3( width, -height, 0.0f),
-        glm::vec3(-width,  height, 0.0f),
-        glm::vec3( width,  height, 0.0f),
-    };
-    mesh.positions.buffer_data();
-    vertex_array.set(mesh.positions);
-
-    mesh.tex_coords = {
-        render_state,
-        { AttribIndex::TEX_COORD, 2, DataType::FLOAT }
-    };
-    mesh.tex_coords.data = {
+        glm::vec3(width, -height, 0.0f),
+        glm::vec3(-width, height, 0.0f),
+        glm::vec3(width, height, 0.0f),
+    });
+    mesh.make_tex_coords({
         glm::vec2(0.0f, 1.0f),
         glm::vec2(1.0f, 1.0f),
         glm::vec2(0.0f, 0.0f),
         glm::vec2(1.0f, 0.0f),
-    };
-    mesh.tex_coords.buffer_data();
-    vertex_array.set(mesh.tex_coords);
+    });
+    mesh.make_indices({ 0, 1, 2, 2, 1, 3, });
 
-    mesh.indices = { render_state, DataType::UNSIGNED_INT };
-    mesh.indices.data = {
-        0, 1, 2,
-        2, 1, 3,
-    };
-    mesh.indices.buffer_data();
-    vertex_array.set(mesh.indices);
+    vertex_array->add(mesh.positions);
+    vertex_array->add(mesh.tex_coords);
+    vertex_array->set(mesh.indices);
 
     return mesh;
 }
@@ -98,32 +78,20 @@ std::vector<gst::Mesh> gst::MeshFactory::create_from_file(std::string const & pa
                 }
             }
 
-            auto vertex_array = VertexArray(render_state);
+            auto vertex_array = std::make_shared<VertexArray>();
             auto mesh = Mesh(vertex_array);
 
             if (!positions.empty()) {
-                mesh.positions = {
-                    render_state,
-                    { AttribIndex::POSITION, 3, DataType::FLOAT }
-                };
-                mesh.positions.data = std::move(positions);
-                mesh.positions.buffer_data();
-                vertex_array.set(mesh.positions);
+                mesh.make_positions(positions);
+                vertex_array->add(mesh.positions);
             }
             if (!normals.empty()) {
-                mesh.normals = {
-                    render_state,
-                    { AttribIndex::NORMAL, 3, DataType::FLOAT }
-                };
-                mesh.normals.data = std::move(normals);
-                mesh.normals.buffer_data();
-                vertex_array.set(mesh.normals);
+                mesh.make_normals(normals);
+                vertex_array->add(mesh.normals);
             }
             if (!indices.empty()) {
-                mesh.indices = { render_state, DataType::UNSIGNED_INT };
-                mesh.indices.data = std::move(indices);
-                mesh.indices.buffer_data();
-                vertex_array.set(mesh.indices);
+                mesh.make_indices(indices);
+                vertex_array->set(mesh.indices);
             }
 
             meshes.push_back(mesh);

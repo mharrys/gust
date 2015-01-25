@@ -28,7 +28,7 @@ gst::RenderState::RenderState(Viewport viewport)
 void gst::RenderState::push()
 {
     // temporary binds shall only be done on texture unit 0
-    auto texture = textures.count(0) > 0 ? textures[0] : Texture();
+    auto texture0 = textures.count(0) > 0 ? textures[0] : Texture();
     stack.push({
         clear_color,
         blend_mode,
@@ -39,7 +39,7 @@ void gst::RenderState::push()
         framebuffer,
         renderbuffer,
         program,
-        texture,
+        texture0,
         vertex_array,
         viewport
     });
@@ -59,7 +59,7 @@ void gst::RenderState::pop()
         set_framebuffer(state.framebuffer);
         set_renderbuffer(state.renderbuffer);
         set_program(state.program);
-        set_texture(state.texture);
+        set_texture(state.texture0);
         set_vertex_array(state.vertex_array);
         set_viewport(state.viewport);
     }
@@ -120,6 +120,7 @@ void gst::RenderState::set_buffer(Buffer & buffer)
     if (this->buffer != buffer) {
         this->buffer = buffer;
         impl->set_buffer(*buffer.impl.get());
+        buffer.refresh();
     }
 }
 
@@ -129,6 +130,7 @@ void gst::RenderState::set_framebuffer(Framebuffer & framebuffer)
         this->framebuffer = framebuffer;
         if (framebuffer) {
             impl->set_framebuffer(*framebuffer.impl.get());
+            framebuffer.refresh();
         } else {
             impl->set_framebuffer_none();
         }
@@ -144,7 +146,10 @@ void gst::RenderState::set_renderbuffer(Renderbuffer & renderbuffer)
 
     if (this->renderbuffer != renderbuffer) {
         this->renderbuffer = renderbuffer;
-        impl->set_renderbuffer(*renderbuffer.impl.get());
+        if (renderbuffer) {
+            impl->set_renderbuffer(*renderbuffer.impl.get());
+            renderbuffer.refresh();
+        }
     }
 }
 
@@ -162,6 +167,11 @@ void gst::RenderState::set_program(Program & program)
 
 void gst::RenderState::set_texture(Texture & texture, int unit)
 {
+    // do not bother rebinding empty texture
+    if (!texture) {
+        return;
+    }
+
     Texture current;
     if (textures.count(unit) > 0) {
         current = textures.at(unit);
@@ -171,8 +181,7 @@ void gst::RenderState::set_texture(Texture & texture, int unit)
         textures[unit] = texture;
         if (texture) {
             impl->set_texture(*texture.impl.get(), unit);
-        } else {
-            impl->set_texture_none(unit);
+            texture.refresh();
         }
     }
 }
@@ -193,6 +202,7 @@ void gst::RenderState::set_vertex_array(VertexArray & vertex_array)
         this->vertex_array = vertex_array;
         if (vertex_array) {
             impl->set_vertex_array(*vertex_array.impl.get());
+            vertex_array.refresh(*this);
         } else {
             impl->set_vertex_array_none();
         }

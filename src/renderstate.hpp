@@ -34,7 +34,7 @@ namespace gst
         Framebuffer framebuffer;
         Renderbuffer renderbuffer;
         Program program;
-        Texture texture; // only texture unit 0
+        Texture texture0;
         VertexArray vertex_array;
         Viewport viewport;
     };
@@ -44,12 +44,9 @@ namespace gst
     class RenderState {
     public:
         RenderState(Viewport viewport);
-
         void push();
         void pop();
-
         void clear_buffers(bool color, bool depth);
-
         void set_clear_color(Color const & clear_color);
         void set_blend_mode(BlendMode blend_mode);
         void set_cull_face(CullFace cull_face);
@@ -64,7 +61,6 @@ namespace gst
         void set_texture(RenderTarget & target, int unit = 0);
         void set_vertex_array(VertexArray & vertex_array);
         void set_viewport(Viewport const & viewport);
-
         std::vector<std::string> check_errors() const;
     private:
         std::shared_ptr<RenderStateImpl> impl;

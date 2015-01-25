@@ -5,9 +5,6 @@
 #include "indexbuffer.hpp"
 #include "vertexbuffer.hpp"
 
-#include <memory>
-#include <vector>
-
 namespace gst
 {
     class RenderState;
@@ -26,8 +23,7 @@ namespace gst
     class VertexArray {
         friend RenderState;
     public:
-        VertexArray() = default;
-        VertexArray(std::shared_ptr<RenderState> render_state);
+        VertexArray();
 
         bool operator==(VertexArray const & other);
         bool operator!=(VertexArray const & other);
@@ -36,27 +32,16 @@ namespace gst
         void draw(DrawMode mode, int first, int count);
         void draw(DrawMode mode, int count, DataType type);
 
-        template<typename T>
-        void set(VertexBuffer<T> buffer)
-        {
-            push();
-            buffer.use();
-            pop();
-        }
-
-        template<typename T>
-        void set(IndexBuffer<T> buffer)
-        {
-            push();
-            buffer.use();
-            pop();
-        }
+        void add(std::shared_ptr<VertexBuffer> vertices);
+        void set(std::shared_ptr<IndexBuffer> indices);
     private:
-        void push();
-        void pop();
+        void refresh(RenderState & render_state);
 
         std::shared_ptr<VertexArrayImpl> impl;
-        std::shared_ptr<RenderState> render_state;
+        std::vector<std::shared_ptr<VertexBuffer>> vertex_buffers;
+        std::shared_ptr<IndexBuffer> indices;
+        bool vertices_dirty;
+        bool indices_dirty;
     };
 }
 

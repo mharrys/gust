@@ -1,13 +1,14 @@
 #ifndef RENDERBUFFER_HPP_INCLUDED
 #define RENDERBUFFER_HPP_INCLUDED
 
+#include "resolution.hpp"
+
 #include <memory>
 
 namespace gst
 {
     class Framebuffer;
     class RenderbufferImpl;
-    class Resolution;
     class RenderState;
 
     enum class RenderbufferFormat {
@@ -23,7 +24,6 @@ namespace gst
     public:
         Renderbuffer() = default;
         Renderbuffer(
-            std::shared_ptr<RenderState> render_state,
             Resolution size,
             RenderbufferFormat format);
 
@@ -31,15 +31,19 @@ namespace gst
         bool operator!=(Renderbuffer const & other);
         explicit operator bool() const;
 
-        void update(Resolution size);
-        void update(RenderbufferFormat format);
-        void update(Resolution size, RenderbufferFormat format);
+        void set_storage(Resolution size);
+        void set_storage(RenderbufferFormat format);
+        void set_storage(Resolution size, RenderbufferFormat format);
+
+        Resolution get_size() const;
+        RenderbufferFormat get_format() const;
     private:
-        void push();
-        void pop();
+        void refresh();
 
         std::shared_ptr<RenderbufferImpl> impl;
-        std::shared_ptr<RenderState> render_state;
+        Resolution size;
+        RenderbufferFormat format;
+        bool dirty;
     };
 }
 
