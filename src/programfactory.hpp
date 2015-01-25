@@ -15,11 +15,11 @@ namespace gst
         Program create_from_file(
             std::string const & vs_path,
             std::string const & fs_path,
-            std::vector<AttribLocation> const & locations = {});
+            std::vector<AttributeLocation> const & locations = {});
         Program create_from_source(
             std::string const & vs_source,
             std::string const & fs_source,
-            std::vector<AttribLocation> const & locations = {});
+            std::vector<AttributeLocation> const & locations = {});
     private:
         std::shared_ptr<Logger> logger;
     };

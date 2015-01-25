@@ -11,7 +11,7 @@
 gst::Program::Program(
     std::shared_ptr<Logger> logger,
     std::vector<Shader> shaders,
-    std::vector<AttribLocation> const & locations)
+    std::vector<AttributeLocation> const & locations)
     : impl(std::make_shared<ProgramImpl>()),
       logger(logger)
 {

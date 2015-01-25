@@ -18,7 +18,7 @@ namespace gst
     class UniformArrayElement;
     class UniformGroup;
 
-    typedef std::pair<int, std::string> AttribLocation;
+    typedef std::pair<int, std::string> AttributeLocation;
     typedef std::unordered_map<std::string, int> UniformCache;
 
     class Program {
@@ -28,7 +28,7 @@ namespace gst
         Program(
             std::shared_ptr<Logger> logger,
             std::vector<Shader> shaders = {},
-            std::vector<AttribLocation> const & locations = {});
+            std::vector<AttributeLocation> const & locations = {});
 
         bool operator==(Program const & other);
         bool operator!=(Program const & other);
