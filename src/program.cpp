@@ -6,7 +6,7 @@
 #include "uniform.hpp"
 #include "uniformarrayelement.hpp"
 #include "uniformgroup.hpp"
-#include "vertexattrib.hpp"
+#include "vertexattribute.hpp"
 
 gst::Program::Program(
     std::shared_ptr<Logger> logger,
@@ -21,10 +21,10 @@ gst::Program::Program(
 
     if (locations.empty()) {
         // default
-        impl->bind_attrib_location(AttribIndex::POSITION,  "vertex_position");
-        impl->bind_attrib_location(AttribIndex::NORMAL,    "vertex_normal");
-        impl->bind_attrib_location(AttribIndex::COLOR,     "vertex_color");
-        impl->bind_attrib_location(AttribIndex::TEX_COORD, "vertex_tex_coord");
+        impl->bind_attrib_location(AttributeIndex::POSITION,  "vertex_position");
+        impl->bind_attrib_location(AttributeIndex::NORMAL,    "vertex_normal");
+        impl->bind_attrib_location(AttributeIndex::COLOR,     "vertex_color");
+        impl->bind_attrib_location(AttributeIndex::TEX_COORD, "vertex_tex_coord");
     } else {
         // custom
         for (auto location : locations) {
