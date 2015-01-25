@@ -1,10 +1,10 @@
 #ifndef BUFFER_HPP_INCLUDED
 #define BUFFER_HPP_INCLUDED
 
-#include "vertexattrib.hpp"
+#include "glm.hpp"
+#include "vertexattribute.hpp"
 
-#include <cstdint>
-#include <memory>
+#include <vector>
 
 namespace gst
 {
@@ -25,23 +25,33 @@ namespace gst
         friend RenderState;
     public:
         Buffer() = default;
-        Buffer(
-            std::shared_ptr<RenderState> render_state,
-            BufferTarget target);
+        Buffer(BufferTarget target);
 
         bool operator==(Buffer const & other);
         bool operator!=(Buffer const & other);
         explicit operator bool() const;
 
-        void buffer_data(int64_t size, void const * data, DataUsage usage);
-        void buffer_sub_data(int64_t offset, int64_t size, void const * data);
-    protected:
-        void define(VertexAttrib const & attrib);
-        void push();
-        void pop();
+        void set_usage(DataUsage usage);
+        void set_int(std::vector<int> const & data);
+        void set_uint(std::vector<unsigned int> const & data);
+        void set_float(std::vector<float> const & data);
+        void set_vec2(std::vector<glm::vec2> const & data);
+        void set_vec3(std::vector<glm::vec3> const & data);
+        void set_vec4(std::vector<glm::vec4> const & data);
+
+        DataType get_type() const;
+        size_t get_count() const;
     private:
+        bool need_new_storage(DataType type, size_t count);
+        void refresh();
+
         std::shared_ptr<BufferImpl> impl;
-        std::shared_ptr<RenderState> render_state;
+        DataUsage usage;
+        DataType type;
+        std::shared_ptr<void> shadowed_data;
+        size_t count;
+        size_t bytes;
+        bool dirty;
     };
 }
 

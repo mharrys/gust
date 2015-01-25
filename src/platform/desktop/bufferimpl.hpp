@@ -2,7 +2,7 @@
 #define BUFFERIMPL_HPP_INCLUDED
 
 #include "translator.hpp"
-#include "vertexattrib.hpp"
+#include "vertexattribute.hpp"
 
 #include <cstdint>
 
@@ -17,13 +17,11 @@ namespace gst
         ~BufferImpl();
         void buffer_data(int64_t size, void const * data, DataUsage usage);
         void buffer_sub_data(int64_t offset, int64_t size, void const * data);
-        void define(VertexAttrib const & attrib);
     private:
         void bind();
 
         GLuint id;
         GLenum target;
-
         Translator translator;
     };
 }
