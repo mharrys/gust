@@ -17,7 +17,10 @@ namespace gst
     enum class DataType {
         INT,
         UNSIGNED_INT,
-        FLOAT
+        FLOAT,
+        VEC2,
+        VEC3,
+        VEC4
     };
 
     struct VertexAttrib {
