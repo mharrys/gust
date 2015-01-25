@@ -43,7 +43,7 @@ void gst::NodeRenderer::visit(ModelNode & node)
     }
 
     auto & mesh = node.model->mesh;
-    render_state->set_vertex_array(mesh.vertex_array);
+    render_state->set_vertex_array(*mesh.vertex_array.get());
 
     auto & effect = node.model->effect;
     for (unsigned int i = 0; i < effect.textures.size(); i++) {

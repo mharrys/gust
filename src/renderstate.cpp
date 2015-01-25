@@ -120,6 +120,7 @@ void gst::RenderState::set_buffer(Buffer & buffer)
     if (this->buffer != buffer) {
         this->buffer = buffer;
         impl->set_buffer(*buffer.impl.get());
+        buffer.refresh();
     }
 }
 
@@ -201,6 +202,7 @@ void gst::RenderState::set_vertex_array(VertexArray & vertex_array)
         this->vertex_array = vertex_array;
         if (vertex_array) {
             impl->set_vertex_array(*vertex_array.impl.get());
+            vertex_array.refresh(*this);
         } else {
             impl->set_vertex_array_none();
         }
