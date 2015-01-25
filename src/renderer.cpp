@@ -54,8 +54,3 @@ void gst::Renderer::check_errors()
         logger->log(error);
     }
 }
-
-std::shared_ptr<gst::RenderState> gst::Renderer::get_render_state() const
-{
-    return render_state;
-}

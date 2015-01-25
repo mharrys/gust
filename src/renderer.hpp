@@ -23,8 +23,6 @@ namespace gst
         void render(Scene & scene, RenderTarget & target);
         void check_errors();
 
-        std::shared_ptr<RenderState> get_render_state() const;
-
         bool auto_clear;
         bool auto_clear_color;
         bool auto_clear_depth;
