@@ -32,6 +32,18 @@ namespace gst
         REPEAT
     };
 
+    enum class CompareFunc {
+        LEQUAL,
+        GEQUAL,
+        LESS,
+        GREATER,
+        EQUAL,
+        NOTEQUAL,
+        ALWAYS,
+        NEVER,
+        NONE
+    };
+
     struct TextureParam {
         TextureParam();
 
@@ -42,6 +54,7 @@ namespace gst
         FilterMode mag_filter;
         WrapMode wrap_s;
         WrapMode wrap_t;
+        CompareFunc depth_compare;
     };
 }
 
