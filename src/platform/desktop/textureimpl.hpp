@@ -38,6 +38,8 @@ namespace gst
         GLint wrap_s;
         GLint wrap_t;
 
+        GLint depth_compare;
+
         Translator translator;
     };
 }
