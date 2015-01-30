@@ -1,6 +1,7 @@
 #include "framebuffer.hpp"
 
 #include "framebufferimpl.hpp"
+#include "renderstate.hpp"
 
 gst::Framebuffer::Framebuffer(
     Texture & color,
@@ -55,15 +56,17 @@ std::vector<std::string> gst::Framebuffer::get_status() const
     return status;
 }
 
-void gst::Framebuffer::refresh()
+void gst::Framebuffer::refresh(RenderState & render_state)
 {
     if (color_dirty) {
         color_dirty = false;
+        render_state.set_texture(color);
         impl->attach(*color.impl.get());
     }
 
     if (depth_dirty) {
         depth_dirty = false;
+        render_state.set_renderbuffer(depth);
         impl->attach(*depth.impl.get());
     }
 

@@ -130,7 +130,7 @@ void gst::RenderState::set_framebuffer(Framebuffer & framebuffer)
         this->framebuffer = framebuffer;
         if (framebuffer) {
             impl->set_framebuffer(*framebuffer.impl.get());
-            framebuffer.refresh();
+            framebuffer.refresh(*this);
         } else {
             impl->set_framebuffer_none();
         }

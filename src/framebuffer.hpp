@@ -32,7 +32,7 @@ namespace gst
         Renderbuffer get_depth() const;
         std::vector<std::string> get_status() const;
     private:
-        void refresh();
+        void refresh(RenderState & render_state);
 
         std::shared_ptr<FramebufferImpl> impl;
         Texture color;
