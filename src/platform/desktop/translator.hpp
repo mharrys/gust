@@ -28,6 +28,7 @@ namespace gst
         GLenum translate(DataUsage usage) const;
         GLenum translate(ShaderType type) const;
         GLenum translate(CullFace cull_face) const;
+        GLint translate(CompareFunc compare_func) const;
         Button translate_button(int button) const;
         Key translate_key(int key) const;
     };

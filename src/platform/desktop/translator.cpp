@@ -170,6 +170,32 @@ GLenum gst::Translator::translate(CullFace cull_face) const
     }
 }
 
+GLint gst::Translator::translate(CompareFunc compare_func) const
+{
+    switch (compare_func) {
+    case CompareFunc::LEQUAL:
+        return GL_LEQUAL;
+    case CompareFunc::GEQUAL:
+        return GL_GEQUAL;
+    case CompareFunc::LESS:
+        return GL_LESS;
+    case CompareFunc::GREATER:
+        return GL_GREATER;
+    case CompareFunc::EQUAL:
+        return GL_EQUAL;
+    case CompareFunc::NOTEQUAL:
+        return GL_NOTEQUAL;
+    case CompareFunc::ALWAYS:
+        return GL_ALWAYS;
+    case CompareFunc::NEVER:
+        return GL_NEVER;
+    case CompareFunc::NONE:
+        return -1;
+    default:
+        return 0;
+    }
+}
+
 gst::Button gst::Translator::translate_button(int button) const
 {
     // Logitech G400 generates 8 and 9 for X1 and X2 in GNU/Linux
