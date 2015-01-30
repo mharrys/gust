@@ -58,10 +58,12 @@ std::vector<std::string> gst::Framebuffer::get_status() const
 void gst::Framebuffer::refresh()
 {
     if (color_dirty) {
+        color_dirty = false;
         impl->attach(*color.impl.get());
     }
 
     if (depth_dirty) {
+        depth_dirty = false;
         impl->attach(*depth.impl.get());
     }
 
