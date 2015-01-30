@@ -41,6 +41,7 @@ namespace gst
         void set_mag_filter(FilterMode mag_filter);
         void set_wrap_s(WrapMode wrap_s);
         void set_wrap_t(WrapMode wrap_t);
+        void set_depth_compare(CompareFunc depth_compare);
 
         Image get_image() const;
         TextureParam get_param() const;
@@ -50,6 +51,7 @@ namespace gst
         FilterMode get_mag_filter() const;
         WrapMode get_wrap_s() const;
         WrapMode get_wrap_t() const;
+        CompareFunc get_depth_compare() const;
     private:
         void refresh();
 

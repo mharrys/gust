@@ -89,6 +89,12 @@ void gst::Texture::set_wrap_t(WrapMode wrap_t)
     param_dirty = true;
 }
 
+void gst::Texture::set_depth_compare(CompareFunc depth_compare)
+{
+    param.depth_compare = depth_compare;
+    param_dirty = true;
+}
+
 gst::Image gst::Texture::get_image() const
 {
     return image;
@@ -127,6 +133,11 @@ gst::WrapMode gst::Texture::get_wrap_s() const
 gst::WrapMode gst::Texture::get_wrap_t() const
 {
     return param.wrap_t;
+}
+
+gst::CompareFunc gst::Texture::get_depth_compare() const
+{
+    return param.depth_compare;
 }
 
 void gst::Texture::refresh()
