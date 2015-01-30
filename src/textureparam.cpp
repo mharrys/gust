@@ -7,6 +7,7 @@ gst::TextureParam::TextureParam()
       min_filter(FilterMode::LINEAR),
       mag_filter(FilterMode::LINEAR),
       wrap_s(WrapMode::REPEAT),
-      wrap_t(WrapMode::REPEAT)
+      wrap_t(WrapMode::REPEAT),
+      depth_compare(CompareFunc::NONE)
 {
 }

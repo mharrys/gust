@@ -35,6 +35,12 @@ void gst::TextureImpl::parameter(TextureParam const & param)
     glTexParameteri(target, GL_TEXTURE_MAG_FILTER, mag_filter);
     glTexParameteri(target, GL_TEXTURE_WRAP_S, wrap_s);
     glTexParameteri(target, GL_TEXTURE_WRAP_T, wrap_t);
+    if (depth_compare == -1) {
+        glTexParameteri(target, GL_TEXTURE_COMPARE_MODE, GL_NONE);
+    } else {
+        glTexParameteri(target, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+        glTexParameteri(target, GL_TEXTURE_COMPARE_FUNC, depth_compare);
+    }
 }
 
 void gst::TextureImpl::bind(int unit)
@@ -52,4 +58,5 @@ void gst::TextureImpl::translate(TextureParam const & param)
     mag_filter = translator.translate(param.mag_filter);
     wrap_s = translator.translate(param.wrap_s);
     wrap_t = translator.translate(param.wrap_t);
+    depth_compare = translator.translate(param.depth_compare);
 }
