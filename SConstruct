@@ -17,5 +17,7 @@ env = Environment(
 
 source = []
 source += Glob('test/*.cpp')
+# for now, only add specific files until platform specific code is mocked
+source += Glob('src/uniform.cpp')
 
 program = env.Program(target='bin/run_all_tests', source=source);
