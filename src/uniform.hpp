@@ -49,15 +49,15 @@ namespace gst
         Uniform & operator=(glm::mat3 const & data);
         Uniform & operator=(glm::mat4 const & data);
 
-        void set_data(bool data);
-        void set_data(int data);
-        void set_data(float data);
-        void set_data(std::vector<float> const & data);
-        void set_data(glm::vec2 const & data);
-        void set_data(glm::vec3 const & data);
-        void set_data(glm::vec4 const & data);
-        void set_data(glm::mat3 const & data);
-        void set_data(glm::mat4 const & data);
+        void set_bool(bool data);
+        void set_int(int data);
+        void set_float(float data);
+        void set_float_array(std::vector<float> const & data);
+        void set_vec2(glm::vec2 const & data);
+        void set_vec3(glm::vec3 const & data);
+        void set_vec4(glm::vec4 const & data);
+        void set_mat3(glm::mat3 const & data);
+        void set_mat4(glm::mat4 const & data);
     private:
         bool need_new_storage(UniformType type, size_t count);
 
