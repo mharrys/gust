@@ -8,8 +8,6 @@
 
 namespace gst
 {
-    class Program;
-
     enum class UniformType {
         BOOL,
         INT,
@@ -23,7 +21,6 @@ namespace gst
     };
 
     class Uniform {
-        friend Program;
     public:
         Uniform() = default;
         Uniform(bool data);
@@ -38,6 +35,7 @@ namespace gst
 
         bool operator==(Uniform const & other);
         bool operator!=(Uniform const & other);
+        explicit operator bool() const;
 
         Uniform & operator=(bool data);
         Uniform & operator=(int data);
@@ -58,6 +56,13 @@ namespace gst
         void set_vec4(glm::vec4 const & data);
         void set_mat3(glm::mat3 const & data);
         void set_mat4(glm::mat4 const & data);
+
+        UniformType get_type() const;
+        std::shared_ptr<bool> get_bool() const;
+        std::shared_ptr<int> get_int() const;
+        std::shared_ptr<float> get_float() const;
+        size_t get_count() const;
+        size_t get_bytes() const;
     private:
         bool need_new_storage(UniformType type, size_t count);
 

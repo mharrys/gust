@@ -58,6 +58,11 @@ bool gst::Uniform::operator!=(Uniform const & other)
     return !(*this == other);
 }
 
+gst::Uniform::operator bool() const
+{
+    return shadowed_data != nullptr;
+}
+
 gst::Uniform & gst::Uniform::operator=(bool data)
 {
     set_bool(data);
@@ -209,6 +214,36 @@ void gst::Uniform::set_mat4(glm::mat4 const & data)
         shadowed_data = std::make_shared<std::array<float, 16>>();
     }
     std::memcpy(shadowed_data.get(), glm::value_ptr(data), bytes);
+}
+
+gst::UniformType gst::Uniform::get_type() const
+{
+    return type;
+}
+
+std::shared_ptr<bool> gst::Uniform::get_bool() const
+{
+    return std::static_pointer_cast<bool>(shadowed_data);
+}
+
+std::shared_ptr<int> gst::Uniform::get_int() const
+{
+    return std::static_pointer_cast<int>(shadowed_data);
+}
+
+std::shared_ptr<float> gst::Uniform::get_float() const
+{
+    return std::static_pointer_cast<float>(shadowed_data);
+}
+
+size_t gst::Uniform::get_count() const
+{
+    return count;
+}
+
+size_t gst::Uniform::get_bytes() const
+{
+    return bytes;
 }
 
 bool gst::Uniform::need_new_storage(UniformType type, size_t count)

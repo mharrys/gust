@@ -58,7 +58,7 @@ gst::Program::operator bool() const
 
 void gst::Program::update(std::string const & name, Uniform const & uniform)
 {
-    if (!uniform.shadowed_data) {
+    if (!uniform) {
         logger->log(TRACE("attempted to update uniform \"" + name + "\" with no allocated data"));
         return;
     }
@@ -66,38 +66,38 @@ void gst::Program::update(std::string const & name, Uniform const & uniform)
     int l = location(name);
     float * data;
 
-    switch (uniform.type) {
+    switch (uniform.get_type()) {
     case UniformType::BOOL:
-        impl->uniform1i(l, *std::static_pointer_cast<bool>(uniform.shadowed_data).get());
+        impl->uniform1i(l, *uniform.get_bool().get());
         break;
     case UniformType::INT:
-        impl->uniform1i(l, *std::static_pointer_cast<int>(uniform.shadowed_data).get());
+        impl->uniform1i(l, *uniform.get_int().get());
         break;
     case UniformType::FLOAT:
-        impl->uniform1f(l, *std::static_pointer_cast<float>(uniform.shadowed_data).get());
+        impl->uniform1f(l, *uniform.get_float().get());
         break;
     case UniformType::FLOAT_ARRAY:
-        data = std::static_pointer_cast<float>(uniform.shadowed_data).get();
-        impl->uniform1fv(l, uniform.count, data);
+        data = uniform.get_float().get();
+        impl->uniform1fv(l, uniform.get_count(), data);
         break;
     case UniformType::VEC2:
-        data = std::static_pointer_cast<float>(uniform.shadowed_data).get();
+        data = uniform.get_float().get();
         impl->uniform2f(l, data[0], data[1]);
         break;
     case UniformType::VEC3:
-        data = std::static_pointer_cast<float>(uniform.shadowed_data).get();
+        data = uniform.get_float().get();
         impl->uniform3f(l, data[0], data[1], data[2]);
         break;
     case UniformType::VEC4:
-        data = std::static_pointer_cast<float>(uniform.shadowed_data).get();
+        data = uniform.get_float().get();
         impl->uniform4f(l, data[0], data[1], data[2], data[3]);
         break;
     case UniformType::MAT3:
-        data = std::static_pointer_cast<float>(uniform.shadowed_data).get();
+        data = uniform.get_float().get();
         impl->uniform_matrix3fv(l, 1, false, data);
         break;
     case UniformType::MAT4:
-        data = std::static_pointer_cast<float>(uniform.shadowed_data).get();
+        data = uniform.get_float().get();
         impl->uniform_matrix4fv(l, 1, false, data);
         break;
     }
