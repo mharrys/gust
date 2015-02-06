@@ -33,8 +33,8 @@ namespace gst
         Uniform(glm::mat3 const & data);
         Uniform(glm::mat4 const & data);
 
-        bool operator==(Uniform const & other);
-        bool operator!=(Uniform const & other);
+        bool operator==(Uniform const & other) const;
+        bool operator!=(Uniform const & other) const;
         explicit operator bool() const;
 
         Uniform & operator=(bool data);

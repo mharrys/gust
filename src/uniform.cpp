@@ -48,12 +48,12 @@ gst::Uniform::Uniform(glm::mat4 const & data)
     set_mat4(data);
 }
 
-bool gst::Uniform::operator==(Uniform const & other)
+bool gst::Uniform::operator==(Uniform const & other) const
 {
     return type == other.type && shadowed_data == other.shadowed_data;
 }
 
-bool gst::Uniform::operator!=(Uniform const & other)
+bool gst::Uniform::operator!=(Uniform const & other) const
 {
     return !(*this == other);
 }
