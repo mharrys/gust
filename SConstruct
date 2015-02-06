@@ -10,7 +10,7 @@ gtest_inc = os.path.join(gtest_dir, 'include')
 env = Environment(
     CC='g++',
     CCFLAGS='-std=c++11 -pedantic -Wall -Wextra -O3',
-    CPPPATH=[gmock_inc, gtest_inc],
+    CPPPATH=['lib', 'src', gmock_inc, gtest_inc],
     LIBPATH=[gmock_lib],
     LIBS=['gmock', 'pthread'],
 )
