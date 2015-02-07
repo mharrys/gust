@@ -1,7 +1,7 @@
+#include "uniform.hpp"
+
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
-
-#include "uniform.hpp"
 
 // Tests operator for validating uniform (if it has shadowed data or not)
 TEST(UniformTest, ValidateStateOperator)
