@@ -30,7 +30,6 @@ namespace gst
         void set_framebuffer_none();
         void set_renderbuffer(RenderbufferImpl & renderbuffer);
         void set_renderbuffer_none();
-        void set_program(ProgramImpl & program);
         void set_program_none();
         void set_texture(TextureImpl & texture, int unit = 0);
         void set_texture_none(int unit = 0);

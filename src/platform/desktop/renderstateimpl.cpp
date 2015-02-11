@@ -98,11 +98,6 @@ void gst::RenderStateImpl::set_renderbuffer_none()
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
 
-void gst::RenderStateImpl::set_program(ProgramImpl & program)
-{
-    program.use();
-}
-
 void gst::RenderStateImpl::set_program_none()
 {
     glUseProgram(0);

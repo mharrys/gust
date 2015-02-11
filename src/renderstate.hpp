@@ -33,7 +33,6 @@ namespace gst
         Buffer buffer;
         Framebuffer framebuffer;
         Renderbuffer renderbuffer;
-        Program program;
         Texture texture0;
         VertexArray vertex_array;
         Viewport viewport;
@@ -55,7 +54,7 @@ namespace gst
         void set_buffer(Buffer & buffer);
         void set_framebuffer(Framebuffer & framebuffer);
         void set_renderbuffer(Renderbuffer & renderbuffer);
-        void set_program(Program & program);
+        void set_program(std::shared_ptr<Program> program);
         void set_texture(Texture & texture, int unit = 0);
         void set_texture(Framebuffer & framebuffer, int unit = 0);
         void set_texture(RenderTarget & target, int unit = 0);
@@ -73,7 +72,7 @@ namespace gst
         Buffer buffer;
         Framebuffer framebuffer;
         Renderbuffer renderbuffer;
-        Program program;
+        std::shared_ptr<Program> program;
         TextureLookup textures;
         VertexArray vertex_array;
         Viewport viewport;

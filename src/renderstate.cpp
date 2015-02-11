@@ -19,7 +19,6 @@ gst::RenderState::RenderState(Viewport viewport)
     impl->set_depth_test(depth_test);
     impl->set_framebuffer_none();
     impl->set_renderbuffer_none();
-    impl->set_program_none();
     impl->set_texture_none();
     impl->set_viewport(viewport);
     impl->set_vertex_array_none();
@@ -38,7 +37,6 @@ void gst::RenderState::push()
         buffer,
         framebuffer,
         renderbuffer,
-        program,
         texture0,
         vertex_array,
         viewport
@@ -58,7 +56,6 @@ void gst::RenderState::pop()
         set_buffer(state.buffer);
         set_framebuffer(state.framebuffer);
         set_renderbuffer(state.renderbuffer);
-        set_program(state.program);
         set_texture(state.texture0);
         set_vertex_array(state.vertex_array);
         set_viewport(state.viewport);
@@ -153,15 +150,11 @@ void gst::RenderState::set_renderbuffer(Renderbuffer & renderbuffer)
     }
 }
 
-void gst::RenderState::set_program(Program & program)
+void gst::RenderState::set_program(std::shared_ptr<Program> program)
 {
     if (this->program != program) {
         this->program = program;
-        if (program) {
-            impl->set_program(*program.impl.get());
-        } else {
-            impl->set_program_none();
-        }
+        this->program->use();
     }
 }
 
