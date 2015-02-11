@@ -1,5 +1,6 @@
 #include "noderenderer.hpp"
 
+#include "annotationarray.hpp"
 #include "camera.hpp"
 #include "cameranode.hpp"
 #include "effect.hpp"
@@ -10,6 +11,7 @@
 #include "pass.hpp"
 #include "renderstate.hpp"
 #include "technique.hpp"
+#include "uniformcollection.hpp"
 
 gst::NodeRenderer::NodeRenderer(
     std::shared_ptr<RenderState> render_state,
@@ -36,10 +38,13 @@ void gst::NodeRenderer::visit(ModelNode & node)
 
     for (unsigned int i = 0; i < lights.size(); i++) {
         auto light = lights[i].light;
-        light->uniforms = i;
+        // special case if annotation array
+        if (auto formatter = std::dynamic_pointer_cast<AnnotationArray>(light->get_formatter())) {
+            formatter->set_current_index(i);
+        }
         // special uniforms
-        light->uniforms("enabled") = lights[i].enabled;
-        light->uniforms("position") = matrices.view * glm::vec4(lights[i].position, 1.0f);
+        light->get_uniforms()->get_uniform("enabled") = lights[i].enabled;
+        light->get_uniforms()->get_uniform("position") = matrices.view * glm::vec4(lights[i].position, 1.0f);
     }
 
     auto & mesh = node.model->mesh;
@@ -56,8 +61,8 @@ void gst::NodeRenderer::visit(ModelNode & node)
             render_state->set_cull_face(pass->cull_face);
             render_state->set_depth_mask(pass->depth_mask);
             render_state->set_depth_test(pass->depth_test);
-            render_state->set_program(*pass->program.get());
-            pass->program->update(effect.uniforms);
+            render_state->set_program(pass->program);
+            pass->program->sync(*effect.uniforms, *effect.formatter);
             pass->apply(matrices, lights);
             mesh.draw();
         }

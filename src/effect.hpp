@@ -1,7 +1,6 @@
 #ifndef EFFECT_HPP_INCLUDED
 #define EFFECT_HPP_INCLUDED
 
-#include "uniformgroup.hpp"
 #include "texture.hpp"
 
 #include <memory>
@@ -9,11 +8,14 @@
 
 namespace gst
 {
+    class AnnotationFormatter;
     class Technique;
+    class UniformCollection;
 
     class Effect {
     public:
-        UniformGroup uniforms;
+        std::shared_ptr<UniformCollection> uniforms;
+        std::shared_ptr<AnnotationFormatter> formatter;
         std::vector<Texture> textures;
         std::vector<std::shared_ptr<Technique>> techniques;
     };
