@@ -10,13 +10,11 @@
 namespace gst
 {
     class Logger;
-    class RenderStateImpl;
     class ShaderImpl;
 
     typedef std::unordered_map<std::string, int> LocationCache;
 
     class ProgramImpl : public Program {
-        friend RenderStateImpl;
     public:
         ProgramImpl(std::shared_ptr<GraphicsDevice> device, std::shared_ptr<Logger> logger);
         ~ProgramImpl();
