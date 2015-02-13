@@ -24,7 +24,7 @@ namespace gst
         GLenum translate(RenderbufferFormat format) const;
         GLenum translate(DrawMode mode) const;
         GLenum translate(BufferTarget target) const;
-        GLenum translate(DataType type) const;
+        GLenum translate(VertexDataType type) const;
         GLenum translate(DataUsage usage) const;
         GLenum translate(ShaderType type) const;
         GLenum translate(CullFace cull_face) const;

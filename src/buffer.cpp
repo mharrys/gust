@@ -35,8 +35,8 @@ void gst::Buffer::set_usage(DataUsage usage)
 
 void gst::Buffer::set_int(std::vector<int> const & data)
 {
-    if (need_new_storage(DataType::INT, data.size())) {
-        type = DataType::INT;
+    if (need_new_storage(VertexDataType::INT, data.size())) {
+        type = VertexDataType::INT;
         count = data.size();
         bytes = sizeof(int) * count;
         shadowed_data = std::shared_ptr<int>(new int[count]);
@@ -47,8 +47,8 @@ void gst::Buffer::set_int(std::vector<int> const & data)
 
 void gst::Buffer::set_uint(std::vector<unsigned int> const & data)
 {
-    if (need_new_storage(DataType::UNSIGNED_INT, data.size())) {
-        type = DataType::UNSIGNED_INT;
+    if (need_new_storage(VertexDataType::UNSIGNED_INT, data.size())) {
+        type = VertexDataType::UNSIGNED_INT;
         count = data.size();
         bytes = sizeof(unsigned int) * count;
         shadowed_data = std::shared_ptr<unsigned int>(new unsigned int[count]);
@@ -59,8 +59,8 @@ void gst::Buffer::set_uint(std::vector<unsigned int> const & data)
 
 void gst::Buffer::set_float(std::vector<float> const & data)
 {
-    if (need_new_storage(DataType::FLOAT, data.size())) {
-        type = DataType::FLOAT;
+    if (need_new_storage(VertexDataType::FLOAT, data.size())) {
+        type = VertexDataType::FLOAT;
         count = data.size();
         bytes = sizeof(float) * count;
         shadowed_data = std::shared_ptr<float>(new float[count]);
@@ -71,8 +71,8 @@ void gst::Buffer::set_float(std::vector<float> const & data)
 
 void gst::Buffer::set_vec2(std::vector<glm::vec2> const & data)
 {
-    if (need_new_storage(DataType::VEC2, data.size())) {
-        type = DataType::VEC2;
+    if (need_new_storage(VertexDataType::VEC2, data.size())) {
+        type = VertexDataType::VEC2;
         count = data.size();
         bytes = sizeof(float) * 2 * count;
         shadowed_data = std::shared_ptr<glm::vec2>(new glm::vec2[count]);
@@ -83,8 +83,8 @@ void gst::Buffer::set_vec2(std::vector<glm::vec2> const & data)
 
 void gst::Buffer::set_vec3(std::vector<glm::vec3> const & data)
 {
-    if (need_new_storage(DataType::VEC3, data.size())) {
-        type = DataType::VEC3;
+    if (need_new_storage(VertexDataType::VEC3, data.size())) {
+        type = VertexDataType::VEC3;
         count = data.size();
         bytes = sizeof(float) * 3 * count;
         shadowed_data = std::shared_ptr<glm::vec3>(new glm::vec3[count]);
@@ -95,8 +95,8 @@ void gst::Buffer::set_vec3(std::vector<glm::vec3> const & data)
 
 void gst::Buffer::set_vec4(std::vector<glm::vec4> const & data)
 {
-    if (need_new_storage(DataType::VEC4, data.size())) {
-        type = DataType::VEC4;
+    if (need_new_storage(VertexDataType::VEC4, data.size())) {
+        type = VertexDataType::VEC4;
         count = data.size();
         bytes = sizeof(float) * 4 * count;
         shadowed_data = std::shared_ptr<glm::vec4>(new glm::vec4[count]);
@@ -105,7 +105,7 @@ void gst::Buffer::set_vec4(std::vector<glm::vec4> const & data)
     dirty = true;
 }
 
-gst::DataType gst::Buffer::get_type() const
+gst::VertexDataType gst::Buffer::get_type() const
 {
     return type;
 }
@@ -115,7 +115,7 @@ size_t gst::Buffer::get_count() const
     return count;
 }
 
-bool gst::Buffer::need_new_storage(DataType type, size_t count)
+bool gst::Buffer::need_new_storage(VertexDataType type, size_t count)
 {
     return !shadowed_data || this->type != type || this->count != count;
 }

@@ -22,7 +22,7 @@ void gst::Mesh::make_positions(std::vector<glm::vec3> const & data)
 {
     if (!positions) {
         positions = std::make_shared<VertexBuffer>(
-            VertexAttribute(AttributeIndex::POSITION, 3, DataType::FLOAT)
+            VertexAttribute(AttributeIndex::POSITION, 3, VertexDataType::FLOAT)
         );
     }
     positions->set_vec3(data);
@@ -32,7 +32,7 @@ void gst::Mesh::make_normals(std::vector<glm::vec3> const & data)
 {
     if (!normals) {
         normals = std::make_shared<VertexBuffer>(
-            VertexAttribute(AttributeIndex::NORMAL, 3, DataType::FLOAT)
+            VertexAttribute(AttributeIndex::NORMAL, 3, VertexDataType::FLOAT)
         );
     }
     normals->set_vec3(data);
@@ -42,7 +42,7 @@ void gst::Mesh::make_colors(std::vector<glm::vec3> const & data)
 {
     if (!colors) {
         colors = std::make_shared<VertexBuffer>(
-            VertexAttribute(AttributeIndex::COLOR, 3, DataType::FLOAT)
+            VertexAttribute(AttributeIndex::COLOR, 3, VertexDataType::FLOAT)
         );
     }
     colors->set_vec3(data);
@@ -52,7 +52,7 @@ void gst::Mesh::make_tex_coords(std::vector<glm::vec2> const & data)
 {
     if (!tex_coords) {
         tex_coords = std::make_shared<VertexBuffer>(
-            VertexAttribute(AttributeIndex::TEX_COORD, 2, DataType::FLOAT)
+            VertexAttribute(AttributeIndex::TEX_COORD, 2, VertexDataType::FLOAT)
         );
     }
     tex_coords->set_vec2(data);

@@ -11,6 +11,7 @@
 #include "pass.hpp"
 #include "renderstate.hpp"
 #include "technique.hpp"
+#include "shadoweddata.hpp"
 #include "uniformcollection.hpp"
 
 gst::NodeRenderer::NodeRenderer(

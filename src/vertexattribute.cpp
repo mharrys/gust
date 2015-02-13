@@ -3,7 +3,7 @@
 gst::VertexAttribute::VertexAttribute(
     int index,
     int components,
-    DataType type)
+    VertexDataType type)
     : VertexAttribute(index, components, type, false, 0, 0)
 {
 }
@@ -11,7 +11,7 @@ gst::VertexAttribute::VertexAttribute(
 gst::VertexAttribute::VertexAttribute(
     int index,
     int components,
-    DataType type,
+    VertexDataType type,
     bool normalized,
     size_t stride_bytes,
     size_t offset_bytes)
@@ -34,7 +34,7 @@ int gst::VertexAttribute::get_components() const
     return components;
 }
 
-gst::DataType gst::VertexAttribute::get_type() const
+gst::VertexDataType gst::VertexAttribute::get_type() const
 {
     return type;
 }

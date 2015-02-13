@@ -30,7 +30,7 @@ void gst::VertexArray::draw(DrawMode mode, int first, int count)
     impl->draw_arrays(mode, first, count);
 }
 
-void gst::VertexArray::draw(DrawMode mode, int count, DataType type)
+void gst::VertexArray::draw(DrawMode mode, int count, VertexDataType type)
 {
     impl->draw_elements(mode, count, type);
 }

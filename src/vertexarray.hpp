@@ -30,7 +30,7 @@ namespace gst
         explicit operator bool() const;
 
         void draw(DrawMode mode, int first, int count);
-        void draw(DrawMode mode, int count, DataType type);
+        void draw(DrawMode mode, int count, VertexDataType type);
 
         void add(std::shared_ptr<VertexBuffer> vertices);
         void set(std::shared_ptr<IndexBuffer> indices);

@@ -39,15 +39,15 @@ namespace gst
         void set_vec3(std::vector<glm::vec3> const & data);
         void set_vec4(std::vector<glm::vec4> const & data);
 
-        DataType get_type() const;
+        VertexDataType get_type() const;
         size_t get_count() const;
     private:
-        bool need_new_storage(DataType type, size_t count);
+        bool need_new_storage(VertexDataType type, size_t count);
         void refresh();
 
         std::shared_ptr<BufferImpl> impl;
         DataUsage usage;
-        DataType type;
+        VertexDataType type;
         std::shared_ptr<void> shadowed_data;
         size_t count;
         size_t bytes;
