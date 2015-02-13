@@ -22,5 +22,6 @@ source += ['src/uniform.cpp']
 source += ['src/annotationarray.cpp']
 source += ['src/annotationbasic.cpp']
 source += ['src/annotationstruct.cpp']
+source += ['src/shadoweddataimpl.cpp']
 
 program = env.Program(target='bin/run_all_tests', source=source);
