@@ -9,10 +9,10 @@ namespace gst
 {
     class UniformMap : public UniformCollection {
     public:
-        Uniform & get_uniform(std::string const & annotation);
+        ShadowedData & get_uniform(std::string const & annotation);
         std::vector<UniformAnnotation> get_uniforms() const;
     private:
-        std::unordered_map<std::string, Uniform> uniforms;
+        std::unordered_map<std::string, std::shared_ptr<ShadowedData>> uniforms;
     };
 }
 

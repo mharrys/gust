@@ -1,11 +1,13 @@
 #include "uniformmap.hpp"
 
-gst::Uniform & gst::UniformMap::get_uniform(std::string const & annotation)
+#include "shadoweddataimpl.hpp"
+
+gst::ShadowedData & gst::UniformMap::get_uniform(std::string const & annotation)
 {
     if (uniforms.count(annotation) == 0) {
-        uniforms[annotation] = Uniform();
+        uniforms[annotation] = std::make_shared<ShadowedDataImpl>();
     }
-    return uniforms.at(annotation);
+    return *uniforms.at(annotation);
 }
 
 std::vector<gst::UniformAnnotation> gst::UniformMap::get_uniforms() const

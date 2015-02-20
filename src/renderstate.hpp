@@ -30,11 +30,9 @@ namespace gst
         CullFace cull_face;
         bool depth_mask;
         bool depth_test;
-        Buffer buffer;
         Framebuffer framebuffer;
         Renderbuffer renderbuffer;
         Texture texture0;
-        VertexArray vertex_array;
         Viewport viewport;
     };
 
@@ -51,14 +49,14 @@ namespace gst
         void set_cull_face(CullFace cull_face);
         void set_depth_mask(bool depth_mask);
         void set_depth_test(bool depth_test);
-        void set_buffer(Buffer & buffer);
+        void set_buffer(std::shared_ptr<Buffer> buffer);
         void set_framebuffer(Framebuffer & framebuffer);
         void set_renderbuffer(Renderbuffer & renderbuffer);
         void set_program(std::shared_ptr<Program> program);
         void set_texture(Texture & texture, int unit = 0);
         void set_texture(Framebuffer & framebuffer, int unit = 0);
         void set_texture(RenderTarget & target, int unit = 0);
-        void set_vertex_array(VertexArray & vertex_array);
+        void set_vertex_array(std::shared_ptr<VertexArray> vertex_array);
         void set_viewport(Viewport const & viewport);
         std::vector<std::string> check_errors() const;
     private:
@@ -69,12 +67,12 @@ namespace gst
         CullFace cull_face;
         bool depth_mask;
         bool depth_test;
-        Buffer buffer;
+        std::shared_ptr<Buffer> buffer;
         Framebuffer framebuffer;
         Renderbuffer renderbuffer;
         std::shared_ptr<Program> program;
         TextureLookup textures;
-        VertexArray vertex_array;
+        std::shared_ptr<VertexArray> vertex_array;
         Viewport viewport;
     };
 }

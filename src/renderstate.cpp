@@ -21,7 +21,6 @@ gst::RenderState::RenderState(Viewport viewport)
     impl->set_renderbuffer_none();
     impl->set_texture_none();
     impl->set_viewport(viewport);
-    impl->set_vertex_array_none();
 }
 
 void gst::RenderState::push()
@@ -34,11 +33,9 @@ void gst::RenderState::push()
         cull_face,
         depth_mask,
         depth_test,
-        buffer,
         framebuffer,
         renderbuffer,
         texture0,
-        vertex_array,
         viewport
     });
 }
@@ -53,11 +50,9 @@ void gst::RenderState::pop()
         set_cull_face(state.cull_face);
         set_depth_mask(state.depth_mask);
         set_depth_test(state.depth_test);
-        set_buffer(state.buffer);
         set_framebuffer(state.framebuffer);
         set_renderbuffer(state.renderbuffer);
         set_texture(state.texture0);
-        set_vertex_array(state.vertex_array);
         set_viewport(state.viewport);
     }
 }
@@ -107,17 +102,12 @@ void gst::RenderState::set_depth_test(bool depth_test)
     }
 }
 
-void gst::RenderState::set_buffer(Buffer & buffer)
+void gst::RenderState::set_buffer(std::shared_ptr<Buffer> buffer)
 {
-    // do not bother rebinding empty buffers
-    if (!buffer) {
-        return;
-    }
-
     if (this->buffer != buffer) {
         this->buffer = buffer;
-        impl->set_buffer(*buffer.impl.get());
-        buffer.refresh();
+        this->buffer->bind();
+        this->buffer->sync();
     }
 }
 
@@ -189,16 +179,12 @@ void gst::RenderState::set_texture(RenderTarget & target, int unit)
     set_texture(target.framebuffer, unit);
 }
 
-void gst::RenderState::set_vertex_array(VertexArray & vertex_array)
+void gst::RenderState::set_vertex_array(std::shared_ptr<VertexArray> vertex_array)
 {
     if (this->vertex_array != vertex_array) {
         this->vertex_array = vertex_array;
-        if (vertex_array) {
-            impl->set_vertex_array(*vertex_array.impl.get());
-            vertex_array.refresh(*this);
-        } else {
-            impl->set_vertex_array_none();
-        }
+        this->vertex_array->bind();
+        this->vertex_array->sync(*this);
     }
 }
 

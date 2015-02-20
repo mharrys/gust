@@ -35,7 +35,7 @@ namespace gst
         std::string get_link_error() const;
     private:
         void use();
-        int get_cached_location(std::string const & name);
+        int get_cached_location(std::string const & annotation);
 
         ProgramHandle handle;
         std::shared_ptr<GraphicsDevice> device;

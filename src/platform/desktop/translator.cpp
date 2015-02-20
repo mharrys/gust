@@ -118,14 +118,14 @@ GLenum gst::Translator::translate(BufferTarget target) const
     }
 }
 
-GLenum gst::Translator::translate(DataType type) const
+GLenum gst::Translator::translate(VertexDataType type) const
 {
     switch (type) {
-    case DataType::INT:
+    case VertexDataType::INT:
         return GL_INT;
-    case DataType::UNSIGNED_INT:
+    case VertexDataType::UNSIGNED_INT:
         return GL_UNSIGNED_INT;
-    case DataType::FLOAT:
+    case VertexDataType::FLOAT:
         return GL_FLOAT;
     default:
         return 0;
