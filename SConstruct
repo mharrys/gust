@@ -18,7 +18,6 @@ env = Environment(
 source = []
 source += Glob('test/*.cpp')
 # for now, only add specific files until platform specific code is mocked
-source += ['src/uniform.cpp']
 source += ['src/annotationarray.cpp']
 source += ['src/annotationbasic.cpp']
 source += ['src/annotationstruct.cpp']
