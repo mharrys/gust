@@ -173,7 +173,11 @@ void gst::GraphicsDeviceImpl::bind_buffer(BufferHandle buffer, BufferTarget targ
 
 void gst::GraphicsDeviceImpl::buffer_data(BufferTarget target, ShadowedData const & data, DataUsage usage)
 {
-    glBufferData(translator.translate(target), data.get_size_bytes(), data.get_raw_data().get(), translator.translate(usage));
+    // shadowed data stores its data in a vector and we just want a pointer to
+    // the first element of that vector, that is why we do not care about
+    // array data type and just pick float for all
+    auto raw_data = data.get_float_array();
+    glBufferData(translator.translate(target), data.get_size_bytes(), &raw_data[0], translator.translate(usage));
 }
 
 gst::VertexArrayHandle gst::GraphicsDeviceImpl::create_vertex_array()
