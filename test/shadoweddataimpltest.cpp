@@ -246,7 +246,7 @@ TEST(ShadowedDataImplTest, SetAndGetVec2Array)
 
     auto test_data = {
         std::vector<glm::vec2>{},
-        std::vector<glm::vec2>{ glm::vec2(42.0f) },
+        std::vector<glm::vec2>{ glm::vec2(1.0f, 2.0f) },
         create_random_vec_vector<glm::vec2>(1000, -10.0f, 10.0f, 2),
         // invoke copy values since same size as previous
         create_random_vec_vector<glm::vec2>(1000, -10.0f, 10.0f, 2),
@@ -265,7 +265,7 @@ TEST(ShadowedDataImplTest, SetAndGetVec3Array)
 
     auto test_data = {
         std::vector<glm::vec3>{},
-        std::vector<glm::vec3>{ glm::vec3(42.0f) },
+        std::vector<glm::vec3>{ glm::vec3(1.0f, 2.0f, 3.0f) },
         create_random_vec_vector<glm::vec3>(1000, -10.0f, 10.0f, 3),
         // invoke copy values since same size as previous
         create_random_vec_vector<glm::vec3>(1000, -10.0f, 10.0f, 3),
@@ -284,7 +284,7 @@ TEST(ShadowedDataImplTest, SetAndGetVec4Array)
 
     auto test_data = {
         std::vector<glm::vec4>{},
-        std::vector<glm::vec4>{ glm::vec4(42.0f) },
+        std::vector<glm::vec4>{ glm::vec4(1.0f, 2.0f, 3.0f, 4.0f) },
         create_random_vec_vector<glm::vec4>(1000, -10.0f, 10.0f, 4),
         // invoke copy values since same size as previous
         create_random_vec_vector<glm::vec4>(1000, -10.0f, 10.0f, 4),

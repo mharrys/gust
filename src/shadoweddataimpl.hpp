@@ -126,10 +126,10 @@ std::vector<T> gst::ShadowedDataImpl::get_vec_array(unsigned int components) con
 {
     std::vector<T> result;
     auto v = get_float_array();
-    for (unsigned int i = 0; i < v.size(); i += components) {
+    for (unsigned int i = 0; i < v.size() / components; i++) {
         T data;
         for (unsigned int j = 0; j < components; j++) {
-            data[j] = v[i];
+            data[j] = v[i * components + j];
         }
         result.push_back(data);
     }
