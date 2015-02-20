@@ -1,12 +1,10 @@
 #include "renderstateimpl.hpp"
 
-#include "bufferimpl.hpp"
 #include "color.hpp"
 #include "framebufferimpl.hpp"
 #include "renderbufferimpl.hpp"
 #include "programimpl.hpp"
 #include "textureimpl.hpp"
-#include "vertexarrayimpl.hpp"
 #include "viewport.hpp"
 
 void gst::RenderStateImpl::clear_buffers(bool color, bool depth)
@@ -73,11 +71,6 @@ void gst::RenderStateImpl::set_depth_test(bool depth_test)
     }
 }
 
-void gst::RenderStateImpl::set_buffer(BufferImpl & buffer)
-{
-    buffer.bind();
-}
-
 void gst::RenderStateImpl::set_framebuffer(FramebufferImpl & framebuffer)
 {
     framebuffer.bind();
@@ -112,16 +105,6 @@ void gst::RenderStateImpl::set_texture_none(int unit)
 {
     glActiveTexture(GL_TEXTURE0 + unit);
     glBindTexture(GL_TEXTURE_2D, 0);
-}
-
-void gst::RenderStateImpl::set_vertex_array(VertexArrayImpl & vertex_array)
-{
-    vertex_array.bind();
-}
-
-void gst::RenderStateImpl::set_vertex_array_none()
-{
-    glBindVertexArray(0);
 }
 
 void gst::RenderStateImpl::set_viewport(Viewport const & viewport)
