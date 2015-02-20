@@ -116,8 +116,6 @@ namespace gst
         virtual unsigned int get_count() const = 0;
         // Return size of shadowed data in bytes.
         virtual unsigned int get_size_bytes() const = 0;
-        // Return raw data.
-        virtual std::shared_ptr<void> get_raw_data() const = 0;
     };
 }
 
