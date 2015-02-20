@@ -111,11 +111,11 @@ void gst::ProgramImpl::use()
 
 int gst::ProgramImpl::get_cached_location(std::string const & annotation)
 {
-    if (locations.count(name) == 0) {
-        locations[name] = device->get_uniform_location(handle, name);
-        if (locations[name] == -1) {
-            logger->log(TRACE("could not get uniform location for \"" + name + "\""));
+    if (locations.count(annotation) == 0) {
+        locations[annotation] = device->get_uniform_location(handle, annotation);
+        if (locations[annotation] == -1) {
+            logger->log(TRACE("could not get uniform location for \"" + annotation + "\""));
         }
     }
-    return locations.at(name);
+    return locations.at(annotation);
 }
