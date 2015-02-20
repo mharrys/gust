@@ -236,6 +236,11 @@ unsigned int gst::ShadowedDataImpl::get_size_bytes() const
     return size_bytes;
 }
 
+std::shared_ptr<void> gst::ShadowedDataImpl::get_raw_data() const
+{
+    return data;
+}
+
 bool gst::ShadowedDataImpl::need_new_storage(DataType type, unsigned int size_bytes)
 {
     return !data || this->type != type || this->size_bytes != size_bytes;

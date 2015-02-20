@@ -58,6 +58,7 @@ namespace gst
         DataType get_type() const;
         unsigned int get_count() const;
         unsigned int get_size_bytes() const;
+        std::shared_ptr<void> get_raw_data() const;
     private:
         bool need_new_storage(DataType type, unsigned int size_bytes);
         template<typename T>
