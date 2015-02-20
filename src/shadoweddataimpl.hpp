@@ -56,8 +56,10 @@ namespace gst
         std::vector<glm::vec4> get_vec4_array() const;
 
         DataType get_type() const;
+        unsigned int get_count() const;
+        unsigned int get_size_bytes() const;
     private:
-        bool need_new_storage(DataType type, size_t size_bytes);
+        bool need_new_storage(DataType type, unsigned int size_bytes);
         template<typename T>
         void set_data(T const & new_data, DataType new_type);
         template<typename T>
@@ -69,7 +71,8 @@ namespace gst
 
         std::shared_ptr<void> data;
         DataType type;
-        size_t size_bytes;
+        unsigned int count;
+        unsigned int size_bytes;
     };
 }
 
@@ -81,6 +84,7 @@ void gst::ShadowedDataImpl::set_data(T const & new_data, DataType new_type)
     if (need_new_storage(new_type, new_size_bytes)) {
         data = std::make_shared<T>(new_data);
         type = new_type;
+        count = 1;
         size_bytes = new_size_bytes;
     } else {
         std::memcpy(data.get(), &new_data, size_bytes);
@@ -90,10 +94,12 @@ void gst::ShadowedDataImpl::set_data(T const & new_data, DataType new_type)
 template<typename T>
 void gst::ShadowedDataImpl::set_array_data(std::vector<T> const & new_data, DataType new_type)
 {
-    const auto new_size_bytes = sizeof(T) * new_data.size();
+    const auto new_count = new_data.size();
+    const auto new_size_bytes = sizeof(T) * new_count;
     if (need_new_storage(new_type, new_size_bytes)) {
         data = std::make_shared<std::vector<T>>(new_data);
         type = new_type;
+        count = new_count;
         size_bytes = new_size_bytes;
     } else {
         auto & current = *std::static_pointer_cast<std::vector<T>>(data);

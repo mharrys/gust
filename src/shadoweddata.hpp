@@ -77,38 +77,44 @@ namespace gst
         virtual void set_vec3_array(std::vector<glm::vec3> const & array_data) = 0;
         // Set shadowed data to vector of vec4 values.
         virtual void set_vec4_array(std::vector<glm::vec4> const & array_data) = 0;
-        // Return current shadowed data intepreted as bool value.
+        // Return current shadowed data interpreted as bool value.
         virtual bool get_bool() const = 0;
-        // Return current shadowed data intepreted as int value.
+        // Return current shadowed data interpreted as int value.
         virtual int get_int() const = 0;
-        // Return current shadowed data intepreted as unsigned int value.
+        // Return current shadowed data interpreted as unsigned int value.
         virtual unsigned int get_unsigned_int() const = 0;
-        // Return current shadowed data intepreted as float value.
+        // Return current shadowed data interpreted as float value.
         virtual float get_float() const = 0;
-        // Return current shadowed data intepreted as vec2 value.
+        // Return current shadowed data interpreted as vec2 value.
         virtual glm::vec2 get_vec2() const = 0;
-        // Return current shadowed data intepreted as vec3 value.
+        // Return current shadowed data interpreted as vec3 value.
         virtual glm::vec3 get_vec3() const = 0;
-        // Return current shadowed data intepreted as vec4 value.
+        // Return current shadowed data interpreted as vec4 value.
         virtual glm::vec4 get_vec4() const = 0;
-        // Return current shadowed data intepreted as mat3 value.
+        // Return current shadowed data interpreted as mat3 value.
         virtual glm::mat3 get_mat3() const = 0;
-        // Return current shadowed data intepreted as mat4 value.
+        // Return current shadowed data interpreted as mat4 value.
         virtual glm::mat4 get_mat4() const = 0;
-        // Return current shadowed data intepreted as vector of int values.
+        // Return current shadowed data interpreted as vector of int values.
         virtual std::vector<int> get_int_array() const = 0;
-        // Return current shadowed data intepreted as vector of unsigned int values.
+        // Return current shadowed data interpreted as vector of unsigned int values.
         virtual std::vector<unsigned int> get_unsigned_int_array() const = 0;
-        // Return current shadowed data intepreted as vector of float values.
+        // Return current shadowed data interpreted as vector of float values.
         virtual std::vector<float> get_float_array() const = 0;
-        // Return current shadowed data intepreted as vector of vec2 values.
+        // Return current shadowed data interpreted as vector of vec2 values.
         virtual std::vector<glm::vec2> get_vec2_array() const = 0;
-        // Return current shadowed data intepreted as vector of vec3 values.
+        // Return current shadowed data interpreted as vector of vec3 values.
         virtual std::vector<glm::vec3> get_vec3_array() const = 0;
-        // Return current shadowed data intepreted as vector of vec4 values.
+        // Return current shadowed data interpreted as vector of vec4 values.
         virtual std::vector<glm::vec4> get_vec4_array() const = 0;
         // Return data type for current shadowed data.
         virtual DataType get_type() const = 0;
+        // Return number of elements stored in shadowed data. Note for glm
+        // data structure it is their internal number of elements that is counted
+        // as well as the number of elements in an array.
+        virtual unsigned int get_count() const = 0;
+        // Return size of shadowed data in bytes.
+        virtual unsigned int get_size_bytes() const = 0;
     };
 }
 

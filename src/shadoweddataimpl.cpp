@@ -3,6 +3,7 @@
 gst::ShadowedDataImpl::ShadowedDataImpl()
     : data(nullptr),
       type(DataType::NONE),
+      count(0),
       size_bytes(0)
 {
 }
@@ -225,7 +226,17 @@ gst::DataType gst::ShadowedDataImpl::get_type() const
     return type;
 }
 
-bool gst::ShadowedDataImpl::need_new_storage(DataType type, size_t size_bytes)
+unsigned int gst::ShadowedDataImpl::get_count() const
+{
+    return count;
+}
+
+unsigned int gst::ShadowedDataImpl::get_size_bytes() const
+{
+    return size_bytes;
+}
+
+bool gst::ShadowedDataImpl::need_new_storage(DataType type, unsigned int size_bytes)
 {
     return !data || this->type != type || this->size_bytes != size_bytes;
 }
