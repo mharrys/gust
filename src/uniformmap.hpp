@@ -7,6 +7,8 @@
 
 namespace gst
 {
+    // The responsibility of this class is to associate uniform data with a
+    // annotation using a unordered map.
     class UniformMap : public UniformCollection {
     public:
         ShadowedData & get_uniform(std::string const & annotation);
