@@ -2,7 +2,6 @@
 
 #include "color.hpp"
 #include "framebufferimpl.hpp"
-#include "renderbufferimpl.hpp"
 #include "programimpl.hpp"
 #include "textureimpl.hpp"
 #include "viewport.hpp"
@@ -79,16 +78,6 @@ void gst::RenderStateImpl::set_framebuffer(FramebufferImpl & framebuffer)
 void gst::RenderStateImpl::set_framebuffer_none()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
-
-void gst::RenderStateImpl::set_renderbuffer(RenderbufferImpl & renderbuffer)
-{
-    renderbuffer.bind();
-}
-
-void gst::RenderStateImpl::set_renderbuffer_none()
-{
-    glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
 
 void gst::RenderStateImpl::set_program_none()

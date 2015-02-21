@@ -2,6 +2,7 @@
 #define GRAPHICSDEVICE_HPP_INCLUDED
 
 #include "buffer.hpp"
+#include "renderbuffer.hpp"
 #include "shader.hpp"
 #include "vertexarray.hpp"
 #include "vertexattribute.hpp"
@@ -16,6 +17,7 @@ namespace gst
 
     RESOURCE_HANDLE(BufferHandle)
     RESOURCE_HANDLE(ProgramHandle)
+    RESOURCE_HANDLE(RenderbufferHandle)
     RESOURCE_HANDLE(ShaderHandle)
     RESOURCE_HANDLE(VertexArrayHandle)
 
@@ -92,6 +94,14 @@ namespace gst
         virtual void draw_elements(DrawMode mode, int count) = 0;
         // Enable and define generic vertex attribute.
         virtual void enable_vertex_attribute(VertexAttribute const & attribute) = 0;
+        // Return new renderbuffer object.
+        virtual RenderbufferHandle create_renderbuffer() = 0;
+        // Destroy renderbuffer object.
+        virtual void destroy_renderbuffer(RenderbufferHandle renderbuffer) = 0;
+        // Bind renderbuffer object.
+        virtual void bind_renderbuffer(RenderbufferHandle renderbuffer) = 0;
+        // Establish data storage of specified format and dimensions for renderbuffer objects image.
+        virtual void renderbuffer_storage(Resolution size, RenderbufferFormat format) = 0;
     };
 }
 

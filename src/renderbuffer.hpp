@@ -3,14 +3,11 @@
 
 #include "resolution.hpp"
 
-#include <memory>
-
 namespace gst
 {
-    class Framebuffer;
-    class RenderbufferImpl;
     class RenderState;
 
+    // Supported renderbuffer storage formats.
     enum class RenderbufferFormat {
         DEPTH_COMPONENT16,
         DEPTH_COMPONENT24,
@@ -18,32 +15,24 @@ namespace gst
         DEPTH_COMPONENT32F
     };
 
+    // The responsibility of this class is to mirror a renderbuffer storage
+    // on the graphics card.
     class Renderbuffer {
-        friend Framebuffer;
         friend RenderState;
     public:
-        Renderbuffer() = default;
-        Renderbuffer(
-            Resolution size,
-            RenderbufferFormat format);
-
-        bool operator==(Renderbuffer const & other);
-        bool operator!=(Renderbuffer const & other);
-        explicit operator bool() const;
-
-        void set_storage(Resolution size);
-        void set_storage(RenderbufferFormat format);
-        void set_storage(Resolution size, RenderbufferFormat format);
-
-        Resolution get_size() const;
-        RenderbufferFormat get_format() const;
-    private:
-        void refresh();
-
-        std::shared_ptr<RenderbufferImpl> impl;
-        Resolution size;
-        RenderbufferFormat format;
-        bool dirty;
+        // Set new client storage size.
+        virtual void set_size(Resolution size) = 0;
+        // Set new client storage format.
+        virtual void set_format(RenderbufferFormat format) = 0;
+        // Return client storage size.
+        virtual Resolution get_size() const = 0;
+        // Return client storage format.
+        virtual RenderbufferFormat get_format() const = 0;
+    protected:
+        // Activate this renderbuffer on the graphics card.
+        virtual void bind() = 0;
+        // Sync current state with graphics card.
+        virtual void sync() = 0;
     };
 }
 

@@ -23,7 +23,7 @@ void gst::FramebufferImpl::attach(TextureImpl const & color)
 
 void gst::FramebufferImpl::attach(RenderbufferImpl const & depth)
 {
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depth.id);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depth.handle.name);
 }
 
 void gst::FramebufferImpl::bind()

@@ -43,6 +43,10 @@ namespace gst
         void draw_arrays(DrawMode mode, int first, int count);
         void draw_elements(DrawMode mode, int count);
         void enable_vertex_attribute(VertexAttribute const & attribute);
+        RenderbufferHandle create_renderbuffer();
+        void destroy_renderbuffer(RenderbufferHandle renderbuffer);
+        void bind_renderbuffer(RenderbufferHandle renderbuffer);
+        void renderbuffer_storage(Resolution size, RenderbufferFormat format);
     private:
         Translator translator;
     };

@@ -2,10 +2,11 @@
 
 #include "framebufferimpl.hpp"
 #include "renderstate.hpp"
+#include "renderbufferimpl.hpp"
 
 gst::Framebuffer::Framebuffer(
     Texture & color,
-    Renderbuffer & depth)
+    std::shared_ptr<Renderbuffer> depth)
     : impl(std::make_shared<FramebufferImpl>()),
       color(color),
       depth(depth),
@@ -35,7 +36,7 @@ void gst::Framebuffer::attach(Texture & color)
     color_dirty = true;
 }
 
-void gst::Framebuffer::attach(Renderbuffer & depth)
+void gst::Framebuffer::attach(std::shared_ptr<Renderbuffer> depth)
 {
     this->depth = depth;
     depth_dirty = true;
@@ -46,7 +47,7 @@ gst::Texture gst::Framebuffer::get_color() const
     return color;
 }
 
-gst::Renderbuffer gst::Framebuffer::get_depth() const
+std::shared_ptr<gst::Renderbuffer> gst::Framebuffer::get_depth() const
 {
     return depth;
 }
@@ -67,7 +68,9 @@ void gst::Framebuffer::refresh(RenderState & render_state)
     if (depth_dirty) {
         depth_dirty = false;
         render_state.set_renderbuffer(depth);
-        impl->attach(*depth.impl.get());
+        if (auto rb_impl = std::dynamic_pointer_cast<RenderbufferImpl>(depth)) {
+            impl->attach(*rb_impl);
+        }
     }
 
     status = impl->check_status();

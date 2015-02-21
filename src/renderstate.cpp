@@ -18,7 +18,6 @@ gst::RenderState::RenderState(Viewport viewport)
     impl->set_depth_mask(depth_mask);
     impl->set_depth_test(depth_test);
     impl->set_framebuffer_none();
-    impl->set_renderbuffer_none();
     impl->set_texture_none();
     impl->set_viewport(viewport);
 }
@@ -34,7 +33,6 @@ void gst::RenderState::push()
         depth_mask,
         depth_test,
         framebuffer,
-        renderbuffer,
         texture0,
         viewport
     });
@@ -51,7 +49,6 @@ void gst::RenderState::pop()
         set_depth_mask(state.depth_mask);
         set_depth_test(state.depth_test);
         set_framebuffer(state.framebuffer);
-        set_renderbuffer(state.renderbuffer);
         set_texture(state.texture0);
         set_viewport(state.viewport);
     }
@@ -124,19 +121,12 @@ void gst::RenderState::set_framebuffer(Framebuffer & framebuffer)
     }
 }
 
-void gst::RenderState::set_renderbuffer(Renderbuffer & renderbuffer)
+void gst::RenderState::set_renderbuffer(std::shared_ptr<Renderbuffer> renderbuffer)
 {
-    // do not bother rebinding empty renderbuffer
-    if (!renderbuffer) {
-        return;
-    }
-
     if (this->renderbuffer != renderbuffer) {
         this->renderbuffer = renderbuffer;
-        if (renderbuffer) {
-            impl->set_renderbuffer(*renderbuffer.impl.get());
-            renderbuffer.refresh();
-        }
+        this->renderbuffer->bind();
+        this->renderbuffer->sync();
     }
 }
 

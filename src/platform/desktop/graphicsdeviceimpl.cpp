@@ -219,3 +219,25 @@ void gst::GraphicsDeviceImpl::enable_vertex_attribute(VertexAttribute const & at
         (GLvoid const *)(attribute.get_offset_bytes())
     );
 }
+
+gst::RenderbufferHandle gst::GraphicsDeviceImpl::create_renderbuffer()
+{
+    RenderbufferHandle renderbuffer;
+    glGenRenderbuffers(1, &renderbuffer.name);
+    return renderbuffer;
+}
+
+void gst::GraphicsDeviceImpl::destroy_renderbuffer(RenderbufferHandle renderbuffer)
+{
+    glDeleteRenderbuffers(1, &renderbuffer.name);
+}
+
+void gst::GraphicsDeviceImpl::bind_renderbuffer(RenderbufferHandle renderbuffer)
+{
+    glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer.name);
+}
+
+void gst::GraphicsDeviceImpl::renderbuffer_storage(Resolution size, RenderbufferFormat format)
+{
+    glRenderbufferStorage(GL_RENDERBUFFER, translator.translate(format), size.get_width(), size.get_height());
+}

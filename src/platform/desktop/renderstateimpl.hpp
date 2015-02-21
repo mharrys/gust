@@ -10,7 +10,6 @@ namespace gst
 {
     class Color;
     class FramebufferImpl;
-    class RenderbufferImpl;
     class ProgramImpl;
     class TextureImpl;
     class Viewport;
@@ -25,8 +24,6 @@ namespace gst
         void set_depth_test(bool depth_test);
         void set_framebuffer(FramebufferImpl & framebuffer);
         void set_framebuffer_none();
-        void set_renderbuffer(RenderbufferImpl & renderbuffer);
-        void set_renderbuffer_none();
         void set_program_none();
         void set_texture(TextureImpl & texture, int unit = 0);
         void set_texture_none(int unit = 0);
