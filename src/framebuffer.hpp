@@ -18,24 +18,24 @@ namespace gst
     public:
         Framebuffer() = default;
         Framebuffer(
-            Texture & color,
+            std::shared_ptr<Texture> color,
             std::shared_ptr<Renderbuffer> depth);
 
         bool operator==(Framebuffer const & other);
         bool operator!=(Framebuffer const & other);
         explicit operator bool() const;
 
-        void attach(Texture & color);
+        void attach(std::shared_ptr<Texture> color);
         void attach(std::shared_ptr<Renderbuffer> depth);
 
-        Texture get_color() const;
+        std::shared_ptr<Texture> get_color() const;
         std::shared_ptr<Renderbuffer> get_depth() const;
         std::vector<std::string> get_status() const;
     private:
         void refresh(RenderState & render_state);
 
         std::shared_ptr<FramebufferImpl> impl;
-        Texture color;
+        std::shared_ptr<Texture> color;
         std::shared_ptr<Renderbuffer> depth;
         bool color_dirty;
         bool depth_dirty;

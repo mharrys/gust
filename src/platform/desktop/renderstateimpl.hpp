@@ -11,7 +11,6 @@ namespace gst
     class Color;
     class FramebufferImpl;
     class ProgramImpl;
-    class TextureImpl;
     class Viewport;
 
     class RenderStateImpl {
@@ -25,8 +24,6 @@ namespace gst
         void set_framebuffer(FramebufferImpl & framebuffer);
         void set_framebuffer_none();
         void set_program_none();
-        void set_texture(TextureImpl & texture, int unit = 0);
-        void set_texture_none(int unit = 0);
         void set_viewport(Viewport const & viewport);
         std::vector<std::string> check_errors() const;
     private:

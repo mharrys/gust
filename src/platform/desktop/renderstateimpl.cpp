@@ -3,7 +3,6 @@
 #include "color.hpp"
 #include "framebufferimpl.hpp"
 #include "programimpl.hpp"
-#include "textureimpl.hpp"
 #include "viewport.hpp"
 
 void gst::RenderStateImpl::clear_buffers(bool color, bool depth)
@@ -83,17 +82,6 @@ void gst::RenderStateImpl::set_framebuffer_none()
 void gst::RenderStateImpl::set_program_none()
 {
     glUseProgram(0);
-}
-
-void gst::RenderStateImpl::set_texture(TextureImpl & texture, int unit)
-{
-    texture.bind(unit);
-}
-
-void gst::RenderStateImpl::set_texture_none(int unit)
-{
-    glActiveTexture(GL_TEXTURE0 + unit);
-    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void gst::RenderStateImpl::set_viewport(Viewport const & viewport)

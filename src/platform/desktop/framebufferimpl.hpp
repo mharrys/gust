@@ -12,14 +12,14 @@ namespace gst
 {
     class RenderbufferImpl;
     class RenderStateImpl;
-    class TextureImpl;
+    class Texture2d;
 
     class FramebufferImpl {
         friend RenderStateImpl;
     public:
         FramebufferImpl();
         ~FramebufferImpl();
-        void attach(TextureImpl const & color);
+        void attach(Texture2d const & color);
         void attach(RenderbufferImpl const & depth);
         std::vector<std::string> check_status();
     private:

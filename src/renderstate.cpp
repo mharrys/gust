@@ -18,14 +18,11 @@ gst::RenderState::RenderState(Viewport viewport)
     impl->set_depth_mask(depth_mask);
     impl->set_depth_test(depth_test);
     impl->set_framebuffer_none();
-    impl->set_texture_none();
     impl->set_viewport(viewport);
 }
 
 void gst::RenderState::push()
 {
-    // temporary binds shall only be done on texture unit 0
-    auto texture0 = textures.count(0) > 0 ? textures[0] : Texture();
     stack.push({
         clear_color,
         blend_mode,
@@ -33,7 +30,6 @@ void gst::RenderState::push()
         depth_mask,
         depth_test,
         framebuffer,
-        texture0,
         viewport
     });
 }
@@ -49,7 +45,6 @@ void gst::RenderState::pop()
         set_depth_mask(state.depth_mask);
         set_depth_test(state.depth_test);
         set_framebuffer(state.framebuffer);
-        set_texture(state.texture0);
         set_viewport(state.viewport);
     }
 }
@@ -138,24 +133,17 @@ void gst::RenderState::set_program(std::shared_ptr<Program> program)
     }
 }
 
-void gst::RenderState::set_texture(Texture & texture, int unit)
+void gst::RenderState::set_texture(std::shared_ptr<Texture> texture, int unit)
 {
-    // do not bother rebinding empty texture
-    if (!texture) {
-        return;
-    }
-
-    Texture current;
+    std::shared_ptr<Texture> current;
     if (textures.count(unit) > 0) {
         current = textures.at(unit);
     }
 
     if (current != texture) {
         textures[unit] = texture;
-        if (texture) {
-            impl->set_texture(*texture.impl.get(), unit);
-            texture.refresh();
-        }
+        texture->bind(unit);
+        texture->sync();
     }
 }
 

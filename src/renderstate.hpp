@@ -22,7 +22,7 @@ namespace gst
     class RenderStateImpl;
     class RenderTarget;
 
-    typedef std::unordered_map<int, Texture> TextureLookup;
+    typedef std::unordered_map<int, std::shared_ptr<Texture>> TextureLookup;
 
     struct StateSet {
         Color clear_color;
@@ -31,7 +31,6 @@ namespace gst
         bool depth_mask;
         bool depth_test;
         Framebuffer framebuffer;
-        Texture texture0;
         Viewport viewport;
     };
 
@@ -52,7 +51,7 @@ namespace gst
         void set_framebuffer(Framebuffer & framebuffer);
         void set_renderbuffer(std::shared_ptr<Renderbuffer> renderbuffer);
         void set_program(std::shared_ptr<Program> program);
-        void set_texture(Texture & texture, int unit = 0);
+        void set_texture(std::shared_ptr<Texture> texture, int unit = 0);
         void set_texture(Framebuffer & framebuffer, int unit = 0);
         void set_texture(RenderTarget & target, int unit = 0);
         void set_vertex_array(std::shared_ptr<VertexArray> vertex_array);

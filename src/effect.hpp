@@ -16,7 +16,7 @@ namespace gst
     public:
         std::shared_ptr<UniformCollection> uniforms;
         std::shared_ptr<AnnotationFormatter> formatter;
-        std::vector<Texture> textures;
+        std::vector<std::shared_ptr<Texture>> textures;
         std::vector<std::shared_ptr<Technique>> techniques;
     };
 }

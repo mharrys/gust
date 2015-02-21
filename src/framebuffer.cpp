@@ -3,9 +3,10 @@
 #include "framebufferimpl.hpp"
 #include "renderstate.hpp"
 #include "renderbufferimpl.hpp"
+#include "texture2d.hpp"
 
 gst::Framebuffer::Framebuffer(
-    Texture & color,
+    std::shared_ptr<Texture> color,
     std::shared_ptr<Renderbuffer> depth)
     : impl(std::make_shared<FramebufferImpl>()),
       color(color),
@@ -30,7 +31,7 @@ gst::Framebuffer::operator bool() const
     return impl != nullptr;
 }
 
-void gst::Framebuffer::attach(Texture & color)
+void gst::Framebuffer::attach(std::shared_ptr<Texture> color)
 {
     this->color = color;
     color_dirty = true;
@@ -42,7 +43,7 @@ void gst::Framebuffer::attach(std::shared_ptr<Renderbuffer> depth)
     depth_dirty = true;
 }
 
-gst::Texture gst::Framebuffer::get_color() const
+std::shared_ptr<gst::Texture> gst::Framebuffer::get_color() const
 {
     return color;
 }
@@ -62,7 +63,9 @@ void gst::Framebuffer::refresh(RenderState & render_state)
     if (color_dirty) {
         color_dirty = false;
         render_state.set_texture(color);
-        impl->attach(*color.impl.get());
+        if (auto tex_2d = std::dynamic_pointer_cast<Texture2d>(color)) {
+            impl->attach(*tex_2d);
+        }
     }
 
     if (depth_dirty) {

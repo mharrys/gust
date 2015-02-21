@@ -1,7 +1,7 @@
 #include "framebufferimpl.hpp"
 
 #include "renderbufferimpl.hpp"
-#include "textureimpl.hpp"
+#include "texture2d.hpp"
 
 gst::FramebufferImpl::FramebufferImpl()
 {
@@ -13,9 +13,9 @@ gst::FramebufferImpl::~FramebufferImpl()
     glDeleteFramebuffers(1, &id);
 }
 
-void gst::FramebufferImpl::attach(TextureImpl const & color)
+void gst::FramebufferImpl::attach(Texture2d const & color)
 {
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color.id, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color.handle.name, 0);
 
     GLenum draw_buffers[] = { GL_COLOR_ATTACHMENT0 };
     glDrawBuffers(1, draw_buffers);
