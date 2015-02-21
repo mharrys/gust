@@ -1,5 +1,6 @@
 #include "graphicsdeviceimpl.hpp"
 
+#include "image.hpp"
 #include "shadoweddata.hpp"
 
 void gst::GraphicsDeviceImpl::clear(bool color, bool depth)
@@ -240,4 +241,60 @@ void gst::GraphicsDeviceImpl::bind_renderbuffer(RenderbufferHandle renderbuffer)
 void gst::GraphicsDeviceImpl::renderbuffer_storage(Resolution size, RenderbufferFormat format)
 {
     glRenderbufferStorage(GL_RENDERBUFFER, translator.translate(format), size.get_width(), size.get_height());
+}
+
+gst::TextureHandle gst::GraphicsDeviceImpl::create_texture()
+{
+    TextureHandle texture;
+    glGenBuffers(1, &texture.name);
+    return texture;
+}
+
+void gst::GraphicsDeviceImpl::destroy_texture(TextureHandle texture)
+{
+    glDeleteTextures(1, &texture.name);
+}
+
+void gst::GraphicsDeviceImpl::bind_texture(TextureHandle texture, TextureTarget target, int unit)
+{
+    glActiveTexture(GL_TEXTURE0 + unit);
+    glBindTexture(translator.translate(target), texture.name);
+}
+
+void gst::GraphicsDeviceImpl::texture_image_2d(TextureTarget target, Image const & image, TextureParam const & param)
+{
+    auto size = image.get_size();
+
+    glTexImage2D(
+        translator.translate(target),
+        0,
+        translator.translate(param.internal_format),
+        size.get_width(),
+        size.get_height(),
+        0,
+        translator.translate(param.source_format),
+        GL_UNSIGNED_BYTE,
+        &image.get_data()[0]
+    );
+}
+
+void gst::GraphicsDeviceImpl::texture_parameters(TextureTarget target, TextureParam const & param)
+{
+    auto tex_target = translator.translate(target);
+    auto min_filter = translator.translate(param.min_filter);
+    auto mag_filter = translator.translate(param.mag_filter);
+    auto wrap_s = translator.translate(param.wrap_s);
+    auto wrap_t = translator.translate(param.wrap_t);
+    auto depth_compare = translator.translate(param.depth_compare);
+
+    glTexParameteri(tex_target, GL_TEXTURE_MIN_FILTER, min_filter);
+    glTexParameteri(tex_target, GL_TEXTURE_MAG_FILTER, mag_filter);
+    glTexParameteri(tex_target, GL_TEXTURE_WRAP_S, wrap_s);
+    glTexParameteri(tex_target, GL_TEXTURE_WRAP_T, wrap_t);
+    if (depth_compare == -1) {
+        glTexParameteri(tex_target, GL_TEXTURE_COMPARE_MODE, GL_NONE);
+    } else {
+        glTexParameteri(tex_target, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+        glTexParameteri(tex_target, GL_TEXTURE_COMPARE_FUNC, depth_compare);
+    }
 }

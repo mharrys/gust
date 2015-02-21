@@ -47,6 +47,11 @@ namespace gst
         void destroy_renderbuffer(RenderbufferHandle renderbuffer);
         void bind_renderbuffer(RenderbufferHandle renderbuffer);
         void renderbuffer_storage(Resolution size, RenderbufferFormat format);
+        TextureHandle create_texture();
+        void destroy_texture(TextureHandle texture);
+        void bind_texture(TextureHandle texture, TextureTarget target, int unit);
+        void texture_image_2d(TextureTarget target, Image const & image, TextureParam const & param);
+        void texture_parameters(TextureTarget target, TextureParam const & param);
     private:
         Translator translator;
     };

@@ -4,8 +4,8 @@
 #include "buffer.hpp"
 #include "renderbuffer.hpp"
 #include "shader.hpp"
+#include "texture.hpp"
 #include "vertexarray.hpp"
-#include "vertexattribute.hpp"
 
 #include <string>
 
@@ -13,12 +13,14 @@
 
 namespace gst
 {
+    class Image;
     class ShadowedData;
 
     RESOURCE_HANDLE(BufferHandle)
     RESOURCE_HANDLE(ProgramHandle)
     RESOURCE_HANDLE(RenderbufferHandle)
     RESOURCE_HANDLE(ShaderHandle)
+    RESOURCE_HANDLE(TextureHandle)
     RESOURCE_HANDLE(VertexArrayHandle)
 
     // The responsibility of this class is to interact with a graphics card.
@@ -102,6 +104,16 @@ namespace gst
         virtual void bind_renderbuffer(RenderbufferHandle renderbuffer) = 0;
         // Establish data storage of specified format and dimensions for renderbuffer objects image.
         virtual void renderbuffer_storage(Resolution size, RenderbufferFormat format) = 0;
+        // Create new texture object.
+        virtual TextureHandle create_texture() = 0;
+        // Destroy texture object.
+        virtual void destroy_texture(TextureHandle texture) = 0;
+        // Bind texture object.
+        virtual void bind_texture(TextureHandle texture, TextureTarget target, int unit) = 0;
+        // Specify 2D texture image.
+        virtual void texture_image_2d(TextureTarget target, Image const & image, TextureParam const & param) = 0;
+        // Set texture parameters.
+        virtual void texture_parameters(TextureTarget target, TextureParam const & param) = 0;
     };
 }
 
