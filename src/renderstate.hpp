@@ -20,7 +20,6 @@
 namespace gst
 {
     class RenderStateImpl;
-    class RenderTarget;
 
     typedef std::unordered_map<int, std::shared_ptr<Texture>> TextureLookup;
 
@@ -40,7 +39,6 @@ namespace gst
         void set_program(std::shared_ptr<Program> program);
         void set_texture(std::shared_ptr<Texture> texture, int unit = 0);
         void set_texture(Framebuffer & framebuffer, int unit = 0);
-        void set_texture(RenderTarget & target, int unit = 0);
         void set_vertex_array(std::shared_ptr<VertexArray> vertex_array);
         void set_viewport(Viewport const & viewport);
         std::vector<std::string> check_errors() const;

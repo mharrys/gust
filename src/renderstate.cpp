@@ -1,7 +1,6 @@
 #include "renderstate.hpp"
 
 #include "renderstateimpl.hpp"
-#include "rendertarget.hpp"
 
 gst::RenderState::RenderState(Viewport viewport)
     : impl(std::make_shared<RenderStateImpl>()),
@@ -122,11 +121,6 @@ void gst::RenderState::set_texture(std::shared_ptr<Texture> texture, int unit)
 void gst::RenderState::set_texture(Framebuffer & framebuffer, int unit)
 {
     set_texture(framebuffer.color, unit);
-}
-
-void gst::RenderState::set_texture(RenderTarget & target, int unit)
-{
-    set_texture(target.framebuffer, unit);
 }
 
 void gst::RenderState::set_vertex_array(std::shared_ptr<VertexArray> vertex_array)

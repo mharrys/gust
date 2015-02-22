@@ -8,7 +8,6 @@ namespace gst
     class Framebuffer;
     class Logger;
     class RenderState;
-    class RenderTarget;
     class Scene;
 
     class Renderer {
@@ -20,7 +19,7 @@ namespace gst
 
         void clear(bool color = true, bool depth = true);
         void render(Scene & scene);
-        void render(Scene & scene, RenderTarget & target);
+        void render(Scene & scene, Framebuffer & target);
         void check_errors();
 
         bool auto_clear;

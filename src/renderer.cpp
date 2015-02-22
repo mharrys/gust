@@ -7,7 +7,6 @@
 #include "logger.hpp"
 #include "noderenderer.hpp"
 #include "renderstate.hpp"
-#include "rendertarget.hpp"
 #include "scene.hpp"
 
 gst::Renderer::Renderer(
@@ -39,10 +38,10 @@ void gst::Renderer::render(Scene & scene)
     scene.traverse(renderer);
 }
 
-void gst::Renderer::render(Scene & scene, RenderTarget & target)
+void gst::Renderer::render(Scene & scene, Framebuffer & target)
 {
-    render_state->set_framebuffer(target.framebuffer);
-    for (auto status : target.framebuffer.get_status()) {
+    render_state->set_framebuffer(target);
+    for (auto status : target.get_status()) {
         logger->log(status);
     }
     render(scene);
