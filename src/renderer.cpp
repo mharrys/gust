@@ -43,7 +43,6 @@ void gst::Renderer::render(Scene & scene, RenderTarget & target)
 {
     render_state->push();
     render_state->set_framebuffer(target.framebuffer);
-    render_state->set_viewport(target.get_size());
     for (auto status : target.framebuffer.get_status()) {
         logger->log(status);
     }
