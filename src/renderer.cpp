@@ -1,6 +1,7 @@
 #include "renderer.hpp"
 
 #include "cameranode.hpp"
+#include "graphicsdevice.hpp"
 #include "groupnode.hpp"
 #include "framebuffer.hpp"
 #include "lightnodecollector.hpp"
@@ -10,19 +11,21 @@
 #include "scene.hpp"
 
 gst::Renderer::Renderer(
-    std::shared_ptr<Logger> logger,
-    std::shared_ptr<RenderState> render_state)
+    std::shared_ptr<GraphicsDevice> device,
+    std::shared_ptr<RenderState> render_state,
+    std::shared_ptr<Logger> logger)
     : auto_clear(true),
       auto_clear_color(true),
       auto_clear_depth(true),
-      logger(logger),
-      render_state(render_state)
+      device(device),
+      render_state(render_state),
+      logger(logger)
 {
 }
 
 void gst::Renderer::clear(bool color, bool depth)
 {
-    render_state->clear_buffers(color, depth);
+    device->clear(color, depth);
 }
 
 void gst::Renderer::render(Scene & scene)
@@ -50,7 +53,7 @@ void gst::Renderer::render(Scene & scene, std::shared_ptr<Framebuffer> target)
 
 void gst::Renderer::check_errors()
 {
-    for (auto error : render_state->check_errors()) {
+    for (auto error : device->get_errors()) {
         logger->log(error);
     }
 }

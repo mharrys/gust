@@ -25,7 +25,6 @@ namespace gst
     class RenderState {
     public:
         RenderState(std::shared_ptr<GraphicsDevice> device);
-        void clear_buffers(bool color, bool depth);
         void set_clear_color(Color const & clear_color);
         void set_blend_mode(BlendMode blend_mode);
         void set_cull_face(CullFace cull_face);
@@ -38,7 +37,6 @@ namespace gst
         void set_texture(std::shared_ptr<Texture> texture, int unit = 0);
         void set_vertex_array(std::shared_ptr<VertexArray> vertex_array);
         void set_viewport(Viewport const & viewport);
-        std::vector<std::string> check_errors() const;
     private:
         std::shared_ptr<GraphicsDevice> device;
         Color clear_color;

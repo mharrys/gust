@@ -27,11 +27,6 @@ gst::RenderState::RenderState(std::shared_ptr<GraphicsDevice> device)
     set_viewport(viewport);
 }
 
-void gst::RenderState::clear_buffers(bool color, bool depth)
-{
-    device->clear(color, depth);
-}
-
 void gst::RenderState::set_clear_color(Color const & clear_color)
 {
     if (this->clear_color != clear_color) {
@@ -148,9 +143,4 @@ void gst::RenderState::set_viewport(Viewport const & viewport)
         this->viewport = viewport;
         device->set_viewport(viewport);
     }
-}
-
-std::vector<std::string> gst::RenderState::check_errors() const
-{
-    return device->get_errors();
 }
