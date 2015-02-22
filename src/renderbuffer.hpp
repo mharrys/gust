@@ -13,6 +13,7 @@ namespace gst
     class Renderbuffer {
         friend RenderState;
     public:
+        virtual ~Renderbuffer() = default;
         // Set new client storage size.
         virtual void set_size(Resolution size) = 0;
         // Set new client storage format.

@@ -15,6 +15,7 @@ namespace gst
     // annotation.
     class UniformCollection {
     public:
+        virtual ~UniformCollection() = default;
         // Return uniform associated with specified annotation, creates a new
         // uniform each time the function is called with a annotation not seen
         // before.

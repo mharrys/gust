@@ -33,6 +33,8 @@ namespace gst
     // The responsibility of this class is to interact with a graphics card.
     class GraphicsDevice {
     public:
+        virtual ~GraphicsDevice() = default;
+
         // Clear buffers to present values.
         virtual void clear(bool color, bool depth) = 0;
 

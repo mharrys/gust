@@ -30,6 +30,7 @@ namespace gst
     class VertexArray {
         friend RenderState;
     public:
+        virtual ~VertexArray() = default;
         // Render primitives from stored array data.
         virtual void draw_arrays(DrawMode mode, int first, int count) = 0;
         // Render primitives from stored array data.

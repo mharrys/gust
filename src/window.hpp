@@ -9,6 +9,7 @@ namespace gst
     // The responsibility of this class is to interact with a system window.
     class Window {
     public:
+        virtual ~Window() = default;
         // Return true if system window has not been opened or if there has
         // been a request to close the system window, false otherwise.
         virtual bool should_close() const = 0;

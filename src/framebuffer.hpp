@@ -19,6 +19,7 @@ namespace gst
     class Framebuffer {
         friend RenderState;
     public:
+        virtual ~Framebuffer() = default;
         // Attach color.
         virtual void attach(std::shared_ptr<Texture> color) = 0;
         // Attach depth.

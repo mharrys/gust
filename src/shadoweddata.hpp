@@ -32,6 +32,7 @@ namespace gst
     // data structure. It must allow for changing the data types at runtime.
     class ShadowedData {
     public:
+        virtual ~ShadowedData() = default;
         // Set shadowed data to bool value.
         virtual ShadowedData & operator=(bool data) = 0;
         // Set shadowed data to int value.

@@ -12,6 +12,7 @@ namespace gst
     class Program {
         friend RenderState;
     public:
+        virtual ~Program() = default;
         // Sync specified uniforms with program object on the graphics card,
         // every annotation is formatted with the specified formatter.
         virtual void sync(UniformCollection const & uniforms, AnnotationFormatter const & formatter) = 0;

@@ -16,6 +16,7 @@ namespace gst
     class Texture {
         friend RenderState;
     public:
+        virtual ~Texture() = default;
         // Set storage size.
         virtual void set_size(Resolution size) = 0;
         // Set storage data.

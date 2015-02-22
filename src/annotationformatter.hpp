@@ -9,6 +9,7 @@ namespace gst
     // structure it currently resides within.
     class AnnotationFormatter {
     public:
+        virtual ~AnnotationFormatter() = default;
         // Return formatted annotation.
         virtual std::string format(std::string const & annotation) const = 0;
     };

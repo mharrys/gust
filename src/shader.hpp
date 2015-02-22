@@ -9,6 +9,7 @@ namespace gst
     // graphics card.
     class Shader {
     public:
+        virtual ~Shader() = default;
         // Return shader type.
         virtual ShaderType get_type() const = 0;
         // Return identifier on the graphics card.

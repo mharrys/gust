@@ -26,6 +26,7 @@ namespace gst
     class Buffer {
         friend RenderState;
     public:
+        virtual ~Buffer() = default;
         // Set client side data to int array.
         virtual void set_int_array(std::vector<int> const & data) = 0;
         // Set client side data to unsigned int array.
