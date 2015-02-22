@@ -20,7 +20,7 @@ namespace gst
         void set_resize(bool resize);
         void set_size(Resolution size);
         void set_title(std::string title);
-        Window build();
+        std::unique_ptr<Window> build();
     private:
         std::shared_ptr<Logger> logger;
         bool exit_on_close;

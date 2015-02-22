@@ -1,6 +1,5 @@
 #include "windowbuilder.hpp"
 
-#include "window.hpp"
 #include "windowimpl.hpp"
 
 gst::WindowBuilder::WindowBuilder(std::shared_ptr<Logger> logger)
@@ -44,9 +43,9 @@ void gst::WindowBuilder::set_title(std::string title)
     this->title = title;
 }
 
-gst::Window gst::WindowBuilder::build()
+std::unique_ptr<gst::Window> gst::WindowBuilder::build()
 {
-    auto impl = std::make_shared<WindowImpl>(
+    auto window = std::unique_ptr<WindowImpl>(new WindowImpl(
         logger,
         exit_on_close,
         exit_on_esc,
@@ -54,10 +53,7 @@ gst::Window gst::WindowBuilder::build()
         resize,
         size,
         title
-    );
-    if (impl->open()) {
-        return Window(impl);
-    } else {
-        return Window();
-    }
+    ));
+    window->open();
+    return std::move(window);
 }
