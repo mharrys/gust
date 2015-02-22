@@ -25,12 +25,12 @@ gst::Viewport::Viewport(int x, int y, unsigned int width, unsigned int height)
 {
 }
 
-bool gst::Viewport::operator==(Viewport const & other)
+bool gst::Viewport::operator==(Viewport const & other) const
 {
     return x == other.x && y == other.y && width == other.width && height == other.height;
 }
 
-bool gst::Viewport::operator!=(Viewport const & other)
+bool gst::Viewport::operator!=(Viewport const & other) const
 {
     return !(*this == other);
 }

@@ -12,8 +12,8 @@ namespace gst
         Viewport(unsigned int width, unsigned int height);
         Viewport(int x, int y, unsigned int width, unsigned int height);
 
-        bool operator==(Viewport const & other);
-        bool operator!=(Viewport const & other);
+        bool operator==(Viewport const & other) const;
+        bool operator!=(Viewport const & other) const;
 
         int get_x() const;
         int get_y() const;
