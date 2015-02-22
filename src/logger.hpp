@@ -10,9 +10,11 @@
 
 namespace gst
 {
+    // The responsibility of this class is to log string messages.
     class Logger {
     public:
         virtual ~Logger() = default;
+        // Log specified message.
         virtual void log(std::string const & message) = 0;
     };
 }
