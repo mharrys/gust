@@ -1,7 +1,9 @@
 #ifndef GRAPHICSDEVICE_HPP_INCLUDED
 #define GRAPHICSDEVICE_HPP_INCLUDED
 
+#include "blendmode.hpp"
 #include "buffer.hpp"
+#include "cullface.hpp"
 #include "renderbufferformat.hpp"
 #include "shader.hpp"
 #include "textureparam.hpp"
@@ -14,9 +16,11 @@
 
 namespace gst
 {
+    class Color;
     class Image;
     class Resolution;
     class ShadowedData;
+    class Viewport;
 
     RESOURCE_HANDLE(BufferHandle)
     RESOURCE_HANDLE(FramebufferHandle)
@@ -31,6 +35,18 @@ namespace gst
     public:
         // Clear buffers to present values.
         virtual void clear(bool color, bool depth) = 0;
+        // Set clear values for color buffers.
+        virtual void set_clear_color(Color const & clear_color) = 0;
+        // Set blend mode enabled/disabled with appropiate blend function.
+        virtual void set_blend_mode(BlendMode blend_mode) = 0;
+        // Set faces that can be culled.
+        virtual void set_cull_face(CullFace cull_face) = 0;
+        // Set depth mask enabled/disabled.
+        virtual void set_depth_mask(bool depth_mask) = 0;
+        // Set depth test enabled/disabled.
+        virtual void set_depth_test(bool depth_test) = 0;
+        // Set viewport.
+        virtual void set_viewport(Viewport const & viewport) = 0;
         // Return new shader object.
         virtual ShaderHandle create_shader(ShaderType type) = 0;
         // Destroy shader object.
@@ -130,7 +146,9 @@ namespace gst
         // object.
         virtual void framebuffer_renderbuffer(RenderbufferHandle renderbuffer) = 0;
         // Return array of status messages for currently bound framebuffer object.
-        virtual std::vector<std::string> check_framebuffer_status() = 0;
+        virtual std::vector<std::string> check_framebuffer_status() const = 0;
+        // Return array of error messages (if any).
+        virtual std::vector<std::string> get_errors() const = 0;
     };
 }
 

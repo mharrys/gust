@@ -5,10 +5,6 @@
 
 namespace gst
 {
-    class RenderbufferImpl;
-    class RenderStateImpl;
-    class Texture2d;
-
     class FramebufferImpl : public Framebuffer {
     public:
         FramebufferImpl(std::shared_ptr<GraphicsDevice> device);

@@ -9,6 +9,7 @@
 #include "model.hpp"
 #include "modelnode.hpp"
 #include "pass.hpp"
+#include "program.hpp"
 #include "renderstate.hpp"
 #include "technique.hpp"
 #include "shadoweddata.hpp"

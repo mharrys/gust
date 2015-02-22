@@ -9,6 +9,12 @@ namespace gst
     class GraphicsDeviceImpl : public GraphicsDevice {
     public:
         void clear(bool color, bool depth);
+        void set_clear_color(Color const & clear_color);
+        void set_blend_mode(BlendMode blend_mode);
+        void set_cull_face(CullFace cull_face);
+        void set_depth_mask(bool depth_mask);
+        void set_depth_test(bool depth_test);
+        void set_viewport(Viewport const & viewport);
         ShaderHandle create_shader(ShaderType type);
         void destroy_shader(ShaderHandle shader);
         void compile_shader(ShaderHandle shader, std::string const & source);
@@ -57,7 +63,8 @@ namespace gst
         void bind_framebuffer(FramebufferHandle framebuffer);
         void framebuffer_texture_2d(TextureHandle texture);
         void framebuffer_renderbuffer(RenderbufferHandle renderbuffer);
-        std::vector<std::string> check_framebuffer_status();
+        std::vector<std::string> check_framebuffer_status() const;
+        std::vector<std::string> get_errors() const;
     private:
         Translator translator;
     };

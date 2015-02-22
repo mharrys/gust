@@ -2,30 +2,29 @@
 #define RENDERSTATE_HPP_INCLUDED
 
 #include "blendmode.hpp"
-#include "buffer.hpp"
 #include "color.hpp"
 #include "cullface.hpp"
-#include "framebuffer.hpp"
-#include "renderbuffer.hpp"
-#include "program.hpp"
-#include "texture.hpp"
-#include "vertexarray.hpp"
 #include "viewport.hpp"
 
 #include <memory>
 #include <unordered_map>
 #include <vector>
-#include <stack>
 
 namespace gst
 {
-    class RenderStateImpl;
+    class Buffer;
+    class Framebuffer;
+    class GraphicsDevice;
+    class Program;
+    class Renderbuffer;
+    class Texture;
+    class VertexArray;
 
     typedef std::unordered_map<int, std::shared_ptr<Texture>> TextureLookup;
 
     class RenderState {
     public:
-        RenderState(Viewport viewport);
+        RenderState(std::shared_ptr<GraphicsDevice> device);
         void clear_buffers(bool color, bool depth);
         void set_clear_color(Color const & clear_color);
         void set_blend_mode(BlendMode blend_mode);
@@ -41,7 +40,7 @@ namespace gst
         void set_viewport(Viewport const & viewport);
         std::vector<std::string> check_errors() const;
     private:
-        std::shared_ptr<RenderStateImpl> impl;
+        std::shared_ptr<GraphicsDevice> device;
         Color clear_color;
         BlendMode blend_mode;
         CullFace cull_face;
