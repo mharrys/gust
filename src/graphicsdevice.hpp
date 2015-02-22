@@ -35,6 +35,7 @@ namespace gst
     public:
         // Clear buffers to present values.
         virtual void clear(bool color, bool depth) = 0;
+
         // Set clear values for color buffers.
         virtual void set_clear_color(Color const & clear_color) = 0;
         // Set blend mode enabled/disabled with appropiate blend function.
@@ -47,6 +48,7 @@ namespace gst
         virtual void set_depth_test(bool depth_test) = 0;
         // Set viewport.
         virtual void set_viewport(Viewport const & viewport) = 0;
+
         // Return new shader object.
         virtual ShaderHandle create_shader(ShaderType type) = 0;
         // Destroy shader object.
@@ -57,6 +59,7 @@ namespace gst
         virtual bool get_compile_status(ShaderHandle shader) = 0;
         // Return error message from last compile operation.
         virtual std::string get_compile_error(ShaderHandle shader) = 0;
+
         // Return new program object.
         virtual ProgramHandle create_program() = 0;
         // Destroy program object.
@@ -95,6 +98,7 @@ namespace gst
         virtual void uniform_matrix4(int location, int count, bool transpose, std::vector<float> const & value) = 0;
         // Install specified program object as part of current rendering state.
         virtual void use_program(ProgramHandle program) = 0;
+
         // Return new buffer object.
         virtual BufferHandle create_buffer() = 0;
         // Destroy buffer object.
@@ -103,6 +107,7 @@ namespace gst
         virtual void bind_buffer(BufferHandle buffer, BufferTarget target) = 0;
         // Buffer data to current bound buffer object.
         virtual void buffer_data(BufferTarget target, ShadowedData const & data, DataUsage usage) = 0;
+
         // Return new vertex array object.
         virtual VertexArrayHandle create_vertex_array() = 0;
         // Destroy vertex array object.
@@ -115,6 +120,7 @@ namespace gst
         virtual void draw_elements(DrawMode mode, int count) = 0;
         // Enable and define generic vertex attribute.
         virtual void enable_vertex_attribute(VertexAttribute const & attribute) = 0;
+
         // Return new renderbuffer object.
         virtual RenderbufferHandle create_renderbuffer() = 0;
         // Destroy renderbuffer object.
@@ -123,6 +129,7 @@ namespace gst
         virtual void bind_renderbuffer(RenderbufferHandle renderbuffer) = 0;
         // Establish data storage of specified format and dimensions for renderbuffer objects image.
         virtual void renderbuffer_storage(Resolution size, RenderbufferFormat format) = 0;
+
         // Create new texture object.
         virtual TextureHandle create_texture() = 0;
         // Destroy texture object.
@@ -133,6 +140,7 @@ namespace gst
         virtual void texture_image_2d(TextureTarget target, Image const & image, TextureParam const & param) = 0;
         // Set texture parameters.
         virtual void texture_parameters(TextureTarget target, TextureParam const & param) = 0;
+
         // Create new framebuffer object.
         virtual FramebufferHandle create_framebuffer() = 0;
         // Destroy framebuffer object.
@@ -147,6 +155,7 @@ namespace gst
         virtual void framebuffer_renderbuffer(RenderbufferHandle renderbuffer) = 0;
         // Return array of status messages for currently bound framebuffer object.
         virtual std::vector<std::string> check_framebuffer_status() const = 0;
+
         // Return array of error messages (if any).
         virtual std::vector<std::string> get_errors() const = 0;
     };
