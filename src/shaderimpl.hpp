@@ -9,14 +9,12 @@
 
 namespace gst
 {
-    class ProgramImpl;
-
     class ShaderImpl : public Shader {
-        friend ProgramImpl;
     public:
         ShaderImpl(std::shared_ptr<GraphicsDevice> device, ShaderType type);
         ~ShaderImpl();
         ShaderType get_type() const;
+        ShaderHandle get_handle() const;
         // Compile specified source code.
         void compile(std::string const & source);
         // Return true if last compile operation on shader was successful,

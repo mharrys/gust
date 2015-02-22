@@ -2,7 +2,7 @@
 
 #include "annotationformatter.hpp"
 #include "logger.hpp"
-#include "shaderimpl.hpp"
+#include "shader.hpp"
 #include "shadoweddata.hpp"
 #include "uniformcollection.hpp"
 
@@ -72,14 +72,14 @@ void gst::ProgramImpl::sync(UniformCollection const & uniforms, AnnotationFormat
     }
 }
 
-void gst::ProgramImpl::attach(ShaderImpl & shader)
+void gst::ProgramImpl::attach(Shader const & shader)
 {
-    device->attach_shader(handle, shader.handle);
+    device->attach_shader(handle, shader.get_handle());
 }
 
-void gst::ProgramImpl::detach(ShaderImpl & shader)
+void gst::ProgramImpl::detach(Shader const & shader)
 {
-    device->detach_shader(handle, shader.handle);
+    device->detach_shader(handle, shader.get_handle());
 }
 
 void gst::ProgramImpl::bind_attribute(int index, std::string const & name)

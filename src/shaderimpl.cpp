@@ -19,6 +19,11 @@ gst::ShaderType gst::ShaderImpl::get_type() const
     return type;
 }
 
+gst::ShaderHandle gst::ShaderImpl::get_handle() const
+{
+    return handle;
+}
+
 void gst::ShaderImpl::compile(std::string const & source)
 {
     device->compile_shader(handle, source);

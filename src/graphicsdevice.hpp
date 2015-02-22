@@ -5,7 +5,7 @@
 #include "buffer.hpp"
 #include "cullface.hpp"
 #include "renderbufferformat.hpp"
-#include "shader.hpp"
+#include "shadertype.hpp"
 #include "textureparam.hpp"
 #include "vertexarray.hpp"
 

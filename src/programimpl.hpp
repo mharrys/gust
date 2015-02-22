@@ -10,7 +10,7 @@
 namespace gst
 {
     class Logger;
-    class ShaderImpl;
+    class Shader;
 
     typedef std::unordered_map<std::string, int> LocationCache;
 
@@ -20,10 +20,10 @@ namespace gst
         ~ProgramImpl();
         void sync(UniformCollection const & uniforms, AnnotationFormatter const & formatter);
         // Attach shader to this program.
-        void attach(ShaderImpl & shader);
+        void attach(Shader const & shader);
         // Detach shader from this program. The shader will remain attached if
         // detached after link operation.
-        void detach(ShaderImpl & shader);
+        void detach(Shader const & shader);
         // Bind attribute location with specified vertex attribute index and
         // specified attribute name.
         void bind_attribute(int index, std::string const & name);
