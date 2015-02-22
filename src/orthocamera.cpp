@@ -11,7 +11,7 @@ gst::OrthoCamera::OrthoCamera(float left, float right, float bottom, float top)
 }
 
 gst::OrthoCamera::OrthoCamera(float left, float right, float bottom, float top, float near, float far)
-    : Camera(glm::ortho(left, right, bottom, top, near, far)),
+    : projection(glm::ortho(left, right, bottom, top, near, far)),
       left(left),
       right(right),
       bottom(bottom),
@@ -19,6 +19,11 @@ gst::OrthoCamera::OrthoCamera(float left, float right, float bottom, float top, 
       near(near),
       far(far)
 {
+}
+
+glm::mat4 gst::OrthoCamera::get_projection() const
+{
+    return projection;
 }
 
 float gst::OrthoCamera::get_left() const

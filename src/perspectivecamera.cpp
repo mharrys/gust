@@ -12,12 +12,17 @@ gst::PerspectiveCamera::PerspectiveCamera(float fov, Resolution resolution, floa
 }
 
 gst::PerspectiveCamera::PerspectiveCamera(float fov, float aspect_ratio, float near, float far)
-    : Camera(glm::perspective(fov, aspect_ratio, near, far)),
+    : projection(glm::perspective(fov, aspect_ratio, near, far)),
       fov(fov),
       aspect_ratio(aspect_ratio),
       near(near),
       far(far)
 {
+}
+
+glm::mat4 gst::PerspectiveCamera::get_projection() const
+{
+    return projection;
 }
 
 float gst::PerspectiveCamera::get_fov() const
