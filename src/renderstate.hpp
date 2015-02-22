@@ -22,20 +22,36 @@ namespace gst
 
     typedef std::unordered_map<int, std::shared_ptr<Texture>> TextureLookup;
 
+    // The responsibility of this class is to cache all operations that
+    // changes the state on the graphics card. It will reset to a sensible
+    // default state when created so that all future operations will reflect
+    // the current state on the graphics card.
     class RenderState {
     public:
         RenderState(std::shared_ptr<GraphicsDevice> device);
+        // Set clear color.
         void set_clear_color(Color const & clear_color);
+        // Set blend mode.
         void set_blend_mode(BlendMode blend_mode);
+        // Set cull face.
         void set_cull_face(CullFace cull_face);
+        // Set depth mask.
         void set_depth_mask(bool depth_mask);
+        // Set depth test.
         void set_depth_test(bool depth_test);
+        // Set buffer.
         void set_buffer(std::shared_ptr<Buffer> buffer);
+        // Set framebuffer, or nullptr to unbind.
         void set_framebuffer(std::shared_ptr<Framebuffer> framebuffer);
+        // Set renderbuffer.
         void set_renderbuffer(std::shared_ptr<Renderbuffer> renderbuffer);
+        // Set program, or nullptr to unbind.
         void set_program(std::shared_ptr<Program> program);
+        // Set texture on specified texture unit.
         void set_texture(std::shared_ptr<Texture> texture, int unit = 0);
+        // Set vertex array, or nullptr to unbind.
         void set_vertex_array(std::shared_ptr<VertexArray> vertex_array);
+        // Set viewport.
         void set_viewport(Viewport const & viewport);
     private:
         std::shared_ptr<GraphicsDevice> device;
