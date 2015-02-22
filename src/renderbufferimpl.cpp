@@ -39,6 +39,11 @@ gst::RenderbufferFormat gst::RenderbufferImpl::get_format() const
     return format;
 }
 
+gst::RenderbufferHandle gst::RenderbufferImpl::get_handle() const
+{
+    return handle;
+}
+
 void gst::RenderbufferImpl::bind()
 {
     device->bind_renderbuffer(handle);

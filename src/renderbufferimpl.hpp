@@ -1,17 +1,14 @@
 #ifndef RENDERBUFFER_IMPL_HPP_INCLUDED
 #define RENDERBUFFER_IMPL_HPP_INCLUDED
 
-#include "graphicsdevice.hpp"
 #include "renderbuffer.hpp"
+#include "resolution.hpp"
 
 #include <memory>
 
 namespace gst
 {
-    class FramebufferImpl;
-
     class RenderbufferImpl : public Renderbuffer {
-        friend FramebufferImpl;
     public:
         RenderbufferImpl(
             std::shared_ptr<GraphicsDevice> device,
@@ -25,6 +22,7 @@ namespace gst
     private:
         void bind();
         void sync();
+        RenderbufferHandle get_handle() const;
 
         RenderbufferHandle handle;
         std::shared_ptr<GraphicsDevice> device;

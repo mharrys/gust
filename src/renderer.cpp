@@ -38,14 +38,14 @@ void gst::Renderer::render(Scene & scene)
     scene.traverse(renderer);
 }
 
-void gst::Renderer::render(Scene & scene, Framebuffer & target)
+void gst::Renderer::render(Scene & scene, std::shared_ptr<Framebuffer> target)
 {
     render_state->set_framebuffer(target);
-    for (auto status : target.get_status()) {
+    for (auto status : target->get_status()) {
         logger->log(status);
     }
     render(scene);
-    render_state->set_framebuffer_none();
+    render_state->set_framebuffer(nullptr);
 }
 
 void gst::Renderer::check_errors()

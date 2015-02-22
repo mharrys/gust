@@ -8,7 +8,7 @@
 #include "gl.hpp"
 #include "sdl.hpp"
 #include "shader.hpp"
-#include "renderbuffer.hpp"
+#include "renderbufferformat.hpp"
 #include "textureparam.hpp"
 #include "vertexarray.hpp"
 

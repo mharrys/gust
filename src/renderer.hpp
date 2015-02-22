@@ -19,7 +19,7 @@ namespace gst
 
         void clear(bool color = true, bool depth = true);
         void render(Scene & scene);
-        void render(Scene & scene, Framebuffer & target);
+        void render(Scene & scene, std::shared_ptr<Framebuffer> target);
         void check_errors();
 
         bool auto_clear;

@@ -1,7 +1,6 @@
 #include "renderstateimpl.hpp"
 
 #include "color.hpp"
-#include "framebufferimpl.hpp"
 #include "programimpl.hpp"
 #include "viewport.hpp"
 
@@ -67,11 +66,6 @@ void gst::RenderStateImpl::set_depth_test(bool depth_test)
     } else {
         glDisable(GL_DEPTH_TEST);
     }
-}
-
-void gst::RenderStateImpl::set_framebuffer(FramebufferImpl & framebuffer)
-{
-    framebuffer.bind();
 }
 
 void gst::RenderStateImpl::set_framebuffer_none()

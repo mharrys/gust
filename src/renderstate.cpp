@@ -74,17 +74,17 @@ void gst::RenderState::set_buffer(std::shared_ptr<Buffer> buffer)
     }
 }
 
-void gst::RenderState::set_framebuffer(Framebuffer & framebuffer)
+void gst::RenderState::set_framebuffer(std::shared_ptr<Framebuffer> framebuffer)
 {
     if (this->framebuffer != framebuffer) {
-        impl->set_framebuffer(*framebuffer.impl.get());
-        framebuffer.refresh(*this);
+        this->framebuffer = framebuffer;
+        if (this->framebuffer) {
+            this->framebuffer->bind();
+            this->framebuffer->sync(*this);
+        } else {
+            impl->set_framebuffer_none();
+        }
     }
-}
-
-void gst::RenderState::set_framebuffer_none()
-{
-    impl->set_framebuffer_none();
 }
 
 void gst::RenderState::set_renderbuffer(std::shared_ptr<Renderbuffer> renderbuffer)
@@ -116,11 +116,6 @@ void gst::RenderState::set_texture(std::shared_ptr<Texture> texture, int unit)
         texture->bind(unit);
         texture->sync();
     }
-}
-
-void gst::RenderState::set_texture(Framebuffer & framebuffer, int unit)
-{
-    set_texture(framebuffer.color, unit);
 }
 
 void gst::RenderState::set_vertex_array(std::shared_ptr<VertexArray> vertex_array)

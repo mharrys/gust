@@ -1,17 +1,14 @@
 #ifndef TEXTURE2D_HPP_INCLUDED
 #define TEXTURE2D_HPP_INCLUDED
 
-#include "graphicsdevice.hpp"
+#include "resolution.hpp"
 #include "texture.hpp"
 
 #include <memory>
 
 namespace gst
 {
-    class FramebufferImpl;
-
     class Texture2d : public Texture {
-        friend FramebufferImpl;
     public:
         Texture2d(
             std::shared_ptr<GraphicsDevice> device,
@@ -27,6 +24,7 @@ namespace gst
         void set_data(std::vector<unsigned char> const & data);
         void set_image(Image const & image);
         void set_param(TextureParam const & param);
+        TextureHandle get_handle() const;
     private:
         void bind(int unit);
         void sync();

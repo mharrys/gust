@@ -1,5 +1,7 @@
 #include "texture2d.hpp"
 
+#include "image.hpp"
+
 gst::Texture2d::Texture2d(
     std::shared_ptr<GraphicsDevice> device,
     Resolution size,
@@ -51,6 +53,11 @@ void gst::Texture2d::set_param(TextureParam const & param)
 {
     this->param = param;
     param_dirty = true;
+}
+
+gst::TextureHandle gst::Texture2d::get_handle() const
+{
+    return handle;
 }
 
 void gst::Texture2d::bind(int unit)

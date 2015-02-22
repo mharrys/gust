@@ -2,9 +2,9 @@
 #define GRAPHICSDEVICE_HPP_INCLUDED
 
 #include "buffer.hpp"
-#include "renderbuffer.hpp"
+#include "renderbufferformat.hpp"
 #include "shader.hpp"
-#include "texture.hpp"
+#include "textureparam.hpp"
 #include "vertexarray.hpp"
 
 #include <string>
@@ -15,6 +15,7 @@
 namespace gst
 {
     class Image;
+    class Resolution;
     class ShadowedData;
 
     RESOURCE_HANDLE(BufferHandle)

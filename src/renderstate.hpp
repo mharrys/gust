@@ -33,12 +33,10 @@ namespace gst
         void set_depth_mask(bool depth_mask);
         void set_depth_test(bool depth_test);
         void set_buffer(std::shared_ptr<Buffer> buffer);
-        void set_framebuffer(Framebuffer & framebuffer);
-        void set_framebuffer_none();
+        void set_framebuffer(std::shared_ptr<Framebuffer> framebuffer);
         void set_renderbuffer(std::shared_ptr<Renderbuffer> renderbuffer);
         void set_program(std::shared_ptr<Program> program);
         void set_texture(std::shared_ptr<Texture> texture, int unit = 0);
-        void set_texture(Framebuffer & framebuffer, int unit = 0);
         void set_vertex_array(std::shared_ptr<VertexArray> vertex_array);
         void set_viewport(Viewport const & viewport);
         std::vector<std::string> check_errors() const;
@@ -50,7 +48,7 @@ namespace gst
         bool depth_mask;
         bool depth_test;
         std::shared_ptr<Buffer> buffer;
-        Framebuffer framebuffer;
+        std::shared_ptr<Framebuffer> framebuffer;
         std::shared_ptr<Renderbuffer> renderbuffer;
         std::shared_ptr<Program> program;
         TextureLookup textures;
