@@ -52,6 +52,12 @@ namespace gst
         void bind_texture(TextureHandle texture, TextureTarget target, int unit);
         void texture_image_2d(TextureTarget target, Image const & image, TextureParam const & param);
         void texture_parameters(TextureTarget target, TextureParam const & param);
+        FramebufferHandle create_framebuffer();
+        void destroy_framebuffer(FramebufferHandle framebuffer);
+        void bind_framebuffer(FramebufferHandle framebuffer);
+        void framebuffer_texture_2d(TextureHandle texture);
+        void framebuffer_renderbuffer(RenderbufferHandle renderbuffer);
+        std::vector<std::string> check_framebuffer_status();
     private:
         Translator translator;
     };

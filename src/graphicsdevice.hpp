@@ -8,6 +8,7 @@
 #include "vertexarray.hpp"
 
 #include <string>
+#include <vector>
 
 #define RESOURCE_HANDLE(resource_name) struct resource_name { unsigned int name; };
 
@@ -17,6 +18,7 @@ namespace gst
     class ShadowedData;
 
     RESOURCE_HANDLE(BufferHandle)
+    RESOURCE_HANDLE(FramebufferHandle)
     RESOURCE_HANDLE(ProgramHandle)
     RESOURCE_HANDLE(RenderbufferHandle)
     RESOURCE_HANDLE(ShaderHandle)
@@ -114,6 +116,20 @@ namespace gst
         virtual void texture_image_2d(TextureTarget target, Image const & image, TextureParam const & param) = 0;
         // Set texture parameters.
         virtual void texture_parameters(TextureTarget target, TextureParam const & param) = 0;
+        // Create new framebuffer object.
+        virtual FramebufferHandle create_framebuffer() = 0;
+        // Destroy framebuffer object.
+        virtual void destroy_framebuffer(FramebufferHandle framebuffer) = 0;
+        // Bind framebuffer object.
+        virtual void bind_framebuffer(FramebufferHandle framebuffer) = 0;
+        // Attach a level of a texture object to the currently bound
+        // framebuffer object.
+        virtual void framebuffer_texture_2d(TextureHandle texture) = 0;
+        // Attach a renderbuffer object to the currently bound framebuffer
+        // object.
+        virtual void framebuffer_renderbuffer(RenderbufferHandle renderbuffer) = 0;
+        // Return array of status messages for currently bound framebuffer object.
+        virtual std::vector<std::string> check_framebuffer_status() = 0;
     };
 }
 

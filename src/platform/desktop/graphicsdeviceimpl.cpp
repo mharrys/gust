@@ -298,3 +298,75 @@ void gst::GraphicsDeviceImpl::texture_parameters(TextureTarget target, TexturePa
         glTexParameteri(tex_target, GL_TEXTURE_COMPARE_FUNC, depth_compare);
     }
 }
+
+gst::FramebufferHandle gst::GraphicsDeviceImpl::create_framebuffer()
+{
+    FramebufferHandle framebuffer;
+    glGenFramebuffers(1, &framebuffer.name);
+    return framebuffer;
+}
+
+void gst::GraphicsDeviceImpl::destroy_framebuffer(FramebufferHandle framebuffer)
+{
+    glDeleteFramebuffers(1, &framebuffer.name);
+}
+
+void gst::GraphicsDeviceImpl::bind_framebuffer(FramebufferHandle framebuffer)
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer.name);
+}
+
+void gst::GraphicsDeviceImpl::framebuffer_texture_2d(TextureHandle texture)
+{
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture.name, 0);
+
+    GLenum draw_buffers[] = { GL_COLOR_ATTACHMENT0 };
+    glDrawBuffers(1, draw_buffers);
+}
+
+void gst::GraphicsDeviceImpl::framebuffer_renderbuffer(RenderbufferHandle renderbuffer)
+{
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, renderbuffer.name);
+}
+
+std::vector<std::string> gst::GraphicsDeviceImpl::check_framebuffer_status()
+{
+    std::vector<std::string> errors;
+
+    auto status_str = [](GLenum status)
+    {
+        switch (status) {
+        case GL_FRAMEBUFFER_UNDEFINED:
+            return "GL_FRAMEBUFFER_UNDEFINED";
+        case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+            return "GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT";
+        case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+            return "GL_FRAMEBUFFER_INCOMPELTE_MISSING_ATTACHMENT";
+        case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
+            return "GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER";
+        case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
+            return "GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER";
+        case GL_FRAMEBUFFER_UNSUPPORTED:
+            return "GL_FRAMEBUFFER_UNSUPPORTED";
+        case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
+            return "GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE";
+        case GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS:
+            return "GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS";
+        default:
+            return "GL: unknown framebuffer status code " + status;
+        }
+    };
+
+    auto log_error = [&](std::string const & name, GLenum buffer)
+    {
+        GLenum status = glCheckFramebufferStatus(buffer);
+        if (status != GL_FRAMEBUFFER_COMPLETE) {
+            errors.push_back(name + ": " + status_str(status));
+        }
+    };
+
+    log_error("GL_READ_FRAMEBUFFER", GL_READ_FRAMEBUFFER);
+    log_error("GL_DRAW_FRAMEBUFFER", GL_DRAW_FRAMEBUFFER);
+
+    return errors;
+}
