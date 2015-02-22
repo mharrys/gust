@@ -21,34 +21,6 @@ gst::RenderState::RenderState(Viewport viewport)
     impl->set_viewport(viewport);
 }
 
-void gst::RenderState::push()
-{
-    stack.push({
-        clear_color,
-        blend_mode,
-        cull_face,
-        depth_mask,
-        depth_test,
-        framebuffer,
-        viewport
-    });
-}
-
-void gst::RenderState::pop()
-{
-    if (!stack.empty()) {
-        auto state = stack.top();
-        stack.pop();
-        set_clear_color(state.clear_color);
-        set_blend_mode(state.blend_mode);
-        set_cull_face(state.cull_face);
-        set_depth_mask(state.depth_mask);
-        set_depth_test(state.depth_test);
-        set_framebuffer(state.framebuffer);
-        set_viewport(state.viewport);
-    }
-}
-
 void gst::RenderState::clear_buffers(bool color, bool depth)
 {
     impl->clear_buffers(color, depth);
@@ -106,14 +78,14 @@ void gst::RenderState::set_buffer(std::shared_ptr<Buffer> buffer)
 void gst::RenderState::set_framebuffer(Framebuffer & framebuffer)
 {
     if (this->framebuffer != framebuffer) {
-        this->framebuffer = framebuffer;
-        if (framebuffer) {
-            impl->set_framebuffer(*framebuffer.impl.get());
-            framebuffer.refresh(*this);
-        } else {
-            impl->set_framebuffer_none();
-        }
+        impl->set_framebuffer(*framebuffer.impl.get());
+        framebuffer.refresh(*this);
     }
+}
+
+void gst::RenderState::set_framebuffer_none()
+{
+    impl->set_framebuffer_none();
 }
 
 void gst::RenderState::set_renderbuffer(std::shared_ptr<Renderbuffer> renderbuffer)

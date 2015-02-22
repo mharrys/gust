@@ -41,13 +41,12 @@ void gst::Renderer::render(Scene & scene)
 
 void gst::Renderer::render(Scene & scene, RenderTarget & target)
 {
-    render_state->push();
     render_state->set_framebuffer(target.framebuffer);
     for (auto status : target.framebuffer.get_status()) {
         logger->log(status);
     }
     render(scene);
-    render_state->pop();
+    render_state->set_framebuffer_none();
 }
 
 void gst::Renderer::check_errors()

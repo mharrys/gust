@@ -24,23 +24,9 @@ namespace gst
 
     typedef std::unordered_map<int, std::shared_ptr<Texture>> TextureLookup;
 
-    struct StateSet {
-        Color clear_color;
-        BlendMode blend_mode;
-        CullFace cull_face;
-        bool depth_mask;
-        bool depth_test;
-        Framebuffer framebuffer;
-        Viewport viewport;
-    };
-
-    typedef std::stack<StateSet> StateStack;
-
     class RenderState {
     public:
         RenderState(Viewport viewport);
-        void push();
-        void pop();
         void clear_buffers(bool color, bool depth);
         void set_clear_color(Color const & clear_color);
         void set_blend_mode(BlendMode blend_mode);
@@ -49,6 +35,7 @@ namespace gst
         void set_depth_test(bool depth_test);
         void set_buffer(std::shared_ptr<Buffer> buffer);
         void set_framebuffer(Framebuffer & framebuffer);
+        void set_framebuffer_none();
         void set_renderbuffer(std::shared_ptr<Renderbuffer> renderbuffer);
         void set_program(std::shared_ptr<Program> program);
         void set_texture(std::shared_ptr<Texture> texture, int unit = 0);
@@ -59,7 +46,6 @@ namespace gst
         std::vector<std::string> check_errors() const;
     private:
         std::shared_ptr<RenderStateImpl> impl;
-        StateStack stack;
         Color clear_color;
         BlendMode blend_mode;
         CullFace cull_face;
