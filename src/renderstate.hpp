@@ -2,80 +2,70 @@
 #define RENDERSTATE_HPP_INCLUDED
 
 #include "blendmode.hpp"
-#include "buffer.hpp"
 #include "color.hpp"
 #include "cullface.hpp"
-#include "framebuffer.hpp"
-#include "renderbuffer.hpp"
-#include "program.hpp"
-#include "texture.hpp"
-#include "vertexarray.hpp"
 #include "viewport.hpp"
 
 #include <memory>
 #include <unordered_map>
 #include <vector>
-#include <stack>
 
 namespace gst
 {
-    class RenderStateImpl;
-    class RenderTarget;
+    class Buffer;
+    class Framebuffer;
+    class GraphicsDevice;
+    class Program;
+    class Renderbuffer;
+    class Texture;
+    class VertexArray;
 
-    typedef std::unordered_map<int, Texture> TextureLookup;
+    typedef std::unordered_map<int, std::shared_ptr<Texture>> TextureLookup;
 
-    struct StateSet {
-        Color clear_color;
-        BlendMode blend_mode;
-        CullFace cull_face;
-        bool depth_mask;
-        bool depth_test;
-        Buffer buffer;
-        Framebuffer framebuffer;
-        Renderbuffer renderbuffer;
-        Program program;
-        Texture texture0;
-        VertexArray vertex_array;
-        Viewport viewport;
-    };
-
-    typedef std::stack<StateSet> StateStack;
-
+    // The responsibility of this class is to cache all operations that
+    // changes the state on the graphics card. It will reset to a sensible
+    // default state when created so that all future operations will reflect
+    // the current state on the graphics card.
     class RenderState {
     public:
-        RenderState(Viewport viewport);
-        void push();
-        void pop();
-        void clear_buffers(bool color, bool depth);
+        RenderState(std::shared_ptr<GraphicsDevice> device);
+        // Set clear color.
         void set_clear_color(Color const & clear_color);
+        // Set blend mode.
         void set_blend_mode(BlendMode blend_mode);
+        // Set cull face.
         void set_cull_face(CullFace cull_face);
+        // Set depth mask.
         void set_depth_mask(bool depth_mask);
+        // Set depth test.
         void set_depth_test(bool depth_test);
-        void set_buffer(Buffer & buffer);
-        void set_framebuffer(Framebuffer & framebuffer);
-        void set_renderbuffer(Renderbuffer & renderbuffer);
-        void set_program(Program & program);
-        void set_texture(Texture & texture, int unit = 0);
-        void set_texture(Framebuffer & framebuffer, int unit = 0);
-        void set_texture(RenderTarget & target, int unit = 0);
-        void set_vertex_array(VertexArray & vertex_array);
+        // Set buffer.
+        void set_buffer(std::shared_ptr<Buffer> buffer);
+        // Set framebuffer, or nullptr to unbind.
+        void set_framebuffer(std::shared_ptr<Framebuffer> framebuffer);
+        // Set renderbuffer.
+        void set_renderbuffer(std::shared_ptr<Renderbuffer> renderbuffer);
+        // Set program, or nullptr to unbind.
+        void set_program(std::shared_ptr<Program> program);
+        // Set texture on specified texture unit.
+        void set_texture(std::shared_ptr<Texture> texture, int unit = 0);
+        // Set vertex array, or nullptr to unbind.
+        void set_vertex_array(std::shared_ptr<VertexArray> vertex_array);
+        // Set viewport.
         void set_viewport(Viewport const & viewport);
-        std::vector<std::string> check_errors() const;
     private:
-        std::shared_ptr<RenderStateImpl> impl;
-        StateStack stack;
+        std::shared_ptr<GraphicsDevice> device;
         Color clear_color;
         BlendMode blend_mode;
         CullFace cull_face;
         bool depth_mask;
         bool depth_test;
-        Buffer buffer;
-        Framebuffer framebuffer;
-        Renderbuffer renderbuffer;
-        Program program;
+        std::shared_ptr<Buffer> buffer;
+        std::shared_ptr<Framebuffer> framebuffer;
+        std::shared_ptr<Renderbuffer> renderbuffer;
+        std::shared_ptr<Program> program;
         TextureLookup textures;
-        VertexArray vertex_array;
+        std::shared_ptr<VertexArray> vertex_array;
         Viewport viewport;
     };
 }

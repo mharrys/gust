@@ -1,33 +1,18 @@
 #ifndef SHADER_HPP_INCLUDED
 #define SHADER_HPP_INCLUDED
 
-#include <memory>
+#include "graphicsdevice.hpp"
 
 namespace gst
 {
-    class Program;
-    class ShaderImpl;
-
-    enum class ShaderType {
-        VERTEX,
-        FRAGMENT
-    };
-
+    // The responsibility of this class is to mirror a shader object on the
+    // graphics card.
     class Shader {
-        friend Program;
     public:
-        Shader() = default;
-        Shader(ShaderType type, std::string const & source);
-
-        bool operator==(Shader const & other);
-        bool operator!=(Shader const & other);
-        explicit operator bool() const;
-
-        std::string get_compile_error() const;
-    private:
-        std::shared_ptr<ShaderImpl> impl;
-        bool compile_successful;
-        std::string error;
+        // Return shader type.
+        virtual ShaderType get_type() const = 0;
+        // Return identifier on the graphics card.
+        virtual ShaderHandle get_handle() const = 0;
     };
 }
 

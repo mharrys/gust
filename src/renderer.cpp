@@ -1,29 +1,31 @@
 #include "renderer.hpp"
 
 #include "cameranode.hpp"
+#include "graphicsdevice.hpp"
 #include "groupnode.hpp"
 #include "framebuffer.hpp"
 #include "lightnodecollector.hpp"
 #include "logger.hpp"
 #include "noderenderer.hpp"
 #include "renderstate.hpp"
-#include "rendertarget.hpp"
 #include "scene.hpp"
 
 gst::Renderer::Renderer(
-    std::shared_ptr<Logger> logger,
-    std::shared_ptr<RenderState> render_state)
+    std::shared_ptr<GraphicsDevice> device,
+    std::shared_ptr<RenderState> render_state,
+    std::shared_ptr<Logger> logger)
     : auto_clear(true),
       auto_clear_color(true),
       auto_clear_depth(true),
-      logger(logger),
-      render_state(render_state)
+      device(device),
+      render_state(render_state),
+      logger(logger)
 {
 }
 
 void gst::Renderer::clear(bool color, bool depth)
 {
-    render_state->clear_buffers(color, depth);
+    device->clear(color, depth);
 }
 
 void gst::Renderer::render(Scene & scene)
@@ -39,21 +41,19 @@ void gst::Renderer::render(Scene & scene)
     scene.traverse(renderer);
 }
 
-void gst::Renderer::render(Scene & scene, RenderTarget & target)
+void gst::Renderer::render(Scene & scene, std::shared_ptr<Framebuffer> target)
 {
-    render_state->push();
-    render_state->set_framebuffer(target.framebuffer);
-    render_state->set_viewport(target.get_size());
-    for (auto status : target.framebuffer.get_status()) {
+    render_state->set_framebuffer(target);
+    for (auto status : target->get_status()) {
         logger->log(status);
     }
     render(scene);
-    render_state->pop();
+    render_state->set_framebuffer(nullptr);
 }
 
 void gst::Renderer::check_errors()
 {
-    for (auto error : render_state->check_errors()) {
+    for (auto error : device->get_errors()) {
         logger->log(error);
     }
 }

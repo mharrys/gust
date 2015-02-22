@@ -1,20 +1,22 @@
 #ifndef WINDOWIMPL_HPP_INCLUDED
 #define WINDOWIMPL_HPP_INCLUDED
 
+#include "window.hpp"
 #include "keyboard.hpp"
 #include "mouse.hpp"
 #include "resolution.hpp"
-#include "translator.hpp"
+
+#include "gl.hpp"
+#include "sdl.hpp"
 
 #include <memory>
 #include <vector>
 
 namespace gst
 {
-    class Input;
     class Logger;
 
-    class WindowImpl {
+    class WindowImpl : public Window {
     public:
         WindowImpl(
             std::shared_ptr<Logger> logger,
@@ -26,18 +28,18 @@ namespace gst
             std::string title);
         ~WindowImpl();
 
+        // Return true if window was opened successfully, false otherwise.
         bool open();
         bool should_close() const;
+
+        void poll();
+        void swap();
 
         void set_pointer_lock(bool pointer_lock);
         bool get_pointer_lock() const;
 
-        Keyboard get_keyboard() const;
-        Mouse get_mouse() const;
+        Input get_input() const;
         Resolution get_size() const;
-
-        void poll();
-        void swap();
     private:
         void on_exit();
         void on_button_down(SDL_Event & event);
@@ -47,13 +49,12 @@ namespace gst
         void on_key_down(SDL_Event & event);
         void on_key_up(SDL_Event & event);
         void on_resize(SDL_Event & event);
+        Button translate_button(int button) const;
+        Key translate_key(int key) const;
 
         std::shared_ptr<Logger> logger;
 
-        SDL_Window * window;
-        SDL_GLContext context;
-
-        bool init;
+        bool init_sdl;
         bool exit_on_close;
         bool exit_on_esc;
         bool exit_flag;
@@ -66,7 +67,8 @@ namespace gst
         Keyboard keyboard;
         Mouse mouse;
 
-        Translator translator;
+        SDL_Window * window;
+        SDL_GLContext context;
     };
 }
 

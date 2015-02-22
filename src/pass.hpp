@@ -6,6 +6,7 @@
 #include "glm.hpp"
 #include "light.hpp"
 #include "lightnode.hpp"
+#include "viewport.hpp"
 
 #include <memory>
 
@@ -33,6 +34,7 @@ namespace gst
         CullFace cull_face;
         bool depth_mask;
         bool depth_test;
+        Viewport viewport;
         std::shared_ptr<Program> program;
     };
 }

@@ -1,65 +1,36 @@
 #ifndef TEXTURE_HPP_INCLUDED
 #define TEXTURE_HPP_INCLUDED
 
-#include "image.hpp"
-#include "resolution.hpp"
-#include "textureparam.hpp"
+#include "graphicsdevice.hpp"
 
-#include <memory>
 #include <vector>
 
 namespace gst
 {
-    class Framebuffer;
+    class Image;
     class RenderState;
-    class TextureImpl;
+    class Resolution;
 
-    // TODO: Texture2D, TextureCube
+    // The responsibility of this class is to mirror a texture object on the
+    // graphics card.
     class Texture {
-        friend Framebuffer;
         friend RenderState;
     public:
-        Texture() = default;
-        Texture(
-            Resolution size,
-            std::vector<unsigned char> const & data = {},
-            TextureParam const & param = {});
-        Texture(
-            Image const & image,
-            TextureParam const & param = {});
-
-        bool operator==(Texture const & other);
-        bool operator!=(Texture const & other);
-        explicit operator bool() const;
-
-        void set_image(Resolution size, std::vector<unsigned char> const & data = {});
-        void set_image(Image const & image);
-        void set_param(TextureParam const & param);
-        void set_internal_format(TextureFormat internal_format);
-        void set_source_format(PixelFormat source_format);
-        void set_min_filter(FilterMode min_filter);
-        void set_mag_filter(FilterMode mag_filter);
-        void set_wrap_s(WrapMode wrap_s);
-        void set_wrap_t(WrapMode wrap_t);
-        void set_depth_compare(CompareFunc depth_compare);
-
-        Image get_image() const;
-        TextureParam get_param() const;
-        TextureFormat get_internal_format() const;
-        PixelFormat get_source_format() const;
-        FilterMode get_min_filter() const;
-        FilterMode get_mag_filter() const;
-        WrapMode get_wrap_s() const;
-        WrapMode get_wrap_t() const;
-        CompareFunc get_depth_compare() const;
-    private:
-        void refresh();
-
-        std::shared_ptr<TextureImpl> impl;
-        Image image;
-        TextureParam param;
-        bool image_dirty;
-        bool param_dirty;
+        // Set storage size.
+        virtual void set_size(Resolution size) = 0;
+        // Set storage data.
+        virtual void set_data(std::vector<unsigned char> const & data) = 0;
+        // Set storage size and data.
+        virtual void set_image(Image const & image) = 0;
+        // Set storage parameters.
+        virtual void set_param(TextureParam const & param) = 0;
+        // Return identifier on the graphics card.
+        virtual TextureHandle get_handle() const = 0;
+    protected:
+        // Notify graphics card to bind this texture.
+        virtual void bind(int unit) = 0;
+        // Sync client state with graphics card.
+        virtual void sync() = 0;
     };
 }
 

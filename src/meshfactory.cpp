@@ -1,37 +1,35 @@
 #include "meshfactory.hpp"
 
 #include "assimp.hpp"
+#include "graphicsdevice.hpp"
 #include "logger.hpp"
 #include "mesh.hpp"
-#include "vertexarray.hpp"
+#include "vertexarrayimpl.hpp"
 
-gst::MeshFactory::MeshFactory(std::shared_ptr<Logger> logger)
-    : logger(logger)
+gst::MeshFactory::MeshFactory(std::shared_ptr<GraphicsDevice> device, std::shared_ptr<Logger> logger)
+    : device(device),
+      logger(logger)
 {
 }
 
 gst::Mesh gst::MeshFactory::create_quad(float width, float height)
 {
-    auto vertex_array = std::make_shared<VertexArray>();
-    auto mesh = Mesh(vertex_array);
+    auto vertex_array = std::make_shared<VertexArrayImpl>(device);
+    auto mesh = Mesh(device, vertex_array);
 
-    mesh.make_positions({
+    mesh.set_positions({
         glm::vec3(-width, -height, 0.0f),
         glm::vec3(width, -height, 0.0f),
         glm::vec3(-width, height, 0.0f),
         glm::vec3(width, height, 0.0f),
     });
-    mesh.make_tex_coords({
+    mesh.set_tex_coords({
         glm::vec2(0.0f, 1.0f),
         glm::vec2(1.0f, 1.0f),
         glm::vec2(0.0f, 0.0f),
         glm::vec2(1.0f, 0.0f),
     });
-    mesh.make_indices({ 0, 1, 2, 2, 1, 3, });
-
-    vertex_array->add(mesh.positions);
-    vertex_array->add(mesh.tex_coords);
-    vertex_array->set(mesh.indices);
+    mesh.set_indices({ 0, 1, 2, 2, 1, 3, });
 
     return mesh;
 }
@@ -78,20 +76,17 @@ std::vector<gst::Mesh> gst::MeshFactory::create_from_file(std::string const & pa
                 }
             }
 
-            auto vertex_array = std::make_shared<VertexArray>();
-            auto mesh = Mesh(vertex_array);
+            auto vertex_array = std::make_shared<VertexArrayImpl>(device);
+            auto mesh = Mesh(device, vertex_array);
 
             if (!positions.empty()) {
-                mesh.make_positions(positions);
-                vertex_array->add(mesh.positions);
+                mesh.set_positions(positions);
             }
             if (!normals.empty()) {
-                mesh.make_normals(normals);
-                vertex_array->add(mesh.normals);
+                mesh.set_normals(normals);
             }
             if (!indices.empty()) {
-                mesh.make_indices(indices);
-                vertex_array->set(mesh.indices);
+                mesh.set_indices(indices);
             }
 
             meshes.push_back(mesh);

@@ -1,80 +1,37 @@
 #include "renderstate.hpp"
 
-#include "renderstateimpl.hpp"
-#include "rendertarget.hpp"
+#include "buffer.hpp"
+#include "framebuffer.hpp"
+#include "graphicsdevice.hpp"
+#include "program.hpp"
+#include "renderbuffer.hpp"
+#include "texture.hpp"
+#include "vertexarray.hpp"
 
-gst::RenderState::RenderState(Viewport viewport)
-    : impl(std::make_shared<RenderStateImpl>()),
+gst::RenderState::RenderState(std::shared_ptr<GraphicsDevice> device)
+    : device(device),
       clear_color(0.0f, 0.0f, 0.0f, 0.0f),
       blend_mode(BlendMode::NONE),
       cull_face(CullFace::NONE),
       depth_mask(true),
-      depth_test(false),
-      viewport(viewport)
+      depth_test(false)
 {
-    impl->set_clear_color(clear_color);
-    impl->set_blend_mode(blend_mode);
-    impl->set_cull_face(cull_face);
-    impl->set_depth_mask(depth_mask);
-    impl->set_depth_test(depth_test);
-    impl->set_framebuffer_none();
-    impl->set_renderbuffer_none();
-    impl->set_program_none();
-    impl->set_texture_none();
-    impl->set_viewport(viewport);
-    impl->set_vertex_array_none();
-}
-
-void gst::RenderState::push()
-{
-    // temporary binds shall only be done on texture unit 0
-    auto texture0 = textures.count(0) > 0 ? textures[0] : Texture();
-    stack.push({
-        clear_color,
-        blend_mode,
-        cull_face,
-        depth_mask,
-        depth_test,
-        buffer,
-        framebuffer,
-        renderbuffer,
-        program,
-        texture0,
-        vertex_array,
-        viewport
-    });
-}
-
-void gst::RenderState::pop()
-{
-    if (!stack.empty()) {
-        auto state = stack.top();
-        stack.pop();
-        set_clear_color(state.clear_color);
-        set_blend_mode(state.blend_mode);
-        set_cull_face(state.cull_face);
-        set_depth_mask(state.depth_mask);
-        set_depth_test(state.depth_test);
-        set_buffer(state.buffer);
-        set_framebuffer(state.framebuffer);
-        set_renderbuffer(state.renderbuffer);
-        set_program(state.program);
-        set_texture(state.texture0);
-        set_vertex_array(state.vertex_array);
-        set_viewport(state.viewport);
-    }
-}
-
-void gst::RenderState::clear_buffers(bool color, bool depth)
-{
-    impl->clear_buffers(color, depth);
+    set_clear_color(clear_color);
+    set_blend_mode(blend_mode);
+    set_cull_face(cull_face);
+    set_depth_mask(depth_mask);
+    set_depth_test(depth_test);
+    set_framebuffer(nullptr);
+    set_program(nullptr);
+    set_vertex_array(nullptr);
+    set_viewport(viewport);
 }
 
 void gst::RenderState::set_clear_color(Color const & clear_color)
 {
     if (this->clear_color != clear_color) {
         this->clear_color = clear_color;
-        impl->set_clear_color(clear_color);
+        device->set_clear_color(clear_color);
     }
 }
 
@@ -82,7 +39,7 @@ void gst::RenderState::set_blend_mode(BlendMode blend_mode)
 {
     if (this->blend_mode != blend_mode) {
         this->blend_mode = blend_mode;
-        impl->set_blend_mode(blend_mode);
+        device->set_blend_mode(blend_mode);
     }
 }
 
@@ -90,7 +47,7 @@ void gst::RenderState::set_cull_face(CullFace cull_face)
 {
     if (this->cull_face != cull_face) {
         this->cull_face = cull_face;
-        impl->set_cull_face(cull_face);
+        device->set_cull_face(cull_face);
     }
 }
 
@@ -98,7 +55,7 @@ void gst::RenderState::set_depth_mask(bool depth_mask)
 {
     if (this->depth_mask != depth_mask) {
         this->depth_mask = depth_mask;
-        impl->set_depth_mask(depth_mask);
+        device->set_depth_mask(depth_mask);
     }
 }
 
@@ -106,105 +63,76 @@ void gst::RenderState::set_depth_test(bool depth_test)
 {
     if (this->depth_test != depth_test) {
         this->depth_test = depth_test;
-        impl->set_depth_test(depth_test);
+        device->set_depth_test(depth_test);
     }
 }
 
-void gst::RenderState::set_buffer(Buffer & buffer)
+void gst::RenderState::set_buffer(std::shared_ptr<Buffer> buffer)
 {
-    // do not bother rebinding empty buffers
-    if (!buffer) {
-        return;
-    }
-
     if (this->buffer != buffer) {
         this->buffer = buffer;
-        impl->set_buffer(*buffer.impl.get());
-        buffer.refresh();
+        this->buffer->bind();
+        this->buffer->sync();
     }
 }
 
-void gst::RenderState::set_framebuffer(Framebuffer & framebuffer)
+void gst::RenderState::set_framebuffer(std::shared_ptr<Framebuffer> framebuffer)
 {
     if (this->framebuffer != framebuffer) {
         this->framebuffer = framebuffer;
-        if (framebuffer) {
-            impl->set_framebuffer(*framebuffer.impl.get());
-            framebuffer.refresh(*this);
+        if (this->framebuffer) {
+            this->framebuffer->bind();
+            this->framebuffer->sync(*this);
         } else {
-            impl->set_framebuffer_none();
+            device->bind_framebuffer({ 0 });
         }
     }
 }
 
-void gst::RenderState::set_renderbuffer(Renderbuffer & renderbuffer)
+void gst::RenderState::set_renderbuffer(std::shared_ptr<Renderbuffer> renderbuffer)
 {
-    // do not bother rebinding empty renderbuffer
-    if (!renderbuffer) {
-        return;
-    }
-
     if (this->renderbuffer != renderbuffer) {
         this->renderbuffer = renderbuffer;
-        if (renderbuffer) {
-            impl->set_renderbuffer(*renderbuffer.impl.get());
-            renderbuffer.refresh();
-        }
+        this->renderbuffer->bind();
+        this->renderbuffer->sync();
     }
 }
 
-void gst::RenderState::set_program(Program & program)
+void gst::RenderState::set_program(std::shared_ptr<Program> program)
 {
     if (this->program != program) {
         this->program = program;
-        if (program) {
-            impl->set_program(*program.impl.get());
+        if (this->program) {
+            this->program->use();
         } else {
-            impl->set_program_none();
+            device->use_program({ 0 });
         }
     }
 }
 
-void gst::RenderState::set_texture(Texture & texture, int unit)
+void gst::RenderState::set_texture(std::shared_ptr<Texture> texture, int unit)
 {
-    // do not bother rebinding empty texture
-    if (!texture) {
-        return;
-    }
-
-    Texture current;
+    std::shared_ptr<Texture> current;
     if (textures.count(unit) > 0) {
         current = textures.at(unit);
     }
 
     if (current != texture) {
         textures[unit] = texture;
-        if (texture) {
-            impl->set_texture(*texture.impl.get(), unit);
-            texture.refresh();
-        }
+        texture->bind(unit);
+        texture->sync();
     }
 }
 
-void gst::RenderState::set_texture(Framebuffer & framebuffer, int unit)
-{
-    set_texture(framebuffer.color, unit);
-}
-
-void gst::RenderState::set_texture(RenderTarget & target, int unit)
-{
-    set_texture(target.framebuffer, unit);
-}
-
-void gst::RenderState::set_vertex_array(VertexArray & vertex_array)
+void gst::RenderState::set_vertex_array(std::shared_ptr<VertexArray> vertex_array)
 {
     if (this->vertex_array != vertex_array) {
         this->vertex_array = vertex_array;
-        if (vertex_array) {
-            impl->set_vertex_array(*vertex_array.impl.get());
-            vertex_array.refresh(*this);
+        if (this->vertex_array) {
+            this->vertex_array->bind();
+            this->vertex_array->sync(*this);
         } else {
-            impl->set_vertex_array_none();
+            device->bind_vertex_array({ 0 });
         }
     }
 }
@@ -213,11 +141,6 @@ void gst::RenderState::set_viewport(Viewport const & viewport)
 {
     if (this->viewport != viewport) {
         this->viewport = viewport;
-        impl->set_viewport(viewport);
+        device->set_viewport(viewport);
     }
-}
-
-std::vector<std::string> gst::RenderState::check_errors() const
-{
-    return impl->check_errors();
 }

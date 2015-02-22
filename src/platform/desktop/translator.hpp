@@ -6,9 +6,8 @@
 #include "cullface.hpp"
 #include "key.hpp"
 #include "gl.hpp"
-#include "sdl.hpp"
 #include "shader.hpp"
-#include "renderbuffer.hpp"
+#include "renderbufferformat.hpp"
 #include "textureparam.hpp"
 #include "vertexarray.hpp"
 
@@ -24,13 +23,11 @@ namespace gst
         GLenum translate(RenderbufferFormat format) const;
         GLenum translate(DrawMode mode) const;
         GLenum translate(BufferTarget target) const;
-        GLenum translate(DataType type) const;
+        GLenum translate(VertexDataType type) const;
         GLenum translate(DataUsage usage) const;
         GLenum translate(ShaderType type) const;
         GLenum translate(CullFace cull_face) const;
         GLint translate(CompareFunc compare_func) const;
-        Button translate_button(int button) const;
-        Key translate_key(int key) const;
     };
 }
 
