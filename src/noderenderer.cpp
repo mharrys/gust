@@ -39,7 +39,7 @@ void gst::NodeRenderer::visit(ModelNode & node)
     matrices.normal = glm::inverseTranspose(glm::mat3(matrices.model_view));
 
     for (unsigned int i = 0; i < lights.size(); i++) {
-        auto light = lights[i].light;
+        auto light = lights[i].get_light();
         // special case if annotation array
         if (auto formatter = std::dynamic_pointer_cast<AnnotationArray>(light->get_formatter())) {
             formatter->set_current_index(i);

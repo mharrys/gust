@@ -7,11 +7,14 @@ namespace gst
 {
     class Light;
 
+    // The responsibility of this class is to position a light.
     class LightNode : public Node {
     public:
         LightNode(std::shared_ptr<Light> light);
-        virtual void accept(NodeVisitor & visitor) override;
-
+        void accept(NodeVisitor & visitor) override;
+        // Return light.
+        const std::shared_ptr<Light> get_light() const;
+    private:
         std::shared_ptr<Light> light;
     };
 }
