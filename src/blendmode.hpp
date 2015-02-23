@@ -3,11 +3,12 @@
 
 namespace gst
 {
+    // Supported blending techniques.
     enum class BlendMode {
-        NONE,
-        ADDITIVE,
-        MULTIPLICATIVE,
-        INTERPOLATIVE
+        NONE,           // Blending disabled.
+        ADDITIVE,       // Additive blending: out = src_frag + dst_frag.
+        MULTIPLICATIVE, // Multiplicative blending: out = src_frag * dst_frag.
+        INTERPOLATIVE   // Interpolative blending: out = (src_alpha * src_frag) + ((1 - src_alpha) * dst_frag).
     };
 }
 
