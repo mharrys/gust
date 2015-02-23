@@ -20,13 +20,13 @@ namespace gst
         // false otherwise.
         bool operator!=(Viewport const & other) const;
 
-        // Return x component.
+        // Return x-component.
         int get_x() const;
-        // Return y component.
+        // Return y-component.
         int get_y() const;
-        // Return width component.
+        // Return width-component.
         int get_width() const;
-        // Return height component.
+        // Return height-component.
         int get_height() const;
     private:
         int x;
