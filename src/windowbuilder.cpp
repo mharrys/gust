@@ -54,6 +54,5 @@ std::unique_ptr<gst::Window> gst::WindowBuilder::build()
         size,
         title
     ));
-    window->open();
-    return std::move(window);
+    return window->open() ? std::move(window) : nullptr;
 }
