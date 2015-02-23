@@ -10,12 +10,12 @@ gst::Color::Color(float red, float green, float blue, float alpha)
 {
 }
 
-bool gst::Color::operator==(Color const & other)
+bool gst::Color::operator==(Color const & other) const
 {
     return color == other.color;
 }
 
-bool gst::Color::operator!=(Color const & other)
+bool gst::Color::operator!=(Color const & other) const
 {
     return !(*this == other);
 }

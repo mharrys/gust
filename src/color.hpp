@@ -15,10 +15,10 @@ namespace gst
 
         // Return true if specified color is equal to this color, false
         // otherwise.
-        bool operator==(Color const & other);
+        bool operator==(Color const & other) const;
         // Return true if specified color is not equal to this color, false
         // otherwise.
-        bool operator!=(Color const & other);
+        bool operator!=(Color const & other) const;
 
         // Return red-component.
         float get_red() const;
