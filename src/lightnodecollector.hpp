@@ -8,10 +8,14 @@
 
 namespace gst
 {
+    // The responsibility of this class is to collect all light nodes in a
+    // node structure.
     class LightNodeCollector : public NodeVisitor {
     public:
-        void visit(LightNode & node);
-
+        void visit(LightNode & node) override;
+        // Return collected lights.
+        std::vector<LightNode> get_lights() const;
+    private:
         std::vector<LightNode> lights;
     };
 }
