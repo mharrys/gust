@@ -3,6 +3,7 @@
 
 namespace gst
 {
+    // Supported keyboard keys.
     enum class Key {
         UNKNOWN,
         BACKSPACE,
