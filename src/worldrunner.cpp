@@ -1,10 +1,10 @@
-#include "eventloop.hpp"
+#include "worldrunner.hpp"
 
 #include "highresolutionclock.hpp"
 #include "window.hpp"
 #include "world.hpp"
 
-int gst::EventLoop::control(Window & window, World & world)
+int gst::WorldRunner::control(Window & window, World & world)
 {
     if (window.should_close() || !world.create()) {
         return 1;
