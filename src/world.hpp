@@ -14,7 +14,10 @@ namespace gst
         // initialization was successful, false otherwise.
         virtual bool create() = 0;
         // Called until window is closed after initialization is successful.
-        virtual void update(seconds delta, seconds elapsed) = 0;
+        // The delta parameter represents the time in seconds since the last
+        // update and the elapsed parameter represents the time in seconds
+        // since create was called.
+        virtual void update(float delta, float elapsed) = 0;
         // Called once after main program event loop exit its control, will be
         // called regardless if initialization was successful or not.
         virtual void destroy() = 0;
