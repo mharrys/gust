@@ -10,7 +10,7 @@ gtest_inc = os.path.join(gtest_dir, 'include')
 env = Environment(
     CC='g++',
     CCFLAGS='-std=c++11 -pedantic -Wall -Wextra -O3',
-    CPPPATH=['lib', 'src', gmock_inc, gtest_inc],
+    CPPPATH=['lib', 'src', 'test', gmock_inc, gtest_inc],
     LIBPATH=[gmock_lib],
     LIBS=['gmock', 'pthread'],
 )
@@ -22,5 +22,6 @@ source += ['src/annotationarray.cpp']
 source += ['src/annotationbasic.cpp']
 source += ['src/annotationstruct.cpp']
 source += ['src/shadoweddataimpl.cpp']
+source += ['src/worldrunner.cpp']
 
 program = env.Program(target='bin/run_all_tests', source=source);
