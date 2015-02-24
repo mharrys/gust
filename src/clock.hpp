@@ -1,21 +1,17 @@
 #ifndef CLOCK_HPP_INCLUDED
 #define CLOCK_HPP_INCLUDED
 
-#include <chrono>
-
 namespace gst
 {
-    typedef std::chrono::duration<float> seconds;
-    typedef std::chrono::high_resolution_clock::time_point time_point;
-
+    // The responsibility of this class is to track the passing of time.
     class Clock {
     public:
-        Clock();
-        seconds elapsed() const;
-        seconds delta();
-    private:
-        time_point start;
-        time_point last;
+        virtual ~Clock() = default;
+        // Return time in seconds since class was created.
+        virtual float elapsed() const = 0;
+        // Return time in seconds since function was last called, clamped at 1
+        // second.
+        virtual float delta() = 0;
     };
 }
 

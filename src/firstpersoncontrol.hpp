@@ -11,13 +11,13 @@ namespace gst
     class FirstPersonControl {
     public:
         FirstPersonControl();
-        void update(seconds dt, Input const & input, Spatial & spatial);
+        void update(float dt, Input const & input, Spatial & spatial);
 
         float rotation_speed;
         float movement_speed;
     private:
-        void rotate(seconds dt, Input const & input, Spatial & spatial);
-        void move(seconds dt, Input const & input, Spatial & spatial);
+        void rotate(float dt, Input const & input, Spatial & spatial);
+        void move(float dt, Input const & input, Spatial & spatial);
 
         float yaw_angle;
         float pitch_angle;

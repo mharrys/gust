@@ -1,23 +1,23 @@
-#include "clock.hpp"
+#include "highresolutionclock.hpp"
 
 using std::chrono::high_resolution_clock;
 using std::chrono::duration_cast;
 
-gst::Clock::Clock()
+gst::HighResolutionClock::HighResolutionClock()
     : start(high_resolution_clock::now()),
       last(start)
 {
 }
 
-gst::seconds gst::Clock::elapsed() const
+float gst::HighResolutionClock::elapsed() const
 {
     auto current = high_resolution_clock::now();
     auto elapsed = current - start;
 
-    return duration_cast<seconds>(elapsed);
+    return duration_cast<seconds>(elapsed).count();
 }
 
-gst::seconds gst::Clock::delta()
+float gst::HighResolutionClock::delta()
 {
     auto current = high_resolution_clock::now();
     auto delta = current - last;
@@ -26,8 +26,8 @@ gst::seconds gst::Clock::delta()
     // prevent unmanageable delta values
     auto max_delta = seconds(1.0f);
     if (delta > max_delta) {
-        return max_delta;
+        return max_delta.count();
     }
 
-    return duration_cast<seconds>(delta);
+    return duration_cast<seconds>(delta).count();
 }

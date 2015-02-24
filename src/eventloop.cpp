@@ -1,6 +1,6 @@
 #include "eventloop.hpp"
 
-#include "clock.hpp"
+#include "highresolutionclock.hpp"
 #include "window.hpp"
 #include "world.hpp"
 
@@ -10,7 +10,7 @@ int gst::EventLoop::control(Window & window, World & world)
         return 1;
     }
 
-    Clock clock;
+    HighResolutionClock clock;
 
     while (!window.should_close()) {
         window.poll();

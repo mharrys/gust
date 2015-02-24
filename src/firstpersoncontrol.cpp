@@ -11,20 +11,20 @@ gst::FirstPersonControl::FirstPersonControl()
 {
 }
 
-void gst::FirstPersonControl::update(seconds dt, Input const & input, Spatial & spatial)
+void gst::FirstPersonControl::update(float dt, Input const & input, Spatial & spatial)
 {
     rotate(dt, input, spatial);
     move(dt, input, spatial);
 }
 
-void gst::FirstPersonControl::rotate(seconds dt, Input const & input, Spatial & spatial)
+void gst::FirstPersonControl::rotate(float dt, Input const & input, Spatial & spatial)
 {
     const glm::vec2 mouse_movement(
         -input.position_rel().x,
         -input.position_rel().y
     );
 
-    const float speed = rotation_speed * dt.count();
+    const float speed = rotation_speed * dt;
 
     // -90 <= pitch <= 90
     pitch_angle += mouse_movement.y * speed;
@@ -43,9 +43,9 @@ void gst::FirstPersonControl::rotate(seconds dt, Input const & input, Spatial & 
     spatial.orientation = glm::normalize(yaw * pitch);
 }
 
-void gst::FirstPersonControl::move(seconds dt, Input const & input, Spatial & spatial)
+void gst::FirstPersonControl::move(float dt, Input const & input, Spatial & spatial)
 {
-    const float speed = movement_speed * dt.count();
+    const float speed = movement_speed * dt;
 
     glm::vec3 displacement(0.0f);
 
