@@ -3,12 +3,13 @@
 
 namespace gst
 {
+    class Clock;
     class Window;
     class World;
 
     class WorldRunner {
     public:
-        int control(Window & window, World & world);
+        int control(World & world, Clock & clock, Window & window) const;
     };
 }
 

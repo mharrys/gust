@@ -1,16 +1,14 @@
 #include "worldrunner.hpp"
 
-#include "highresolutionclock.hpp"
+#include "clock.hpp"
 #include "window.hpp"
 #include "world.hpp"
 
-int gst::WorldRunner::control(Window & window, World & world)
+int gst::WorldRunner::control(World & world, Clock & clock, Window & window) const
 {
     if (window.should_close() || !world.create()) {
         return 1;
     }
-
-    HighResolutionClock clock;
 
     while (!window.should_close()) {
         window.poll();
