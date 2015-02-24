@@ -1,16 +1,19 @@
-#include "eventloop.hpp"
+#include "worldrunner.hpp"
 
-#include "highresolutionclock.hpp"
+#include "clock.hpp"
 #include "window.hpp"
 #include "world.hpp"
 
-int gst::EventLoop::control(Window & window, World & world)
+int gst::WorldRunner::control(World & world, Clock & clock, Window & window) const
 {
-    if (window.should_close() || !world.create()) {
+    if (window.should_close()) {
         return 1;
     }
 
-    HighResolutionClock clock;
+    if (!world.create()) {
+        world.destroy();
+        return 1;
+    }
 
     while (!window.should_close()) {
         window.poll();
