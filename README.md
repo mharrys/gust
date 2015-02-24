@@ -31,6 +31,14 @@ Run all tests
     $ cd bin
     $ ./run_all_tests
 
+Run a specific test
+-------------------
+
+    $ scons
+    $ cd bin
+    $ ./run_all_tests --gtest_filter=WorldRunnerTest.*
+    $ ./run_all_tests --gtest_filter=WorldRunnerTest.BreakControlIfWindowShouldClose
+
 Examples
 ========
 Following are projects that depends on this engine.
