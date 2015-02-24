@@ -6,7 +6,12 @@
 
 int gst::WorldRunner::control(World & world, Clock & clock, Window & window) const
 {
-    if (window.should_close() || !world.create()) {
+    if (window.should_close()) {
+        return 1;
+    }
+
+    if (!world.create()) {
+        world.destroy();
         return 1;
     }
 
