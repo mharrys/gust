@@ -16,6 +16,7 @@ namespace gst
         FirstPersonControl();
         void update(float dt, Input const & input, Spatial & spatial) override;
 
+        bool freelook;        // lock/unlock to XY-plane, also known as free-look camera controls
         float rotation_speed; // also known as the mouse sensitivity
         float movement_speed;
     private:
