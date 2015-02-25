@@ -4,7 +4,8 @@
 #include "spatial.hpp"
 
 gst::FirstPersonControl::FirstPersonControl()
-    : rotation_speed(2.8f),
+    : freelook(false),
+      rotation_speed(2.8f),
       movement_speed(5.0f),
       yaw_angle(0.0f),
       pitch_angle(0.0f)
@@ -74,11 +75,16 @@ void gst::FirstPersonControl::move(float dt, Input const & input, Spatial & spat
     }
 
     if (displacement != glm::vec3(0.0f)) {
-        // limit translation to the xz-plane
-        glm::quat yaw = spatial.orientation;
-        yaw.x = 0.0f;
-        yaw.z = 0.0f;
-        yaw = glm::normalize(yaw);
-        spatial.position += yaw * (glm::normalize(displacement) * speed);
+        displacement = glm::normalize(displacement);
+        if (freelook) {
+            spatial.translate(speed, displacement);
+        } else {
+            // limit translation to the xz-plane
+            glm::quat yaw = spatial.orientation;
+            yaw.x = 0.0f;
+            yaw.z = 0.0f;
+            yaw = glm::normalize(yaw);
+            spatial.position += yaw * (displacement * speed);
+        }
     }
 }
