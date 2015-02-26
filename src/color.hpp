@@ -29,7 +29,7 @@ namespace gst
         // Return alpha-component.
         float get_alpha() const;
     private:
-        glm::vec4 color;
+        glm::vec4 rgba;
     };
 }
 

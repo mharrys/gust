@@ -6,13 +6,13 @@ gst::Color::Color()
 }
 
 gst::Color::Color(float red, float green, float blue, float alpha)
-    : color(red, green, blue, alpha)
+    : rgba(red, green, blue, alpha)
 {
 }
 
 bool gst::Color::operator==(Color const & other) const
 {
-    return color == other.color;
+    return rgba == other.rgba;
 }
 
 bool gst::Color::operator!=(Color const & other) const
@@ -22,20 +22,20 @@ bool gst::Color::operator!=(Color const & other) const
 
 float gst::Color::get_red() const
 {
-    return color.x;
+    return rgba.x;
 }
 
 float gst::Color::get_green() const
 {
-    return color.y;
+    return rgba.y;
 }
 
 float gst::Color::get_blue() const
 {
-    return color.z;
+    return rgba.z;
 }
 
 float gst::Color::get_alpha() const
 {
-    return color.w;
+    return rgba.w;
 }
