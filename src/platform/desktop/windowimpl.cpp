@@ -119,9 +119,7 @@ gst::Resolution gst::WindowImpl::get_size() const
 
 void gst::WindowImpl::poll()
 {
-    // advance the input device state
-    keyboard.tick();
-    mouse.tick();
+    advance_input();
 
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
@@ -161,6 +159,12 @@ void gst::WindowImpl::swap()
     SDL_GL_SwapWindow(window);
 }
 
+void gst::WindowImpl::advance_input()
+{
+    keyboard.tick();
+    mouse.tick();
+}
+
 void gst::WindowImpl::on_exit()
 {
     if (exit_on_close) {
@@ -197,15 +201,15 @@ void gst::WindowImpl::on_scroll(SDL_Event & event)
 void gst::WindowImpl::on_key_down(SDL_Event & event)
 {
     if (event.key.repeat == 0) {
-        Key key = translate_key(event.key.keysym.sym);
-        keyboard.keys[static_cast<int>(key)] = KeyState::PRESSED;
+        const Key key = translate_key(event.key.keysym.sym);
+        keyboard.set_state(key, KeyState::PRESSED);
     }
 }
 
 void gst::WindowImpl::on_key_up(SDL_Event & event)
 {
-    Key key = translate_key(event.key.keysym.sym);
-    keyboard.keys[static_cast<int>(key)] = KeyState::RELEASED;
+    const Key key = translate_key(event.key.keysym.sym);
+    keyboard.set_state(key, KeyState::RELEASED);
 
     if (exit_on_esc && key == Key::ESCAPE) {
         exit_flag = true;

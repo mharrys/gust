@@ -41,6 +41,8 @@ namespace gst
         Input get_input() const;
         Resolution get_size() const;
     private:
+        void advance_input();
+
         void on_exit();
         void on_button_down(SDL_Event & event);
         void on_button_up(SDL_Event & event);
@@ -49,6 +51,7 @@ namespace gst
         void on_key_down(SDL_Event & event);
         void on_key_up(SDL_Event & event);
         void on_resize(SDL_Event & event);
+
         Button translate_button(int button) const;
         Key translate_key(int key) const;
 
