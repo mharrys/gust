@@ -1,7 +1,6 @@
 #ifndef TRANSLATOR_HPP_INCLUDED
 #define TRANSLATOR_HPP_INCLUDED
 
-#include "button.hpp"
 #include "buffer.hpp"
 #include "cullface.hpp"
 #include "key.hpp"
