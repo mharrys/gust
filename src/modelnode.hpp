@@ -7,11 +7,14 @@ namespace gst
 {
     class Model;
 
+    // The responsibility of this class is to position a model.
     class ModelNode : public Node {
     public:
         ModelNode(std::shared_ptr<Model> model);
-        virtual void accept(NodeVisitor & visitor) override;
-
+        void accept(NodeVisitor & visitor) override;
+        // Return model.
+        const std::shared_ptr<Model> get_model() const;
+    private:
         std::shared_ptr<Model> model;
     };
 }

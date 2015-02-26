@@ -49,10 +49,12 @@ void gst::NodeRenderer::visit(ModelNode & node)
         light->get_uniforms()->get_uniform("position") = matrices.view * glm::vec4(lights[i].position, 1.0f);
     }
 
-    auto & mesh = node.model->mesh;
+    auto model = node.get_model();
+
+    auto & mesh = model->mesh;
     render_state->set_vertex_array(mesh.vertex_array);
 
-    auto & effect = node.model->effect;
+    auto & effect = model->effect;
     for (unsigned int i = 0; i < effect.textures.size(); i++) {
         render_state->set_texture(effect.textures[i], i);
     }
