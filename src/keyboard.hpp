@@ -17,8 +17,7 @@ namespace gst
 
     typedef std::vector<KeyState> Keys;
 
-    // The responsibility of this class is to track the state for all defined
-    // keys.
+    // The responsibility of this class is to track the state of a keyboard.
     class Keyboard {
     public:
         Keyboard();
@@ -27,9 +26,9 @@ namespace gst
         // changed to UP.
         void tick();
         // Set key state.
-        void set_state(Key key, KeyState state);
+        void set_key_state(Key key, KeyState state);
         // Return key state.
-        KeyState get_state(Key key) const;
+        KeyState get_key_state(Key key) const;
     private:
         Keys keys;
     };

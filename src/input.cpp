@@ -8,22 +8,22 @@ gst::Input::Input(Keyboard keyboard, Mouse mouse)
 
 bool gst::Input::pressed(Key key) const
 {
-    return keyboard.get_state(key) == KeyState::PRESSED;
+    return keyboard.get_key_state(key) == KeyState::PRESSED;
 }
 
 bool gst::Input::down(Key key) const
 {
-    return keyboard.get_state(key) == KeyState::DOWN;
+    return keyboard.get_key_state(key) == KeyState::DOWN;
 }
 
 bool gst::Input::released(Key key) const
 {
-    return keyboard.get_state(key) == KeyState::RELEASED;
+    return keyboard.get_key_state(key) == KeyState::RELEASED;
 }
 
 bool gst::Input::up(Key key) const
 {
-    return keyboard.get_state(key) == KeyState::UP;
+    return keyboard.get_key_state(key) == KeyState::UP;
 }
 
 bool gst::Input::clicked(Button button) const

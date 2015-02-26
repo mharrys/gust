@@ -200,14 +200,14 @@ void gst::WindowImpl::on_key_down(SDL_Event & event)
 {
     if (event.key.repeat == 0) {
         const Key key = translate_key(event.key.keysym.sym);
-        keyboard.set_state(key, KeyState::PRESSED);
+        keyboard.set_key_state(key, KeyState::PRESSED);
     }
 }
 
 void gst::WindowImpl::on_key_up(SDL_Event & event)
 {
     const Key key = translate_key(event.key.keysym.sym);
-    keyboard.set_state(key, KeyState::RELEASED);
+    keyboard.set_key_state(key, KeyState::RELEASED);
 
     if (exit_on_esc && key == Key::ESCAPE) {
         exit_flag = true;

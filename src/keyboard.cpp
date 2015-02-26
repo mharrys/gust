@@ -17,12 +17,12 @@ void gst::Keyboard::tick()
     }
 }
 
-void gst::Keyboard::set_state(Key key, KeyState state)
+void gst::Keyboard::set_key_state(Key key, KeyState state)
 {
     keys[static_cast<int>(key)] = state;
 }
 
-gst::KeyState gst::Keyboard::get_state(Key key) const
+gst::KeyState gst::Keyboard::get_key_state(Key key) const
 {
     return keys[static_cast<int>(key)];
 }
