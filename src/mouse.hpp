@@ -1,7 +1,6 @@
 #ifndef MOUSE_HPP_INCLUDED
 #define MOUSE_HPP_INCLUDED
 
-#include "button.hpp"
 #include "glm.hpp"
 
 #include <vector>
