@@ -23,7 +23,7 @@ namespace gst
         bool up(Button button) const;
 
         glm::ivec2 position() const;
-        glm::ivec2 position_rel() const;
+        glm::ivec2 position_delta() const;
         int scroll_delta() const;
     private:
         Keyboard keyboard;

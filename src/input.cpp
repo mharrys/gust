@@ -28,40 +28,40 @@ bool gst::Input::up(Key key) const
 
 bool gst::Input::clicked(Button button) const
 {
-    return mouse.buttons[static_cast<int>(button)] == ButtonState::CLICKED;
+    return mouse.get_button_state(button) == ButtonState::CLICKED;
 }
 
 bool gst::Input::dblclicked(Button button) const
 {
-    return mouse.buttons[static_cast<int>(button)] == ButtonState::DBLCLICKED;
+    return mouse.get_button_state(button) == ButtonState::DBLCLICKED;
 }
 
 bool gst::Input::down(Button button) const
 {
-    return mouse.buttons[static_cast<int>(button)] == ButtonState::DOWN;
+    return mouse.get_button_state(button) == ButtonState::DOWN;
 }
 
 bool gst::Input::released(Button button) const
 {
-    return mouse.buttons[static_cast<int>(button)] == ButtonState::RELEASED;
+    return mouse.get_button_state(button) == ButtonState::RELEASED;
 }
 
 bool gst::Input::up(Button button) const
 {
-    return mouse.buttons[static_cast<int>(button)] == ButtonState::UP;
+    return mouse.get_button_state(button) == ButtonState::UP;
 }
 
 glm::ivec2 gst::Input::position() const
 {
-    return mouse.position;
+    return mouse.get_position();
 }
 
-glm::ivec2 gst::Input::position_rel() const
+glm::ivec2 gst::Input::position_delta() const
 {
-    return mouse.position_rel;
+    return mouse.get_position_delta();
 }
 
 int gst::Input::scroll_delta() const
 {
-    return mouse.scroll_delta;
+    return mouse.get_scroll_delta();
 }

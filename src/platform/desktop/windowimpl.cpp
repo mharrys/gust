@@ -174,28 +174,26 @@ void gst::WindowImpl::on_exit()
 
 void gst::WindowImpl::on_button_down(SDL_Event & event)
 {
-    Button button = translate_button(event.button.button);
-    ButtonState state = event.button.clicks > 1 ? ButtonState::DBLCLICKED : ButtonState::CLICKED;
-    mouse.buttons[static_cast<int>(button)] = state;
+    const Button button = translate_button(event.button.button);
+    const ButtonState state = event.button.clicks > 1 ? ButtonState::DBLCLICKED : ButtonState::CLICKED;
+    mouse.set_button_state(button, state);
 }
 
 void gst::WindowImpl::on_button_up(SDL_Event & event)
 {
-    Button button = translate_button(event.button.button);
-    mouse.buttons[static_cast<int>(button)] = ButtonState::RELEASED;
+    const Button button = translate_button(event.button.button);
+    mouse.set_button_state(button, ButtonState::RELEASED);
 }
 
 void gst::WindowImpl::on_move(SDL_Event & event)
 {
-    mouse.position.x = event.motion.x;
-    mouse.position.y = event.motion.y;
-    mouse.position_rel.x += event.motion.xrel;
-    mouse.position_rel.y += event.motion.yrel;
+    mouse.set_position(glm::ivec2(event.motion.x, event.motion.y));
+    mouse.add_position_delta(glm::ivec2(event.motion.xrel, event.motion.yrel));
 }
 
 void gst::WindowImpl::on_scroll(SDL_Event & event)
 {
-    mouse.scroll_delta += event.wheel.y;
+    mouse.add_scroll_delta(event.wheel.y);
 }
 
 void gst::WindowImpl::on_key_down(SDL_Event & event)

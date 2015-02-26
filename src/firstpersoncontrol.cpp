@@ -21,8 +21,8 @@ void gst::FirstPersonControl::update(float dt, Input const & input, Spatial & sp
 void gst::FirstPersonControl::rotate(float dt, Input const & input, Spatial & spatial)
 {
     const glm::vec2 mouse_movement(
-        -input.position_rel().x,
-        -input.position_rel().y
+        -input.position_delta().x,
+        -input.position_delta().y
     );
 
     const float speed = rotation_speed * dt;
