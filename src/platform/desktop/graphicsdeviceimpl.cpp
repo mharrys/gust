@@ -289,21 +289,21 @@ void gst::GraphicsDeviceImpl::enable_vertex_attribute(VertexAttribute const & at
     );
 }
 
-gst::RenderbufferHandle gst::GraphicsDeviceImpl::create_renderbuffer()
+gst::ResourceName gst::GraphicsDeviceImpl::create_renderbuffer()
 {
-    RenderbufferHandle renderbuffer;
-    glGenRenderbuffers(1, &renderbuffer.name);
-    return renderbuffer;
+    ResourceName name;
+    glGenRenderbuffers(1, &name);
+    return name;
 }
 
-void gst::GraphicsDeviceImpl::destroy_renderbuffer(RenderbufferHandle renderbuffer)
+void gst::GraphicsDeviceImpl::destroy_renderbuffer(ResourceName name)
 {
-    glDeleteRenderbuffers(1, &renderbuffer.name);
+    glDeleteRenderbuffers(1, &name);
 }
 
-void gst::GraphicsDeviceImpl::bind_renderbuffer(RenderbufferHandle renderbuffer)
+void gst::GraphicsDeviceImpl::bind_renderbuffer(ResourceName name)
 {
-    glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer.name);
+    glBindRenderbuffer(GL_RENDERBUFFER, name);
 }
 
 void gst::GraphicsDeviceImpl::renderbuffer_storage(Resolution size, RenderbufferFormat format)
@@ -311,22 +311,22 @@ void gst::GraphicsDeviceImpl::renderbuffer_storage(Resolution size, Renderbuffer
     glRenderbufferStorage(GL_RENDERBUFFER, translator.translate(format), size.get_width(), size.get_height());
 }
 
-gst::TextureHandle gst::GraphicsDeviceImpl::create_texture()
+gst::ResourceName gst::GraphicsDeviceImpl::create_texture()
 {
-    TextureHandle texture;
-    glGenBuffers(1, &texture.name);
-    return texture;
+    ResourceName name;
+    glGenBuffers(1, &name);
+    return name;
 }
 
-void gst::GraphicsDeviceImpl::destroy_texture(TextureHandle texture)
+void gst::GraphicsDeviceImpl::destroy_texture(ResourceName name)
 {
-    glDeleteTextures(1, &texture.name);
+    glDeleteTextures(1, &name);
 }
 
-void gst::GraphicsDeviceImpl::bind_texture(TextureHandle texture, TextureTarget target, int unit)
+void gst::GraphicsDeviceImpl::bind_texture(ResourceName name, TextureTarget target, int unit)
 {
     glActiveTexture(GL_TEXTURE0 + unit);
-    glBindTexture(translator.translate(target), texture.name);
+    glBindTexture(translator.translate(target), name);
 }
 
 void gst::GraphicsDeviceImpl::texture_image_2d(TextureTarget target, Image const & image, TextureParam const & param)
@@ -367,34 +367,34 @@ void gst::GraphicsDeviceImpl::texture_parameters(TextureTarget target, TexturePa
     }
 }
 
-gst::FramebufferHandle gst::GraphicsDeviceImpl::create_framebuffer()
+gst::ResourceName gst::GraphicsDeviceImpl::create_framebuffer()
 {
-    FramebufferHandle framebuffer;
-    glGenFramebuffers(1, &framebuffer.name);
-    return framebuffer;
+    ResourceName name;
+    glGenFramebuffers(1, &name);
+    return name;
 }
 
-void gst::GraphicsDeviceImpl::destroy_framebuffer(FramebufferHandle framebuffer)
+void gst::GraphicsDeviceImpl::destroy_framebuffer(ResourceName name)
 {
-    glDeleteFramebuffers(1, &framebuffer.name);
+    glDeleteFramebuffers(1, &name);
 }
 
-void gst::GraphicsDeviceImpl::bind_framebuffer(FramebufferHandle framebuffer)
+void gst::GraphicsDeviceImpl::bind_framebuffer(ResourceName name)
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer.name);
+    glBindFramebuffer(GL_FRAMEBUFFER, name);
 }
 
-void gst::GraphicsDeviceImpl::framebuffer_texture_2d(TextureHandle texture)
+void gst::GraphicsDeviceImpl::framebuffer_texture_2d(ResourceName name)
 {
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture.name, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, name, 0);
 
     GLenum draw_buffers[] = { GL_COLOR_ATTACHMENT0 };
     glDrawBuffers(1, draw_buffers);
 }
 
-void gst::GraphicsDeviceImpl::framebuffer_renderbuffer(RenderbufferHandle renderbuffer)
+void gst::GraphicsDeviceImpl::framebuffer_renderbuffer(ResourceName name)
 {
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, renderbuffer.name);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, name);
 }
 
 std::vector<std::string> gst::GraphicsDeviceImpl::check_framebuffer_status() const

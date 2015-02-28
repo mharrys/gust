@@ -55,22 +55,22 @@ namespace gst
         void draw_elements(DrawMode mode, int count);
         void enable_vertex_attribute(VertexAttribute const & attribute);
 
-        RenderbufferHandle create_renderbuffer();
-        void destroy_renderbuffer(RenderbufferHandle renderbuffer);
-        void bind_renderbuffer(RenderbufferHandle renderbuffer);
+        ResourceName create_renderbuffer();
+        void destroy_renderbuffer(ResourceName name);
+        void bind_renderbuffer(ResourceName name);
         void renderbuffer_storage(Resolution size, RenderbufferFormat format);
 
-        TextureHandle create_texture();
-        void destroy_texture(TextureHandle texture);
-        void bind_texture(TextureHandle texture, TextureTarget target, int unit);
+        ResourceName create_texture();
+        void destroy_texture(ResourceName name);
+        void bind_texture(ResourceName name, TextureTarget target, int unit);
         void texture_image_2d(TextureTarget target, Image const & image, TextureParam const & param);
         void texture_parameters(TextureTarget target, TextureParam const & param);
 
-        FramebufferHandle create_framebuffer();
-        void destroy_framebuffer(FramebufferHandle framebuffer);
-        void bind_framebuffer(FramebufferHandle framebuffer);
-        void framebuffer_texture_2d(TextureHandle texture);
-        void framebuffer_renderbuffer(RenderbufferHandle renderbuffer);
+        ResourceName create_framebuffer();
+        void destroy_framebuffer(ResourceName name);
+        void bind_framebuffer(ResourceName name);
+        void framebuffer_texture_2d(ResourceName name);
+        void framebuffer_renderbuffer(ResourceName name);
         std::vector<std::string> check_framebuffer_status() const;
 
         std::vector<std::string> get_errors() const;

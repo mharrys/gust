@@ -4,7 +4,8 @@
 #include "blendmode.hpp"
 #include "buffer.hpp"
 #include "cullface.hpp"
-#include "renderbufferformat.hpp"
+#include "graphicsresource.hpp"
+#include "renderbuffer.hpp"
 #include "shadertype.hpp"
 #include "textureparam.hpp"
 #include "vertexarray.hpp"
@@ -124,37 +125,37 @@ namespace gst
         virtual void enable_vertex_attribute(VertexAttribute const & attribute) = 0;
 
         // Return new renderbuffer object.
-        virtual RenderbufferHandle create_renderbuffer() = 0;
+        virtual ResourceName create_renderbuffer() = 0;
         // Destroy renderbuffer object.
-        virtual void destroy_renderbuffer(RenderbufferHandle renderbuffer) = 0;
+        virtual void destroy_renderbuffer(ResourceName name) = 0;
         // Bind renderbuffer object.
-        virtual void bind_renderbuffer(RenderbufferHandle renderbuffer) = 0;
+        virtual void bind_renderbuffer(ResourceName name) = 0;
         // Establish data storage of specified format and dimensions for renderbuffer objects image.
         virtual void renderbuffer_storage(Resolution size, RenderbufferFormat format) = 0;
 
         // Create new texture object.
-        virtual TextureHandle create_texture() = 0;
+        virtual ResourceName create_texture() = 0;
         // Destroy texture object.
-        virtual void destroy_texture(TextureHandle texture) = 0;
+        virtual void destroy_texture(ResourceName name) = 0;
         // Bind texture object.
-        virtual void bind_texture(TextureHandle texture, TextureTarget target, int unit) = 0;
+        virtual void bind_texture(ResourceName name, TextureTarget target, int unit) = 0;
         // Specify 2D texture image.
         virtual void texture_image_2d(TextureTarget target, Image const & image, TextureParam const & param) = 0;
         // Set texture parameters.
         virtual void texture_parameters(TextureTarget target, TextureParam const & param) = 0;
 
         // Create new framebuffer object.
-        virtual FramebufferHandle create_framebuffer() = 0;
+        virtual ResourceName create_framebuffer() = 0;
         // Destroy framebuffer object.
-        virtual void destroy_framebuffer(FramebufferHandle framebuffer) = 0;
+        virtual void destroy_framebuffer(ResourceName name) = 0;
         // Bind framebuffer object.
-        virtual void bind_framebuffer(FramebufferHandle framebuffer) = 0;
+        virtual void bind_framebuffer(ResourceName name) = 0;
         // Attach a level of a texture object to the currently bound
         // framebuffer object.
-        virtual void framebuffer_texture_2d(TextureHandle texture) = 0;
+        virtual void framebuffer_texture_2d(ResourceName name) = 0;
         // Attach a renderbuffer object to the currently bound framebuffer
         // object.
-        virtual void framebuffer_renderbuffer(RenderbufferHandle renderbuffer) = 0;
+        virtual void framebuffer_renderbuffer(ResourceName name) = 0;
         // Return array of status messages for currently bound framebuffer object.
         virtual std::vector<std::string> check_framebuffer_status() const = 0;
 

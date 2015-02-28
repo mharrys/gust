@@ -3,77 +3,50 @@
 #include "image.hpp"
 
 gst::Texture2d::Texture2d(
-    std::shared_ptr<GraphicsDevice> device,
     Resolution size,
     std::vector<unsigned char> const & data,
     TextureParam const & param)
-    : handle(device->create_texture()),
-      device(device),
-      target(TextureTarget::TEXTURE_2D),
-      size(size),
+    : size(size),
       data(data),
-      param(param),
-      image_dirty(true),
-      param_dirty(true)
+      param(param)
 {
-}
-
-gst::Texture2d::Texture2d(
-    std::shared_ptr<GraphicsDevice> device,
-    Image const & image,
-    TextureParam const & param)
-    : Texture2d(device, image.get_size(), image.get_data(), param)
-{
-}
-
-gst::Texture2d::~Texture2d()
-{
-    device->destroy_texture(handle);
+    needs_update();
 }
 
 void gst::Texture2d::set_size(Resolution size)
 {
     this->size = size;
-    image_dirty = true;
+    needs_update();
 }
 
 void gst::Texture2d::set_data(std::vector<unsigned char> const & data)
 {
     this->data = data;
-    image_dirty = true;
-}
-
-void gst::Texture2d::set_image(Image const & image)
-{
-    set_size(image.get_size());
-    set_data(image.get_data());
+    needs_update();
 }
 
 void gst::Texture2d::set_param(TextureParam const & param)
 {
     this->param = param;
-    param_dirty = true;
+    needs_update();
 }
 
-gst::TextureHandle gst::Texture2d::get_handle() const
+gst::TextureTarget gst::Texture2d::get_target() const
 {
-    return handle;
+    return TextureTarget::TEXTURE_2D;
 }
 
-void gst::Texture2d::bind(int unit)
+gst::Resolution gst::Texture2d::get_size() const
 {
-    device->bind_texture(handle, target, unit);
+    return size;
 }
 
-void gst::Texture2d::sync()
+std::vector<unsigned char> gst::Texture2d::get_data() const
 {
-    if (param_dirty) {
-        param_dirty = false;
-        device->texture_parameters(target, param);
-    }
+    return data;
+}
 
-    if (image_dirty) {
-        image_dirty = false;
-        device->texture_image_2d(target, { size, data }, param);
-    }
+gst::TextureParam gst::Texture2d::get_param() const
+{
+    return param;
 }

@@ -44,7 +44,7 @@ void gst::Renderer::render(Scene & scene)
 void gst::Renderer::render(Scene & scene, std::shared_ptr<Framebuffer> target)
 {
     render_state->set_framebuffer(target);
-    for (auto status : target->get_status()) {
+    for (auto status : device->check_framebuffer_status()) {
         logger->log(status);
     }
     render(scene);

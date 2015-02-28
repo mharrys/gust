@@ -3,13 +3,17 @@
 #include "buffer.hpp"
 #include "framebuffer.hpp"
 #include "graphicsdevice.hpp"
+#include "graphicssynchronizer.hpp"
 #include "program.hpp"
 #include "renderbuffer.hpp"
 #include "texture.hpp"
 #include "vertexarray.hpp"
 
-gst::RenderState::RenderState(std::shared_ptr<GraphicsDevice> device)
+gst::RenderState::RenderState(
+    std::shared_ptr<GraphicsDevice> device,
+    std::shared_ptr<GraphicsSynchronizer> synchronizer)
     : device(device),
+      synchronizer(synchronizer),
       clear_color(0.0f, 0.0f, 0.0f, 0.0f),
       blend_mode(BlendMode::NONE),
       cull_face(CullFace::NONE),
@@ -80,11 +84,12 @@ void gst::RenderState::set_framebuffer(std::shared_ptr<Framebuffer> framebuffer)
 {
     if (this->framebuffer != framebuffer) {
         this->framebuffer = framebuffer;
-        if (this->framebuffer) {
-            this->framebuffer->bind();
-            this->framebuffer->sync(*this);
+        if (framebuffer) {
+            set_texture(framebuffer->get_color());
+            set_renderbuffer(framebuffer->get_depth());
+            synchronizer->sync(*framebuffer);
         } else {
-            device->bind_framebuffer({ 0 });
+            device->bind_framebuffer(0);
         }
     }
 }
@@ -93,8 +98,9 @@ void gst::RenderState::set_renderbuffer(std::shared_ptr<Renderbuffer> renderbuff
 {
     if (this->renderbuffer != renderbuffer) {
         this->renderbuffer = renderbuffer;
-        this->renderbuffer->bind();
-        this->renderbuffer->sync();
+        if (renderbuffer) {
+            synchronizer->sync(*renderbuffer);
+        }
     }
 }
 
@@ -112,15 +118,13 @@ void gst::RenderState::set_program(std::shared_ptr<Program> program)
 
 void gst::RenderState::set_texture(std::shared_ptr<Texture> texture, int unit)
 {
-    std::shared_ptr<Texture> current;
-    if (textures.count(unit) > 0) {
-        current = textures.at(unit);
-    }
+    auto current = textures.count(unit) > 0 ? textures.at(unit) : nullptr;
 
     if (current != texture) {
         textures[unit] = texture;
-        texture->bind(unit);
-        texture->sync();
+        if (texture) {
+            synchronizer->sync(*texture, unit);
+        }
     }
 }
 
@@ -131,8 +135,6 @@ void gst::RenderState::set_vertex_array(std::shared_ptr<VertexArray> vertex_arra
         if (this->vertex_array) {
             this->vertex_array->bind();
             this->vertex_array->sync(*this);
-        } else {
-            device->bind_vertex_array({ 0 });
         }
     }
 }

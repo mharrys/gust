@@ -11,33 +11,20 @@ namespace gst
     class Texture2d : public Texture {
     public:
         Texture2d(
-            std::shared_ptr<GraphicsDevice> device,
             Resolution size,
             std::vector<unsigned char> const & data,
             TextureParam const & param);
-        Texture2d(
-            std::shared_ptr<GraphicsDevice> device,
-            Image const & image,
-            TextureParam const & param);
-        ~Texture2d();
         void set_size(Resolution size);
         void set_data(std::vector<unsigned char> const & data);
-        void set_image(Image const & image);
         void set_param(TextureParam const & param);
-        TextureHandle get_handle() const;
+        TextureTarget get_target() const;
+        Resolution get_size() const;
+        std::vector<unsigned char> get_data() const;
+        TextureParam get_param() const;
     private:
-        void bind(int unit);
-        void sync();
-
-        TextureHandle handle;
-        std::shared_ptr<GraphicsDevice> device;
-
-        TextureTarget target;
         Resolution size;
         std::vector<unsigned char> data;
         TextureParam param;
-        bool image_dirty;
-        bool param_dirty;
     };
 }
 

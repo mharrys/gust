@@ -15,6 +15,7 @@ namespace gst
     class Buffer;
     class Framebuffer;
     class GraphicsDevice;
+    class GraphicsSynchronizer;
     class Program;
     class Renderbuffer;
     class Texture;
@@ -28,7 +29,9 @@ namespace gst
     // the current state on the graphics card.
     class RenderState {
     public:
-        RenderState(std::shared_ptr<GraphicsDevice> device);
+        RenderState(
+            std::shared_ptr<GraphicsDevice> device,
+            std::shared_ptr<GraphicsSynchronizer> synchronizer);
         // Set clear color.
         void set_clear_color(Color const & clear_color);
         // Set blend mode.
@@ -55,6 +58,7 @@ namespace gst
         void set_viewport(Viewport const & viewport);
     private:
         std::shared_ptr<GraphicsDevice> device;
+        std::shared_ptr<GraphicsSynchronizer> synchronizer;
         Color clear_color;
         BlendMode blend_mode;
         CullFace cull_face;
