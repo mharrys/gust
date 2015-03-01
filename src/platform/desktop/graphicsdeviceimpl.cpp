@@ -223,21 +223,21 @@ void gst::GraphicsDeviceImpl::use_program(ProgramHandle program)
     glUseProgram(program.name);
 }
 
-gst::BufferHandle gst::GraphicsDeviceImpl::create_buffer()
+gst::ResourceName gst::GraphicsDeviceImpl::create_buffer()
 {
-    BufferHandle buffer;
-    glGenBuffers(1, &buffer.name);
-    return buffer;
+    ResourceName name;
+    glGenBuffers(1, &name);
+    return name;
 }
 
-void gst::GraphicsDeviceImpl::destroy_buffer(BufferHandle buffer)
+void gst::GraphicsDeviceImpl::destroy_buffer(ResourceName name)
 {
-    glDeleteBuffers(1, &buffer.name);
+    glDeleteBuffers(1, &name);
 }
 
-void gst::GraphicsDeviceImpl::bind_buffer(BufferHandle buffer, BufferTarget target)
+void gst::GraphicsDeviceImpl::bind_buffer(ResourceName name, BufferTarget target)
 {
-    glBindBuffer(translator.translate(target), buffer.name);
+    glBindBuffer(translator.translate(target), name);
 }
 
 void gst::GraphicsDeviceImpl::buffer_data(BufferTarget target, ShadowedData const & data, DataUsage usage)

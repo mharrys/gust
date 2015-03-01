@@ -85,7 +85,7 @@ void gst::Mesh::set_indices(std::vector<unsigned int> const & data)
 std::shared_ptr<gst::Buffer> gst::Mesh::make_buffer(BufferTarget target)
 {
     auto data = std::make_shared<ShadowedDataImpl>();
-    auto buffer = std::make_shared<BufferImpl>(device, data);
+    auto buffer = std::make_shared<BufferImpl>(data);
     buffer->set_target(target);
     return buffer;
 }

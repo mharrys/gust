@@ -43,9 +43,9 @@ namespace gst
         void uniform_matrix4(int location, int count, bool transpose, std::vector<float> const & value);
         void use_program(ProgramHandle program);
 
-        BufferHandle create_buffer();
-        void destroy_buffer(BufferHandle buffer);
-        void bind_buffer(BufferHandle buffer, BufferTarget target);
+        ResourceName create_buffer();
+        void destroy_buffer(ResourceName name);
+        void bind_buffer(ResourceName name, BufferTarget target);
         void buffer_data(BufferTarget target, ShadowedData const & data, DataUsage usage);
 
         ResourceName create_vertex_array();

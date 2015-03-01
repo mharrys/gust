@@ -103,11 +103,11 @@ namespace gst
         virtual void use_program(ProgramHandle program) = 0;
 
         // Return new buffer object.
-        virtual BufferHandle create_buffer() = 0;
+        virtual ResourceName create_buffer() = 0;
         // Destroy buffer object.
-        virtual void destroy_buffer(BufferHandle buffer) = 0;
+        virtual void destroy_buffer(ResourceName name) = 0;
         // Bind buffer object.
-        virtual void bind_buffer(BufferHandle buffer, BufferTarget target) = 0;
+        virtual void bind_buffer(ResourceName name, BufferTarget target) = 0;
         // Buffer data to current bound buffer object.
         virtual void buffer_data(BufferTarget target, ShadowedData const & data, DataUsage usage) = 0;
 

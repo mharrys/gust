@@ -2,12 +2,14 @@
 #define BUFFER_HPP_INCLUDED
 
 #include "glm.hpp"
+#include "graphicsresource.hpp"
 
+#include <memory>
 #include <vector>
 
 namespace gst
 {
-    class RenderState;
+    class ShadowedData;
 
     // Specifies buffer target.
     enum class BufferTarget {
@@ -23,8 +25,7 @@ namespace gst
 
     // The responsibility of this class is to mirror a buffer object on the
     // graphics card.
-    class Buffer {
-        friend RenderState;
+    class Buffer : public GraphicsResource {
     public:
         virtual ~Buffer() = default;
         // Set client side data to int array.
@@ -47,15 +48,12 @@ namespace gst
         virtual BufferTarget get_target() const = 0;
         // Return buffer data usage.
         virtual DataUsage get_usage() const = 0;
+        // Return buffer data.
+        virtual std::shared_ptr<ShadowedData> get_shadowed_data() const = 0;
         // Return the number of elements in the buffer data.
         virtual unsigned int get_count() const = 0;
         // Return buffer data size in bytes.
         virtual unsigned int get_size_bytes() const = 0;
-    protected:
-        // Notify graphics card to bind this buffer.
-        virtual void bind() = 0;
-        // Sync client state with graphics card.
-        virtual void sync() = 0;
     };
 }
 

@@ -5,6 +5,7 @@
 
 namespace gst
 {
+    class Buffer;
     class Framebuffer;
     class GraphicsDevice;
     class Renderbuffer;
@@ -16,6 +17,8 @@ namespace gst
     class GraphicsSynchronizer {
     public:
         GraphicsSynchronizer(std::shared_ptr<GraphicsDevice> device);
+        // Replace graphics card state with specified buffer.
+        void sync(Buffer & buffer);
         // Replace graphics card state with specified renderbuffer.
         void sync(Renderbuffer & renderbuffer);
         // Replace graphics card state with specified texture.

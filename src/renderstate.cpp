@@ -75,8 +75,9 @@ void gst::RenderState::set_buffer(std::shared_ptr<Buffer> buffer)
 {
     if (this->buffer != buffer) {
         this->buffer = buffer;
-        this->buffer->bind();
-        this->buffer->sync();
+        if (buffer) {
+            synchronizer->sync(*buffer);
+        }
     }
 }
 

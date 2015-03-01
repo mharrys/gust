@@ -5,12 +5,28 @@
 #include "graphicsdevice.hpp"
 #include "renderbuffer.hpp"
 #include "resolution.hpp"
+#include "shadoweddata.hpp"
 #include "texture.hpp"
 #include "vertexarray.hpp"
 
 gst::GraphicsSynchronizer::GraphicsSynchronizer(std::shared_ptr<GraphicsDevice> device)
     : device(device)
 {
+}
+
+void gst::GraphicsSynchronizer::sync(Buffer & buffer)
+{
+    if (!buffer.name) {
+        buffer.name = device->create_buffer();
+        buffer.cleanup = std::bind(&GraphicsDevice::destroy_buffer, device, buffer.name);
+    }
+
+    device->bind_buffer(buffer.name, buffer.get_target());
+
+    if (buffer.dirty) {
+        buffer.dirty = false;
+        device->buffer_data(buffer.get_target(), *buffer.get_shadowed_data(), buffer.get_usage());
+    }
 }
 
 void gst::GraphicsSynchronizer::sync(Renderbuffer & renderbuffer)
