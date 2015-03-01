@@ -14,7 +14,7 @@ gst::MeshFactory::MeshFactory(std::shared_ptr<GraphicsDevice> device, std::share
 
 gst::Mesh gst::MeshFactory::create_quad(float width, float height)
 {
-    auto vertex_array = std::make_shared<VertexArrayImpl>(device);
+    auto vertex_array = std::make_shared<VertexArrayImpl>();
     auto mesh = Mesh(device, vertex_array);
 
     mesh.set_positions({
@@ -76,7 +76,7 @@ std::vector<gst::Mesh> gst::MeshFactory::create_from_file(std::string const & pa
                 }
             }
 
-            auto vertex_array = std::make_shared<VertexArrayImpl>(device);
+            auto vertex_array = std::make_shared<VertexArrayImpl>();
             auto mesh = Mesh(device, vertex_array);
 
             if (!positions.empty()) {

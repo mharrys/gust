@@ -9,6 +9,7 @@ namespace gst
     class GraphicsDevice;
     class Renderbuffer;
     class Texture;
+    class VertexArray;
 
     // The responsibility of this class is to synchronize client state of
     // mirrored graphics resources with the graphics card.
@@ -21,6 +22,8 @@ namespace gst
         void sync(Texture & texture, int unit);
         // Replace graphics card state with specified framebuffer.
         void sync(Framebuffer & framebuffer);
+        // Replace graphics card state with specified vertex array.
+        void sync(VertexArray & vertex_array);
     private:
         std::shared_ptr<GraphicsDevice> device;
     };

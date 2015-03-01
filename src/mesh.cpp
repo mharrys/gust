@@ -14,9 +14,9 @@ gst::Mesh::Mesh(std::shared_ptr<GraphicsDevice> device, std::shared_ptr<VertexAr
 void gst::Mesh::draw() const
 {
     if (index_buffer) {
-        vertex_array->draw_elements(mode, index_buffer->get_count());
+        device->draw_elements(mode, index_buffer->get_count());
     } else {
-        vertex_array->draw_arrays(mode, 0, positions_buffer->get_count());
+        device->draw_arrays(mode, 0, positions_buffer->get_count());
     }
 }
 

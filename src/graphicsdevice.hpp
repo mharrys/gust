@@ -112,11 +112,11 @@ namespace gst
         virtual void buffer_data(BufferTarget target, ShadowedData const & data, DataUsage usage) = 0;
 
         // Return new vertex array object.
-        virtual VertexArrayHandle create_vertex_array() = 0;
+        virtual ResourceName create_vertex_array() = 0;
         // Destroy vertex array object.
-        virtual void destroy_vertex_array(VertexArrayHandle vertex_array) = 0;
+        virtual void destroy_vertex_array(ResourceName name) = 0;
         // Bind vertex array object.
-        virtual void bind_vertex_array(VertexArrayHandle vertex_array) = 0;
+        virtual void bind_vertex_array(ResourceName name) = 0;
         // Render primitives from stored array data.
         virtual void draw_arrays(DrawMode mode, int first, int count) = 0;
         // Render primitives from stored array data.

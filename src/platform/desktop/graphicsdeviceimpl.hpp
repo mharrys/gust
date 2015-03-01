@@ -48,9 +48,9 @@ namespace gst
         void bind_buffer(BufferHandle buffer, BufferTarget target);
         void buffer_data(BufferTarget target, ShadowedData const & data, DataUsage usage);
 
-        VertexArrayHandle create_vertex_array();
-        void destroy_vertex_array(VertexArrayHandle vertex_array);
-        void bind_vertex_array(VertexArrayHandle vertex_array);
+        ResourceName create_vertex_array();
+        void destroy_vertex_array(ResourceName name);
+        void bind_vertex_array(ResourceName name);
         void draw_arrays(DrawMode mode, int first, int count);
         void draw_elements(DrawMode mode, int count);
         void enable_vertex_attribute(VertexAttribute const & attribute);

@@ -249,21 +249,21 @@ void gst::GraphicsDeviceImpl::buffer_data(BufferTarget target, ShadowedData cons
     glBufferData(translator.translate(target), data.get_size_bytes(), &raw_data[0], translator.translate(usage));
 }
 
-gst::VertexArrayHandle gst::GraphicsDeviceImpl::create_vertex_array()
+gst::ResourceName gst::GraphicsDeviceImpl::create_vertex_array()
 {
-    VertexArrayHandle vertex_array;
-    glGenVertexArrays(1, &vertex_array.name);
-    return vertex_array;
+    ResourceName name;
+    glGenVertexArrays(1, &name);
+    return name;
 }
 
-void gst::GraphicsDeviceImpl::destroy_vertex_array(VertexArrayHandle vertex_array)
+void gst::GraphicsDeviceImpl::destroy_vertex_array(ResourceName name)
 {
-    glDeleteVertexArrays(1, &vertex_array.name);
+    glDeleteVertexArrays(1, &name);
 }
 
-void gst::GraphicsDeviceImpl::bind_vertex_array(VertexArrayHandle vertex_array)
+void gst::GraphicsDeviceImpl::bind_vertex_array(ResourceName name)
 {
-    glBindVertexArray(vertex_array.name);
+    glBindVertexArray(name);
 }
 
 void gst::GraphicsDeviceImpl::draw_arrays(DrawMode mode, int first, int count)

@@ -132,9 +132,15 @@ void gst::RenderState::set_vertex_array(std::shared_ptr<VertexArray> vertex_arra
 {
     if (this->vertex_array != vertex_array) {
         this->vertex_array = vertex_array;
-        if (this->vertex_array) {
-            this->vertex_array->bind();
-            this->vertex_array->sync(*this);
+        if (vertex_array) {
+            synchronizer->sync(*vertex_array);
+            for (auto vertex_buffer : vertex_array->get_vertex_buffers()) {
+                set_buffer(vertex_buffer.first);
+                for (auto attribute : vertex_buffer.second) {
+                    device->enable_vertex_attribute(attribute);
+                }
+            }
+            set_buffer(vertex_array->get_index_buffer());
         }
     }
 }

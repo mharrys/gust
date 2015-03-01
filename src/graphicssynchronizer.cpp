@@ -6,6 +6,7 @@
 #include "renderbuffer.hpp"
 #include "resolution.hpp"
 #include "texture.hpp"
+#include "vertexarray.hpp"
 
 gst::GraphicsSynchronizer::GraphicsSynchronizer(std::shared_ptr<GraphicsDevice> device)
     : device(device)
@@ -61,5 +62,20 @@ void gst::GraphicsSynchronizer::sync(Framebuffer & framebuffer)
         const auto depth = framebuffer.get_depth();
         device->framebuffer_texture_2d(color->name);
         device->framebuffer_renderbuffer(depth->name);
+    }
+}
+
+void gst::GraphicsSynchronizer::sync(VertexArray & vertex_array)
+{
+    if (!vertex_array.name) {
+        vertex_array.name = device->create_vertex_array();
+        vertex_array.cleanup = std::bind(&GraphicsDevice::destroy_vertex_array, device, vertex_array.name);
+    }
+
+    device->bind_vertex_array(vertex_array.name);
+
+    if (vertex_array.dirty) {
+        vertex_array.dirty = false;
+        // TODO: update vertex attributes here
     }
 }
