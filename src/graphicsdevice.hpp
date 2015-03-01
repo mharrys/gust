@@ -23,13 +23,8 @@ namespace gst
     class ShadowedData;
     class Viewport;
 
-    RESOURCE_HANDLE(BufferHandle)
-    RESOURCE_HANDLE(FramebufferHandle)
     RESOURCE_HANDLE(ProgramHandle)
-    RESOURCE_HANDLE(RenderbufferHandle)
     RESOURCE_HANDLE(ShaderHandle)
-    RESOURCE_HANDLE(TextureHandle)
-    RESOURCE_HANDLE(VertexArrayHandle)
 
     // The responsibility of this class is to interact with a graphics card.
     class GraphicsDevice {
