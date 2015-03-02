@@ -87,9 +87,7 @@ void gst::RenderState::set_renderbuffer(std::shared_ptr<Renderbuffer> renderbuff
 {
     if (this->renderbuffer != renderbuffer) {
         this->renderbuffer = renderbuffer;
-        if (renderbuffer) {
-            synchronizer->sync(*renderbuffer);
-        }
+        synchronizer->sync(*renderbuffer);
     }
 }
 
@@ -107,9 +105,7 @@ void gst::RenderState::set_texture(std::shared_ptr<Texture> texture, int unit)
 
     if (current != texture) {
         textures[unit] = texture;
-        if (texture) {
-            synchronizer->sync(*texture, unit);
-        }
+        synchronizer->sync(*texture, unit);
     }
 }
 
