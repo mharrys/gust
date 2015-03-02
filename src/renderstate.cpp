@@ -110,7 +110,7 @@ void gst::RenderState::set_program(std::shared_ptr<Program> program)
     if (this->program != program) {
         this->program = program;
         if (this->program) {
-            this->program->use();
+            synchronizer->sync(*program);
         } else {
             device->use_program({ 0 });
         }

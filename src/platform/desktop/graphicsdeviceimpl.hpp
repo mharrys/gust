@@ -17,21 +17,21 @@ namespace gst
         void set_depth_test(bool depth_test);
         void set_viewport(Viewport const & viewport);
 
-        ShaderHandle create_shader(ShaderType type);
-        void destroy_shader(ShaderHandle shader);
-        void compile_shader(ShaderHandle shader, std::string const & source);
-        bool get_compile_status(ShaderHandle shader);
-        std::string get_compile_error(ShaderHandle shader);
+        ResourceName create_shader(ShaderType type);
+        void destroy_shader(ResourceName name);
+        void compile_shader(ResourceName name, std::string const & source);
+        bool get_compile_status(ResourceName name);
+        std::string get_compile_error(ResourceName name);
 
-        ProgramHandle create_program();
-        void destroy_program(ProgramHandle program);
-        void attach_shader(ProgramHandle program, ShaderHandle shader);
-        void detach_shader(ProgramHandle program, ShaderHandle shader);
-        void link_program(ProgramHandle program);
-        bool get_link_status(ProgramHandle program);
-        std::string get_link_error(ProgramHandle program);
-        void bind_attribute_location(ProgramHandle program, int index, std::string const & name);
-        int get_uniform_location(ProgramHandle program, std::string const & name);
+        ResourceName create_program();
+        void destroy_program(ResourceName name);
+        void attach_shader(ResourceName program_name, ResourceName shader_name);
+        void detach_shader(ResourceName program_name, ResourceName shader_name);
+        void link_program(ResourceName name);
+        bool get_link_status(ResourceName name);
+        std::string get_link_error(ResourceName name);
+        void bind_attribute_location(ResourceName program_name, int index, std::string const & name);
+        int get_uniform_location(ResourceName program_name, std::string const & name);
         void uniform_int(int location, int value);
         void uniform_float(int location, float value);
         void uniform_vec2(int location, glm::vec2 const & value);
@@ -41,7 +41,7 @@ namespace gst
         void uniform_float_array(int location, std::vector<float> const & value);
         void uniform_matrix3(int location, int count, bool transpose, std::vector<float> const & value);
         void uniform_matrix4(int location, int count, bool transpose, std::vector<float> const & value);
-        void use_program(ProgramHandle program);
+        void use_program(ResourceName name);
 
         ResourceName create_buffer();
         void destroy_buffer(ResourceName name);

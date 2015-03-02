@@ -13,8 +13,6 @@
 #include <string>
 #include <vector>
 
-#define RESOURCE_HANDLE(resource_name) struct resource_name { unsigned int name; };
-
 namespace gst
 {
     class Color;
@@ -22,9 +20,6 @@ namespace gst
     class Resolution;
     class ShadowedData;
     class Viewport;
-
-    RESOURCE_HANDLE(ProgramHandle)
-    RESOURCE_HANDLE(ShaderHandle)
 
     // The responsibility of this class is to interact with a graphics card.
     class GraphicsDevice {
@@ -48,34 +43,34 @@ namespace gst
         virtual void set_viewport(Viewport const & viewport) = 0;
 
         // Return new shader object.
-        virtual ShaderHandle create_shader(ShaderType type) = 0;
+        virtual ResourceName create_shader(ShaderType type) = 0;
         // Destroy shader object.
-        virtual void destroy_shader(ShaderHandle shader) = 0;
+        virtual void destroy_shader(ResourceName name) = 0;
         // Compile shader from specified source.
-        virtual void compile_shader(ShaderHandle shader, std::string const & source) = 0;
+        virtual void compile_shader(ResourceName name, std::string const & source) = 0;
         // Return status from last compile operation.
-        virtual bool get_compile_status(ShaderHandle shader) = 0;
+        virtual bool get_compile_status(ResourceName name) = 0;
         // Return error message from last compile operation.
-        virtual std::string get_compile_error(ShaderHandle shader) = 0;
+        virtual std::string get_compile_error(ResourceName name) = 0;
 
         // Return new program object.
-        virtual ProgramHandle create_program() = 0;
+        virtual ResourceName create_program() = 0;
         // Destroy program object.
-        virtual void destroy_program(ProgramHandle program) = 0;
+        virtual void destroy_program(ResourceName name) = 0;
         // Attach specified shader object to specified program object.
-        virtual void attach_shader(ProgramHandle program, ShaderHandle shader) = 0;
+        virtual void attach_shader(ResourceName program_name, ResourceName shader_name) = 0;
         // Attach specified shader object to specified program object.
-        virtual void detach_shader(ProgramHandle program, ShaderHandle shader) = 0;
+        virtual void detach_shader(ResourceName program_name, ResourceName shader_name) = 0;
         // Link program object.
-        virtual void link_program(ProgramHandle program) = 0;
+        virtual void link_program(ResourceName name) = 0;
         // Return status from last link operation.
-        virtual bool get_link_status(ProgramHandle program) = 0;
+        virtual bool get_link_status(ResourceName name) = 0;
         // Return error message from last compile operation.
-        virtual std::string get_link_error(ProgramHandle program) = 0;
+        virtual std::string get_link_error(ResourceName name) = 0;
         // Bind vertex attribute index with a named attribute variable.
-        virtual void bind_attribute_location(ProgramHandle program, int index, std::string const & name) = 0;
+        virtual void bind_attribute_location(ResourceName program_name, int index, std::string const & name) = 0;
         // Return uniform location from specified name.
-        virtual int get_uniform_location(ProgramHandle program, std::string const & name) = 0;
+        virtual int get_uniform_location(ResourceName program_name, std::string const & name) = 0;
         // Modify value of int uniform.
         virtual void uniform_int(int location, int value) = 0;
         // Modify value of float uniform.
@@ -95,7 +90,7 @@ namespace gst
         // Modify value of matrix uniform.
         virtual void uniform_matrix4(int location, int count, bool transpose, std::vector<float> const & value) = 0;
         // Install specified program object as part of current rendering state.
-        virtual void use_program(ProgramHandle program) = 0;
+        virtual void use_program(ResourceName name) = 0;
 
         // Return new buffer object.
         virtual ResourceName create_buffer() = 0;

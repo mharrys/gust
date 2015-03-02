@@ -3,14 +3,20 @@
 #include "framebuffer.hpp"
 #include "image.hpp"
 #include "graphicsdevice.hpp"
+#include "logger.hpp"
 #include "renderbuffer.hpp"
 #include "resolution.hpp"
 #include "shadoweddata.hpp"
+#include "shader.hpp"
+#include "program.hpp"
 #include "texture.hpp"
 #include "vertexarray.hpp"
 
-gst::GraphicsSynchronizer::GraphicsSynchronizer(std::shared_ptr<GraphicsDevice> device)
-    : device(device)
+gst::GraphicsSynchronizer::GraphicsSynchronizer(
+    std::shared_ptr<GraphicsDevice> device,
+    std::shared_ptr<Logger> logger)
+    : device(device),
+      logger(logger)
 {
 }
 
@@ -41,6 +47,116 @@ void gst::GraphicsSynchronizer::sync(Renderbuffer & renderbuffer)
     if (renderbuffer.dirty) {
         renderbuffer.dirty = false;
         device->renderbuffer_storage(renderbuffer.get_size(), renderbuffer.get_format());
+    }
+}
+
+void gst::GraphicsSynchronizer::sync(Program & program)
+{
+    if (!program.name) {
+        program.name = device->create_program();
+        program.cleanup = std::bind(&GraphicsDevice::destroy_program, device, program.name);
+    }
+
+    if (program.dirty) {
+        program.dirty = false;
+
+        bool shader_dirty = false;
+        for (auto shader : program.get_shaders()) {
+            shader_dirty = shader->dirty ? true : shader_dirty;
+            sync(*shader);
+        }
+
+        if (shader_dirty) {
+            for (auto shader : program.get_shaders()) {
+                device->attach_shader(program.name, shader->name);
+            }
+
+            for (auto location : program.get_attribute_locations()) {
+                device->bind_attribute_location(program.name, location.first, location.second);
+            }
+
+            device->link_program(program.name);
+            if (!device->get_link_status(program.name)) {
+                auto error = device->get_link_error(program.name);
+                logger->log(TRACE("could not link program: " + error));
+            }
+
+            // safe to detach after linking
+            for (auto shader : program.get_shaders()) {
+                device->detach_shader(program.name, shader->name);
+            }
+        }
+    }
+
+    device->use_program(program.name);
+
+    for (auto uniform : program.get_uniforms()) {
+        const auto annotation = uniform.first;
+        const auto location = device->get_uniform_location(program.name, annotation);
+        if (location == -1) {
+            logger->log(TRACE("could not get uniform location for \"" + annotation + "\""));
+        }
+        const auto data = uniform.second;
+
+        switch (data->get_type()) {
+        case DataType::NONE:
+            logger->log(TRACE("attempted to update uniform \"" + annotation + "\" with no allocated data"));
+            break;
+        case DataType::BOOL:
+            device->uniform_int(location, data->get_bool());
+            break;
+        case DataType::INT:
+            device->uniform_int(location, data->get_int());
+            break;
+        case DataType::FLOAT:
+            device->uniform_float(location, data->get_float());
+            break;
+        case DataType::VEC2:
+            device->uniform_vec2(location, data->get_vec2());
+            break;
+        case DataType::VEC3:
+            device->uniform_vec3(location, data->get_vec3());
+            break;
+        case DataType::VEC4:
+            device->uniform_vec4(location, data->get_vec4());
+            break;
+        case DataType::MAT3:
+            device->uniform_matrix3(location, 1, false, data->get_float_array());
+            break;
+        case DataType::MAT4:
+            device->uniform_matrix4(location, 1, false, data->get_float_array());
+            break;
+        case DataType::INT_ARRAY:
+            device->uniform_int_array(location, data->get_int_array());
+            break;
+        case DataType::FLOAT_ARRAY:
+            device->uniform_float_array(location, data->get_float_array());
+            break;
+        case DataType::UNSIGNED_INT:
+        case DataType::UNSIGNED_INT_ARRAY:
+        case DataType::VEC2_ARRAY:
+        case DataType::VEC3_ARRAY:
+        case DataType::VEC4_ARRAY:
+            logger->log(TRACE("unsupported data type for uniform \"" + annotation + "\""));
+            break;
+        }
+    }
+}
+
+void gst::GraphicsSynchronizer::sync(Shader & shader)
+{
+    if (!shader.name) {
+        shader.name = device->create_shader(shader.get_type());
+        shader.cleanup = std::bind(&GraphicsDevice::destroy_shader, device, shader.name);
+    }
+
+    if (shader.dirty) {
+        shader.dirty = false;
+        device->compile_shader(shader.name, shader.get_source());
+        if (!device->get_compile_status(shader.name)) {
+            auto error = device->get_compile_error(shader.name);
+            logger->log(TRACE("could not compile shader (" + shader.get_source() + "): " + error));
+        }
     }
 }
 

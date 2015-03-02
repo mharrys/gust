@@ -11,8 +11,6 @@ namespace gst
     class Program;
     class Shader;
 
-    typedef std::pair<int, std::string> AttributeLocation;
-
     class ProgramFactory {
     public:
         ProgramFactory(
@@ -20,12 +18,10 @@ namespace gst
             std::shared_ptr<Logger> logger);
         std::unique_ptr<Program> create_from_file(
             std::string const & vs_path,
-            std::string const & fs_path,
-            std::vector<AttributeLocation> const & locations = {});
+            std::string const & fs_path);
         std::unique_ptr<Program> create_from_source(
             std::string const & vs_source,
-            std::string const & fs_source,
-            std::vector<AttributeLocation> const & locations = {});
+            std::string const & fs_source);
     private:
         std::shared_ptr<GraphicsDevice> device;
         std::shared_ptr<Logger> logger;

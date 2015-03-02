@@ -1,6 +1,12 @@
 #include "uniformmap.hpp"
 
+#include "annotationformatter.hpp"
 #include "shadoweddataimpl.hpp"
+
+gst::UniformMap::UniformMap(std::shared_ptr<AnnotationFormatter> formatter)
+    : formatter(formatter)
+{
+}
 
 gst::ShadowedData & gst::UniformMap::get_uniform(std::string const & annotation)
 {
@@ -12,9 +18,10 @@ gst::ShadowedData & gst::UniformMap::get_uniform(std::string const & annotation)
 
 std::vector<gst::UniformAnnotation> gst::UniformMap::get_uniforms() const
 {
-    std::vector<UniformAnnotation> result;
-    for (auto & uniform : uniforms) {
-        result.push_back(uniform);
-    }
-    return result;
+    return std::vector<UniformAnnotation>(uniforms.begin(), uniforms.end());
+}
+
+std::shared_ptr<gst::AnnotationFormatter> gst::UniformMap::get_formatter() const
+{
+    return formatter;
 }

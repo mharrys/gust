@@ -7,6 +7,7 @@
 
 namespace gst
 {
+    class AnnotationFormatter;
     class ShadowedData;
 
     typedef std::pair<std::string, std::shared_ptr<ShadowedData>> UniformAnnotation;
@@ -22,6 +23,8 @@ namespace gst
         virtual ShadowedData & get_uniform(std::string const & annotation) = 0;
         // Return all stored uniforms with its associated annotation.
         virtual std::vector<UniformAnnotation> get_uniforms() const = 0;
+        // Return associated formatter.
+        virtual std::shared_ptr<AnnotationFormatter> get_formatter() const = 0;
     };
 }
 

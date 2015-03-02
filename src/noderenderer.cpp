@@ -40,13 +40,14 @@ void gst::NodeRenderer::visit(ModelNode & node)
 
     for (unsigned int i = 0; i < lights.size(); i++) {
         auto light = lights[i].get_light();
+        // special uniforms
+        auto uniforms = light->get_uniforms();
+        uniforms->get_uniform("enabled") = lights[i].enabled;
+        uniforms->get_uniform("position") = matrices.view * glm::vec4(lights[i].position, 1.0f);
         // special case if annotation array
-        if (auto formatter = std::dynamic_pointer_cast<AnnotationArray>(light->get_formatter())) {
+        if (auto formatter = std::dynamic_pointer_cast<AnnotationArray>(uniforms->get_formatter())) {
             formatter->set_current_index(i);
         }
-        // special uniforms
-        light->get_uniforms()->get_uniform("enabled") = lights[i].enabled;
-        light->get_uniforms()->get_uniform("position") = matrices.view * glm::vec4(lights[i].position, 1.0f);
     }
 
     auto model = node.get_model();
@@ -68,7 +69,7 @@ void gst::NodeRenderer::visit(ModelNode & node)
             render_state->set_viewport(pass->viewport);
             render_state->set_program(pass->program);
             if (effect.uniforms) {
-                pass->program->sync(*effect.uniforms, *effect.formatter);
+                pass->program->set_uniforms(effect.uniforms);
             }
             pass->apply(matrices, lights);
             mesh.draw();
