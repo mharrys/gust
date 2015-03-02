@@ -27,7 +27,6 @@ gst::RenderState::RenderState(
     set_depth_test(depth_test);
     set_framebuffer(nullptr);
     set_program(nullptr);
-    set_vertex_array(nullptr);
     set_viewport(viewport);
 }
 
@@ -68,16 +67,6 @@ void gst::RenderState::set_depth_test(bool depth_test)
     if (this->depth_test != depth_test) {
         this->depth_test = depth_test;
         device->set_depth_test(depth_test);
-    }
-}
-
-void gst::RenderState::set_buffer(std::shared_ptr<Buffer> buffer)
-{
-    if (this->buffer != buffer) {
-        this->buffer = buffer;
-        if (buffer) {
-            synchronizer->sync(*buffer);
-        }
     }
 }
 
@@ -133,16 +122,7 @@ void gst::RenderState::set_vertex_array(std::shared_ptr<VertexArray> vertex_arra
 {
     if (this->vertex_array != vertex_array) {
         this->vertex_array = vertex_array;
-        if (vertex_array) {
-            synchronizer->sync(*vertex_array);
-            for (auto vertex_buffer : vertex_array->get_vertex_buffers()) {
-                set_buffer(vertex_buffer.first);
-                for (auto attribute : vertex_buffer.second) {
-                    device->enable_vertex_attribute(attribute);
-                }
-            }
-            set_buffer(vertex_array->get_index_buffer());
-        }
+        synchronizer->sync(*vertex_array);
     }
 }
 

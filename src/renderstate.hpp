@@ -42,8 +42,6 @@ namespace gst
         void set_depth_mask(bool depth_mask);
         // Set depth test.
         void set_depth_test(bool depth_test);
-        // Set buffer.
-        void set_buffer(std::shared_ptr<Buffer> buffer);
         // Set framebuffer, or nullptr to unbind.
         void set_framebuffer(std::shared_ptr<Framebuffer> framebuffer);
         // Set renderbuffer.

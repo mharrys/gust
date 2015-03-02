@@ -208,6 +208,12 @@ void gst::GraphicsSynchronizer::sync(VertexArray & vertex_array)
 
     if (vertex_array.dirty) {
         vertex_array.dirty = false;
-        // TODO: update vertex attributes here
+        for (auto vertex_buffer : vertex_array.get_vertex_buffers()) {
+            sync(*vertex_buffer.first);
+            for (auto attribute : vertex_buffer.second) {
+                device->enable_vertex_attribute(attribute);
+            }
+        }
+        sync(*vertex_array.get_index_buffer());
     }
 }
