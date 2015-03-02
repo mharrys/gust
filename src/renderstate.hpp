@@ -46,11 +46,11 @@ namespace gst
         void set_framebuffer(std::shared_ptr<Framebuffer> framebuffer);
         // Set renderbuffer.
         void set_renderbuffer(std::shared_ptr<Renderbuffer> renderbuffer);
-        // Set program, or nullptr to unbind.
+        // Set program.
         void set_program(std::shared_ptr<Program> program);
         // Set texture on specified texture unit.
         void set_texture(std::shared_ptr<Texture> texture, int unit = 0);
-        // Set vertex array, or nullptr to unbind.
+        // Set vertex array.
         void set_vertex_array(std::shared_ptr<VertexArray> vertex_array);
         // Set viewport.
         void set_viewport(Viewport const & viewport);

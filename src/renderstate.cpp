@@ -26,7 +26,6 @@ gst::RenderState::RenderState(
     set_depth_mask(depth_mask);
     set_depth_test(depth_test);
     set_framebuffer(nullptr);
-    set_program(nullptr);
     set_viewport(viewport);
 }
 
@@ -98,11 +97,7 @@ void gst::RenderState::set_program(std::shared_ptr<Program> program)
 {
     if (this->program != program) {
         this->program = program;
-        if (this->program) {
-            synchronizer->sync(*program);
-        } else {
-            device->use_program({ 0 });
-        }
+        synchronizer->sync(*program);
     }
 }
 
