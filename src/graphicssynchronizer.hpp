@@ -38,8 +38,6 @@ namespace gst
         // Replace graphics card state with specified vertex array.
         void sync(VertexArray & vertex_array);
     private:
-        int get_cached_location(Program const & program, std::string const & annotation) const;
-
         std::shared_ptr<GraphicsDevice> device;
         std::shared_ptr<Logger> logger;
     };
