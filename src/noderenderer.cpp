@@ -67,11 +67,11 @@ void gst::NodeRenderer::visit(ModelNode & node)
             render_state->set_depth_mask(pass->depth_mask);
             render_state->set_depth_test(pass->depth_test);
             render_state->set_viewport(pass->viewport);
-            render_state->set_program(pass->program);
             if (effect.uniforms) {
                 pass->program->set_uniforms(effect.uniforms);
             }
             pass->apply(matrices, lights);
+            render_state->set_program(pass->program);
             mesh.draw();
         }
     }
