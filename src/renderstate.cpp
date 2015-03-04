@@ -74,12 +74,16 @@ void gst::RenderState::set_framebuffer(std::shared_ptr<Framebuffer> framebuffer)
     if (this->framebuffer != framebuffer) {
         this->framebuffer = framebuffer;
         if (framebuffer) {
-            set_texture(framebuffer->get_color());
-            set_renderbuffer(framebuffer->get_depth());
-            synchronizer->sync(*framebuffer);
+            synchronizer->bind(*framebuffer);
         } else {
             device->bind_framebuffer(0);
         }
+    }
+
+    if (framebuffer) {
+        set_texture(framebuffer->get_color());
+        set_renderbuffer(framebuffer->get_depth());
+        synchronizer->update(*framebuffer);
     }
 }
 
@@ -87,16 +91,18 @@ void gst::RenderState::set_renderbuffer(std::shared_ptr<Renderbuffer> renderbuff
 {
     if (this->renderbuffer != renderbuffer) {
         this->renderbuffer = renderbuffer;
-        synchronizer->sync(*renderbuffer);
+        synchronizer->bind(*renderbuffer);
     }
+    synchronizer->update(*renderbuffer);
 }
 
 void gst::RenderState::set_program(std::shared_ptr<Program> program)
 {
     if (this->program != program) {
         this->program = program;
-        synchronizer->sync(*program);
+        synchronizer->bind(*program);
     }
+    synchronizer->update(*program);
 }
 
 void gst::RenderState::set_texture(std::shared_ptr<Texture> texture, int unit)
@@ -105,16 +111,18 @@ void gst::RenderState::set_texture(std::shared_ptr<Texture> texture, int unit)
 
     if (current != texture) {
         textures[unit] = texture;
-        synchronizer->sync(*texture, unit);
+        synchronizer->bind(*texture, unit);
     }
+    synchronizer->update(*texture);
 }
 
 void gst::RenderState::set_vertex_array(std::shared_ptr<VertexArray> vertex_array)
 {
     if (this->vertex_array != vertex_array) {
         this->vertex_array = vertex_array;
-        synchronizer->sync(*vertex_array);
+        synchronizer->bind(*vertex_array);
     }
+    synchronizer->update(*vertex_array);
 }
 
 void gst::RenderState::set_viewport(Viewport const & viewport)
