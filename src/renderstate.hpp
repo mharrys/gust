@@ -15,6 +15,7 @@ namespace gst
     class Buffer;
     class Framebuffer;
     class GraphicsDevice;
+    class GraphicsSynchronizer;
     class Program;
     class Renderbuffer;
     class Texture;
@@ -28,7 +29,9 @@ namespace gst
     // the current state on the graphics card.
     class RenderState {
     public:
-        RenderState(std::shared_ptr<GraphicsDevice> device);
+        RenderState(
+            std::shared_ptr<GraphicsDevice> device,
+            std::shared_ptr<GraphicsSynchronizer> synchronizer);
         // Set clear color.
         void set_clear_color(Color const & clear_color);
         // Set blend mode.
@@ -39,22 +42,21 @@ namespace gst
         void set_depth_mask(bool depth_mask);
         // Set depth test.
         void set_depth_test(bool depth_test);
-        // Set buffer.
-        void set_buffer(std::shared_ptr<Buffer> buffer);
         // Set framebuffer, or nullptr to unbind.
         void set_framebuffer(std::shared_ptr<Framebuffer> framebuffer);
         // Set renderbuffer.
         void set_renderbuffer(std::shared_ptr<Renderbuffer> renderbuffer);
-        // Set program, or nullptr to unbind.
+        // Set program.
         void set_program(std::shared_ptr<Program> program);
         // Set texture on specified texture unit.
         void set_texture(std::shared_ptr<Texture> texture, int unit = 0);
-        // Set vertex array, or nullptr to unbind.
+        // Set vertex array.
         void set_vertex_array(std::shared_ptr<VertexArray> vertex_array);
         // Set viewport.
         void set_viewport(Viewport const & viewport);
     private:
         std::shared_ptr<GraphicsDevice> device;
+        std::shared_ptr<GraphicsSynchronizer> synchronizer;
         Color clear_color;
         BlendMode blend_mode;
         CullFace cull_face;

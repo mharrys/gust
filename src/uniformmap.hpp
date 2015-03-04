@@ -11,10 +11,13 @@ namespace gst
     // annotation using a unordered map.
     class UniformMap : public UniformCollection {
     public:
+        UniformMap(std::shared_ptr<AnnotationFormatter> formatter);
         ShadowedData & get_uniform(std::string const & annotation);
         std::vector<UniformAnnotation> get_uniforms() const;
+        std::shared_ptr<AnnotationFormatter> get_formatter() const;
     private:
         std::unordered_map<std::string, std::shared_ptr<ShadowedData>> uniforms;
+        std::shared_ptr<AnnotationFormatter> formatter;
     };
 }
 

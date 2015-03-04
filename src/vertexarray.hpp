@@ -1,6 +1,7 @@
 #ifndef VERTEXARRAY_HPP_INCLUDED
 #define VERTEXARRAY_HPP_INCLUDED
 
+#include "graphicsresource.hpp"
 #include "vertexattribute.hpp"
 
 #include <memory>
@@ -9,7 +10,6 @@
 namespace gst
 {
     class Buffer;
-    class RenderState;
 
     // Primitives to render.
     enum class DrawMode {
@@ -27,23 +27,17 @@ namespace gst
 
     // The responsibility of this class is to mirror a vertex array object on
     // the graphics card.
-    class VertexArray {
-        friend RenderState;
+    class VertexArray : public GraphicsResource {
     public:
         virtual ~VertexArray() = default;
-        // Render primitives from stored array data.
-        virtual void draw_arrays(DrawMode mode, int first, int count) = 0;
-        // Render primitives from stored array data.
-        virtual void draw_elements(DrawMode mode, int count) = 0;
         // Set and enable index buffer.
         virtual void set_index_buffer(std::shared_ptr<Buffer> buffer) = 0;
         // Add and enable vertex buffer.
         virtual void add_vertex_buffer(std::shared_ptr<Buffer> buffer, VertexAttributes attributes) = 0;
-    protected:
-        // Notify graphics card to bind this vertex array.
-        virtual void bind() = 0;
-        // Sync client state with graphics card.
-        virtual void sync(RenderState & render_state) = 0;
+        // Return added vertex buffers.
+        virtual std::vector<VertexBuffer> get_vertex_buffers() const = 0;
+        // Return set index buffer.
+        virtual std::shared_ptr<Buffer> get_index_buffer() const = 0;
     };
 }
 

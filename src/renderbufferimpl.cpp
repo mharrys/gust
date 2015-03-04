@@ -1,32 +1,24 @@
 #include "renderbufferimpl.hpp"
 
 gst::RenderbufferImpl::RenderbufferImpl(
-    std::shared_ptr<GraphicsDevice> device,
     Resolution size,
     RenderbufferFormat format)
-    : handle(device->create_renderbuffer()),
-      device(device),
-      size(size),
-      format(format),
-      dirty(true)
+    : size(size),
+      format(format)
 {
-}
-
-gst::RenderbufferImpl::~RenderbufferImpl()
-{
-    device->destroy_renderbuffer(handle);
+    needs_update();
 }
 
 void gst::RenderbufferImpl::set_size(Resolution size)
 {
     this->size = size;
-    dirty = true;
+    needs_update();
 }
 
 void gst::RenderbufferImpl::set_format(RenderbufferFormat format)
 {
     this->format = format;
-    dirty = true;
+    needs_update();
 }
 
 gst::Resolution gst::RenderbufferImpl::get_size() const
@@ -37,22 +29,4 @@ gst::Resolution gst::RenderbufferImpl::get_size() const
 gst::RenderbufferFormat gst::RenderbufferImpl::get_format() const
 {
     return format;
-}
-
-gst::RenderbufferHandle gst::RenderbufferImpl::get_handle() const
-{
-    return handle;
-}
-
-void gst::RenderbufferImpl::bind()
-{
-    device->bind_renderbuffer(handle);
-}
-
-void gst::RenderbufferImpl::sync()
-{
-    if (dirty) {
-        dirty = false;
-        device->renderbuffer_storage(size, format);
-    }
 }

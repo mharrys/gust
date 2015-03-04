@@ -1,121 +1,41 @@
 #include "programimpl.hpp"
 
 #include "annotationformatter.hpp"
-#include "logger.hpp"
 #include "shader.hpp"
 #include "shadoweddata.hpp"
-#include "uniformcollection.hpp"
 
-gst::ProgramImpl::ProgramImpl(std::shared_ptr<GraphicsDevice> device, std::shared_ptr<Logger> logger)
-    : handle(device->create_program()),
-      device(device),
-      logger(logger),
-      link_status(false),
-      link_error("")
+void gst::ProgramImpl::attach(std::shared_ptr<Shader> shader)
 {
+    shaders.push_back(shader);
+    needs_update();
 }
 
-gst::ProgramImpl::~ProgramImpl()
+void gst::ProgramImpl::set_attributes(std::vector<AttributeLocation> attibute_locations)
 {
-    device->destroy_program(handle);
+    this->attribute_locations = attibute_locations;
+    needs_update();
 }
 
-void gst::ProgramImpl::sync(UniformCollection const & uniforms, AnnotationFormatter const & formatter)
+void gst::ProgramImpl::set_uniforms(std::shared_ptr<UniformCollection> collection)
 {
-    for (auto & uniform : uniforms.get_uniforms()) {
-        const auto annotation = formatter.format(uniform.first);
-        const auto data = uniform.second;
-        const auto location = get_cached_location(annotation);
-
-        switch (data->get_type()) {
-        case DataType::NONE:
-            logger->log(TRACE("attempted to update uniform \"" + annotation + "\" with no allocated data"));
-            break;
-        case DataType::BOOL:
-            device->uniform_int(location, data->get_bool());
-            break;
-        case DataType::INT:
-            device->uniform_int(location, data->get_int());
-            break;
-        case DataType::FLOAT:
-            device->uniform_float(location, data->get_float());
-            break;
-        case DataType::VEC2:
-            device->uniform_vec2(location, data->get_vec2());
-            break;
-        case DataType::VEC3:
-            device->uniform_vec3(location, data->get_vec3());
-            break;
-        case DataType::VEC4:
-            device->uniform_vec4(location, data->get_vec4());
-            break;
-        case DataType::MAT3:
-            device->uniform_matrix3(location, 1, false, data->get_float_array());
-            break;
-        case DataType::MAT4:
-            device->uniform_matrix4(location, 1, false, data->get_float_array());
-            break;
-        case DataType::INT_ARRAY:
-            device->uniform_int_array(location, data->get_int_array());
-            break;
-        case DataType::FLOAT_ARRAY:
-            device->uniform_float_array(location, data->get_float_array());
-            break;
-        case DataType::UNSIGNED_INT:
-        case DataType::UNSIGNED_INT_ARRAY:
-        case DataType::VEC2_ARRAY:
-        case DataType::VEC3_ARRAY:
-        case DataType::VEC4_ARRAY:
-            logger->log(TRACE("unsupported data type for uniform \"" + annotation + "\""));
-            break;
-        }
+    auto formatter = collection->get_formatter();
+    for (auto uniform : collection->get_uniforms()) {
+        uniforms[formatter->format(uniform.first)] = uniform.second;
     }
+    needs_update();
 }
 
-void gst::ProgramImpl::attach(Shader const & shader)
+std::vector<std::shared_ptr<gst::Shader>> gst::ProgramImpl::get_shaders() const
 {
-    device->attach_shader(handle, shader.get_handle());
+    return shaders;
 }
 
-void gst::ProgramImpl::detach(Shader const & shader)
+std::vector<gst::AttributeLocation> gst::ProgramImpl::get_attribute_locations() const
 {
-    device->detach_shader(handle, shader.get_handle());
+    return attribute_locations;
 }
 
-void gst::ProgramImpl::bind_attribute(int index, std::string const & name)
+std::vector<gst::UniformAnnotation> gst::ProgramImpl::get_uniforms() const
 {
-    device->bind_attribute_location(handle, index, name);
-}
-
-void gst::ProgramImpl::link()
-{
-    device->link_program(handle);
-    link_status = device->get_link_status(handle);
-    link_error = link_status ? "" : device->get_link_error(handle);
-}
-
-bool gst::ProgramImpl::get_link_status() const
-{
-    return link_status;
-}
-
-std::string gst::ProgramImpl::get_link_error() const
-{
-    return link_error;
-}
-
-void gst::ProgramImpl::use()
-{
-    device->use_program(handle);
-}
-
-int gst::ProgramImpl::get_cached_location(std::string const & annotation)
-{
-    if (locations.count(annotation) == 0) {
-        locations[annotation] = device->get_uniform_location(handle, annotation);
-        if (locations[annotation] == -1) {
-            logger->log(TRACE("could not get uniform location for \"" + annotation + "\""));
-        }
-    }
-    return locations.at(annotation);
+    return std::vector<UniformAnnotation>(uniforms.begin(), uniforms.end());
 }

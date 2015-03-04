@@ -2,18 +2,12 @@
 #define BUFFERIMPL_HPP_INCLUDED
 
 #include "buffer.hpp"
-#include "graphicsdevice.hpp"
-
-#include <memory>
 
 namespace gst
 {
-    class ShadowedData;
-
     class BufferImpl : public Buffer {
     public:
-        BufferImpl(std::shared_ptr<GraphicsDevice> device, std::shared_ptr<ShadowedData> shadowed_data);
-        ~BufferImpl();
+        BufferImpl(std::shared_ptr<ShadowedData> shadowed_data);
         void set_int_array(std::vector<int> const & data);
         void set_unsigned_int_array(std::vector<unsigned int> const & data);
         void set_float_array(std::vector<float> const & data);
@@ -24,19 +18,13 @@ namespace gst
         void set_usage(DataUsage usage);
         BufferTarget get_target() const;
         DataUsage get_usage() const;
+        std::shared_ptr<ShadowedData> get_shadowed_data() const;
         unsigned int get_count() const;
         unsigned int get_size_bytes() const;
     private:
-        void bind();
-        void sync();
-
-        BufferHandle handle;
-        std::shared_ptr<GraphicsDevice> device;
-
         BufferTarget target;
         std::shared_ptr<ShadowedData> shadowed_data;
         DataUsage usage;
-        bool dirty;
     };
 }
 

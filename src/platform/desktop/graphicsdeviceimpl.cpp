@@ -79,98 +79,94 @@ void gst::GraphicsDeviceImpl::set_viewport(Viewport const & viewport)
     );
 }
 
-gst::ShaderHandle gst::GraphicsDeviceImpl::create_shader(ShaderType type)
+gst::ResourceName gst::GraphicsDeviceImpl::create_shader(ShaderType type)
 {
-    ShaderHandle shader;
-    shader.name = glCreateShader(translator.translate(type));
-    return shader;
+    return glCreateShader(translator.translate(type));
 }
 
-void gst::GraphicsDeviceImpl::destroy_shader(ShaderHandle shader)
+void gst::GraphicsDeviceImpl::destroy_shader(ResourceName name)
 {
-    glDeleteShader(shader.name);
+    glDeleteShader(name);
 }
 
-void gst::GraphicsDeviceImpl::compile_shader(ShaderHandle shader, std::string const & source)
+void gst::GraphicsDeviceImpl::compile_shader(ResourceName name, std::string const & source)
 {
     char const * shader_source = source.c_str();
     // replace source code in shader
-    glShaderSource(shader.name, 1, &shader_source, NULL);
+    glShaderSource(name, 1, &shader_source, NULL);
     // compile current set source code in shader
-    glCompileShader(shader.name);
+    glCompileShader(name);
 }
 
-bool gst::GraphicsDeviceImpl::get_compile_status(ShaderHandle shader)
+bool gst::GraphicsDeviceImpl::get_compile_status(ResourceName name)
 {
     GLint status;
-    glGetShaderiv(shader.name, GL_COMPILE_STATUS, &status);
+    glGetShaderiv(name, GL_COMPILE_STATUS, &status);
     return status == GL_TRUE;
 }
 
-std::string gst::GraphicsDeviceImpl::get_compile_error(ShaderHandle shader)
+std::string gst::GraphicsDeviceImpl::get_compile_error(ResourceName name)
 {
     GLint log_len;
-    glGetShaderiv(shader.name, GL_INFO_LOG_LENGTH, &log_len);
+    glGetShaderiv(name, GL_INFO_LOG_LENGTH, &log_len);
 
     std::vector<GLchar> log_info(log_len);
-    glGetShaderInfoLog(shader.name, log_len, NULL, &log_info[0]);
+    glGetShaderInfoLog(name, log_len, NULL, &log_info[0]);
 
     return std::string(log_info.begin(), log_info.end());
 }
 
-gst::ProgramHandle gst::GraphicsDeviceImpl::create_program()
+gst::ResourceName gst::GraphicsDeviceImpl::create_program()
 {
-    ProgramHandle program;
-    program.name = glCreateProgram();
-    return program;
+    return glCreateProgram();
 }
 
-void gst::GraphicsDeviceImpl::destroy_program(ProgramHandle program)
+void gst::GraphicsDeviceImpl::destroy_program(ResourceName name)
 {
-    glDeleteProgram(program.name);
+    glDeleteProgram(name);
 }
 
-void gst::GraphicsDeviceImpl::attach_shader(ProgramHandle program, ShaderHandle shader)
+void gst::GraphicsDeviceImpl::attach_shader(ResourceName program_name, ResourceName shader_name)
 {
-    glAttachShader(program.name, shader.name);
+    glAttachShader(program_name, shader_name);
 }
 
-void gst::GraphicsDeviceImpl::detach_shader(ProgramHandle program, ShaderHandle shader)
+void gst::GraphicsDeviceImpl::detach_shader(ResourceName program_name, ResourceName shader_name)
 {
-    glDetachShader(program.name, shader.name);
+    glDetachShader(program_name, shader_name);
 }
 
-void gst::GraphicsDeviceImpl::link_program(ProgramHandle program)
+void gst::GraphicsDeviceImpl::link_program(ResourceName name)
 {
-    glLinkProgram(program.name);
+    glLinkProgram(name);
 }
 
-bool gst::GraphicsDeviceImpl::get_link_status(ProgramHandle program)
+bool gst::GraphicsDeviceImpl::get_link_status(ResourceName name)
 {
     GLint status;
-    glGetProgramiv(program.name, GL_LINK_STATUS, &status);
+    glGetProgramiv(name, GL_LINK_STATUS, &status);
     return status == GL_TRUE;
 }
 
-std::string gst::GraphicsDeviceImpl::get_link_error(ProgramHandle program)
+std::string gst::GraphicsDeviceImpl::get_link_error(ResourceName name)
 {
     GLint log_len;
-    glGetProgramiv(program.name, GL_INFO_LOG_LENGTH, &log_len);
+    glGetProgramiv(name, GL_INFO_LOG_LENGTH, &log_len);
 
     std::vector<GLchar> log_info(log_len);
-    glGetProgramInfoLog(program.name, log_len, NULL, &log_info[0]);
+    glGetProgramInfoLog(name, log_len, NULL, &log_info[0]);
 
     return std::string(log_info.begin(), log_info.end());
 }
 
-void gst::GraphicsDeviceImpl::bind_attribute_location(ProgramHandle program, int index, std::string const & name)
+void gst::GraphicsDeviceImpl::bind_attribute_location(ResourceName program_name, int index, std::string const & name)
 {
-    glBindAttribLocation(program.name, index, name.c_str());
+    glBindAttribLocation(program_name, index, name.c_str());
 }
 
-int gst::GraphicsDeviceImpl::get_uniform_location(ProgramHandle program, std::string const & name)
+int gst::GraphicsDeviceImpl::get_uniform_location(ResourceName program_name, std::string const & name)
 {
-    return glGetUniformLocation(program.name, name.c_str());
+    return glGetUniformLocation(program_name, name.c_str());
 }
 
 void gst::GraphicsDeviceImpl::uniform_int(int location, int value)
@@ -218,26 +214,26 @@ void gst::GraphicsDeviceImpl::uniform_matrix4(int location, int count, bool tran
     glUniformMatrix4fv(location, count, transpose ? GL_TRUE : GL_FALSE, &value[0]);
 }
 
-void gst::GraphicsDeviceImpl::use_program(ProgramHandle program)
+void gst::GraphicsDeviceImpl::use_program(ResourceName name)
 {
-    glUseProgram(program.name);
+    glUseProgram(name);
 }
 
-gst::BufferHandle gst::GraphicsDeviceImpl::create_buffer()
+gst::ResourceName gst::GraphicsDeviceImpl::create_buffer()
 {
-    BufferHandle buffer;
-    glGenBuffers(1, &buffer.name);
-    return buffer;
+    ResourceName name;
+    glGenBuffers(1, &name);
+    return name;
 }
 
-void gst::GraphicsDeviceImpl::destroy_buffer(BufferHandle buffer)
+void gst::GraphicsDeviceImpl::destroy_buffer(ResourceName name)
 {
-    glDeleteBuffers(1, &buffer.name);
+    glDeleteBuffers(1, &name);
 }
 
-void gst::GraphicsDeviceImpl::bind_buffer(BufferHandle buffer, BufferTarget target)
+void gst::GraphicsDeviceImpl::bind_buffer(ResourceName name, BufferTarget target)
 {
-    glBindBuffer(translator.translate(target), buffer.name);
+    glBindBuffer(translator.translate(target), name);
 }
 
 void gst::GraphicsDeviceImpl::buffer_data(BufferTarget target, ShadowedData const & data, DataUsage usage)
@@ -249,21 +245,21 @@ void gst::GraphicsDeviceImpl::buffer_data(BufferTarget target, ShadowedData cons
     glBufferData(translator.translate(target), data.get_size_bytes(), &raw_data[0], translator.translate(usage));
 }
 
-gst::VertexArrayHandle gst::GraphicsDeviceImpl::create_vertex_array()
+gst::ResourceName gst::GraphicsDeviceImpl::create_vertex_array()
 {
-    VertexArrayHandle vertex_array;
-    glGenVertexArrays(1, &vertex_array.name);
-    return vertex_array;
+    ResourceName name;
+    glGenVertexArrays(1, &name);
+    return name;
 }
 
-void gst::GraphicsDeviceImpl::destroy_vertex_array(VertexArrayHandle vertex_array)
+void gst::GraphicsDeviceImpl::destroy_vertex_array(ResourceName name)
 {
-    glDeleteVertexArrays(1, &vertex_array.name);
+    glDeleteVertexArrays(1, &name);
 }
 
-void gst::GraphicsDeviceImpl::bind_vertex_array(VertexArrayHandle vertex_array)
+void gst::GraphicsDeviceImpl::bind_vertex_array(ResourceName name)
 {
-    glBindVertexArray(vertex_array.name);
+    glBindVertexArray(name);
 }
 
 void gst::GraphicsDeviceImpl::draw_arrays(DrawMode mode, int first, int count)
@@ -289,21 +285,21 @@ void gst::GraphicsDeviceImpl::enable_vertex_attribute(VertexAttribute const & at
     );
 }
 
-gst::RenderbufferHandle gst::GraphicsDeviceImpl::create_renderbuffer()
+gst::ResourceName gst::GraphicsDeviceImpl::create_renderbuffer()
 {
-    RenderbufferHandle renderbuffer;
-    glGenRenderbuffers(1, &renderbuffer.name);
-    return renderbuffer;
+    ResourceName name;
+    glGenRenderbuffers(1, &name);
+    return name;
 }
 
-void gst::GraphicsDeviceImpl::destroy_renderbuffer(RenderbufferHandle renderbuffer)
+void gst::GraphicsDeviceImpl::destroy_renderbuffer(ResourceName name)
 {
-    glDeleteRenderbuffers(1, &renderbuffer.name);
+    glDeleteRenderbuffers(1, &name);
 }
 
-void gst::GraphicsDeviceImpl::bind_renderbuffer(RenderbufferHandle renderbuffer)
+void gst::GraphicsDeviceImpl::bind_renderbuffer(ResourceName name)
 {
-    glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer.name);
+    glBindRenderbuffer(GL_RENDERBUFFER, name);
 }
 
 void gst::GraphicsDeviceImpl::renderbuffer_storage(Resolution size, RenderbufferFormat format)
@@ -311,22 +307,22 @@ void gst::GraphicsDeviceImpl::renderbuffer_storage(Resolution size, Renderbuffer
     glRenderbufferStorage(GL_RENDERBUFFER, translator.translate(format), size.get_width(), size.get_height());
 }
 
-gst::TextureHandle gst::GraphicsDeviceImpl::create_texture()
+gst::ResourceName gst::GraphicsDeviceImpl::create_texture()
 {
-    TextureHandle texture;
-    glGenBuffers(1, &texture.name);
-    return texture;
+    ResourceName name;
+    glGenBuffers(1, &name);
+    return name;
 }
 
-void gst::GraphicsDeviceImpl::destroy_texture(TextureHandle texture)
+void gst::GraphicsDeviceImpl::destroy_texture(ResourceName name)
 {
-    glDeleteTextures(1, &texture.name);
+    glDeleteTextures(1, &name);
 }
 
-void gst::GraphicsDeviceImpl::bind_texture(TextureHandle texture, TextureTarget target, int unit)
+void gst::GraphicsDeviceImpl::bind_texture(ResourceName name, TextureTarget target, int unit)
 {
     glActiveTexture(GL_TEXTURE0 + unit);
-    glBindTexture(translator.translate(target), texture.name);
+    glBindTexture(translator.translate(target), name);
 }
 
 void gst::GraphicsDeviceImpl::texture_image_2d(TextureTarget target, Image const & image, TextureParam const & param)
@@ -367,34 +363,34 @@ void gst::GraphicsDeviceImpl::texture_parameters(TextureTarget target, TexturePa
     }
 }
 
-gst::FramebufferHandle gst::GraphicsDeviceImpl::create_framebuffer()
+gst::ResourceName gst::GraphicsDeviceImpl::create_framebuffer()
 {
-    FramebufferHandle framebuffer;
-    glGenFramebuffers(1, &framebuffer.name);
-    return framebuffer;
+    ResourceName name;
+    glGenFramebuffers(1, &name);
+    return name;
 }
 
-void gst::GraphicsDeviceImpl::destroy_framebuffer(FramebufferHandle framebuffer)
+void gst::GraphicsDeviceImpl::destroy_framebuffer(ResourceName name)
 {
-    glDeleteFramebuffers(1, &framebuffer.name);
+    glDeleteFramebuffers(1, &name);
 }
 
-void gst::GraphicsDeviceImpl::bind_framebuffer(FramebufferHandle framebuffer)
+void gst::GraphicsDeviceImpl::bind_framebuffer(ResourceName name)
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer.name);
+    glBindFramebuffer(GL_FRAMEBUFFER, name);
 }
 
-void gst::GraphicsDeviceImpl::framebuffer_texture_2d(TextureHandle texture)
+void gst::GraphicsDeviceImpl::framebuffer_texture_2d(ResourceName name)
 {
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture.name, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, name, 0);
 
     GLenum draw_buffers[] = { GL_COLOR_ATTACHMENT0 };
     glDrawBuffers(1, draw_buffers);
 }
 
-void gst::GraphicsDeviceImpl::framebuffer_renderbuffer(RenderbufferHandle renderbuffer)
+void gst::GraphicsDeviceImpl::framebuffer_renderbuffer(ResourceName name)
 {
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, renderbuffer.name);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, name);
 }
 
 std::vector<std::string> gst::GraphicsDeviceImpl::check_framebuffer_status() const
