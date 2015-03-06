@@ -13,13 +13,15 @@ namespace gst
     class LightNode;
     class RenderState;
 
+    // The responsibility of this class is to render all nodes in a node
+    // structure.
     class NodeRenderer : public NodeVisitor {
     public:
         NodeRenderer(
             std::shared_ptr<RenderState> render_state,
             std::shared_ptr<CameraNode> eye,
             std::vector<LightNode> lights);
-        void visit(ModelNode & node);
+        void visit(ModelNode & node) override;
     private:
         std::shared_ptr<RenderState> render_state;
         std::shared_ptr<CameraNode> eye;
