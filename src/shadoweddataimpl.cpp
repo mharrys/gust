@@ -156,6 +156,11 @@ unsigned int gst::ShadowedDataImpl::get_size_bytes() const
     return size_bytes;
 }
 
+std::shared_ptr<void> gst::ShadowedDataImpl::get_data() const
+{
+    return data;
+}
+
 std::shared_ptr<int> gst::ShadowedDataImpl::get_as_int() const
 {
     return std::static_pointer_cast<int>(data);

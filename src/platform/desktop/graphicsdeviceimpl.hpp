@@ -32,15 +32,7 @@ namespace gst
         std::string get_link_error(ResourceName name);
         void bind_attribute_location(ResourceName program_name, int index, std::string const & name);
         int get_uniform_location(ResourceName program_name, std::string const & name);
-        void uniform_int(int location, int value);
-        void uniform_float(int location, float value);
-        void uniform_vec2(int location, glm::vec2 const & value);
-        void uniform_vec3(int location, glm::vec3 const & value);
-        void uniform_vec4(int location, glm::vec4 const & value);
-        void uniform_int_array(int location, std::vector<int> const & value);
-        void uniform_float_array(int location, std::vector<float> const & value);
-        void uniform_matrix3(int location, int count, bool transpose, std::vector<float> const & value);
-        void uniform_matrix4(int location, int count, bool transpose, std::vector<float> const & value);
+        void uniform(int location, ShadowedData const & data);
         void use_program(ResourceName name);
 
         ResourceName create_buffer();

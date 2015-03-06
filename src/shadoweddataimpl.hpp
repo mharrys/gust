@@ -44,6 +44,7 @@ namespace gst
         DataType get_type() const;
         unsigned int get_count() const;
         unsigned int get_size_bytes() const;
+        std::shared_ptr<void> get_data() const;
         std::shared_ptr<int> get_as_int() const;
         std::shared_ptr<unsigned int> get_as_unsigned_int() const;
         std::shared_ptr<float> get_as_float() const;

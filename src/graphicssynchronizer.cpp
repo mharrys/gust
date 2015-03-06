@@ -146,53 +146,20 @@ void gst::GraphicsSynchronizer::update(Program & program)
     for (auto uniform : program.get_uniforms()) {
         const auto annotation = uniform.first;
         const auto location = device->get_uniform_location(program.name, annotation);
+
         if (location == -1) {
             logger->log(TRACE("could not get uniform location for \"" + annotation + "\""));
+            continue;
         }
+
         const auto data = uniform.second;
 
-        switch (data->get_type()) {
-        case DataType::NONE:
+        if (data->get_type() == DataType::NONE) {
             logger->log(TRACE("attempted to update uniform \"" + annotation + "\" with no allocated data"));
-            break;
-        case DataType::BOOL:
-            device->uniform_int(location, data->get_bool());
-            break;
-        case DataType::INT:
-            device->uniform_int(location, data->get_int());
-            break;
-        case DataType::FLOAT:
-            device->uniform_float(location, data->get_float());
-            break;
-        case DataType::VEC2:
-            device->uniform_vec2(location, data->get_vec2());
-            break;
-        case DataType::VEC3:
-            device->uniform_vec3(location, data->get_vec3());
-            break;
-        case DataType::VEC4:
-            device->uniform_vec4(location, data->get_vec4());
-            break;
-        case DataType::MAT3:
-            device->uniform_matrix3(location, 1, false, data->get_float_array());
-            break;
-        case DataType::MAT4:
-            device->uniform_matrix4(location, 1, false, data->get_float_array());
-            break;
-        case DataType::INT_ARRAY:
-            device->uniform_int_array(location, data->get_int_array());
-            break;
-        case DataType::FLOAT_ARRAY:
-            device->uniform_float_array(location, data->get_float_array());
-            break;
-        case DataType::UNSIGNED_INT:
-        case DataType::UNSIGNED_INT_ARRAY:
-        case DataType::VEC2_ARRAY:
-        case DataType::VEC3_ARRAY:
-        case DataType::VEC4_ARRAY:
-            logger->log(TRACE("unsupported data type for uniform \"" + annotation + "\""));
-            break;
+            continue;
         }
+
+        device->uniform(location, *data);
     }
     program.dirty = false;
 }

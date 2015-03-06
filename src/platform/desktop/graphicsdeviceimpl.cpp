@@ -169,49 +169,62 @@ int gst::GraphicsDeviceImpl::get_uniform_location(ResourceName program_name, std
     return glGetUniformLocation(program_name, name.c_str());
 }
 
-void gst::GraphicsDeviceImpl::uniform_int(int location, int value)
+void gst::GraphicsDeviceImpl::uniform(int location, ShadowedData const & data)
 {
-    glUniform1i(location, value);
-}
+    int const * rint = data.get_as_int().get();
+    unsigned int const * ruint = data.get_as_unsigned_int().get();
+    float const * rfloat = data.get_as_float().get();
 
-void gst::GraphicsDeviceImpl::uniform_float(int location, float value)
-{
-    glUniform1f(location, value);
-}
-
-void gst::GraphicsDeviceImpl::uniform_vec2(int location, glm::vec2 const & value)
-{
-    glUniform2f(location, value.x, value.y);
-}
-
-void gst::GraphicsDeviceImpl::uniform_vec3(int location, glm::vec3 const & value)
-{
-    glUniform3f(location, value.x, value.y, value.z);
-}
-
-void gst::GraphicsDeviceImpl::uniform_vec4(int location, glm::vec4 const & value)
-{
-    glUniform4f(location, value.x, value.y, value.z, value.w);
-}
-
-void gst::GraphicsDeviceImpl::uniform_int_array(int location, std::vector<int> const & value)
-{
-    glUniform1iv(location, value.size(), &value[0]);
-}
-
-void gst::GraphicsDeviceImpl::uniform_float_array(int location, std::vector<float> const & value)
-{
-    glUniform1fv(location, value.size(), &value[0]);
-}
-
-void gst::GraphicsDeviceImpl::uniform_matrix3(int location, int count, bool transpose, std::vector<float> const & value)
-{
-    glUniformMatrix3fv(location, count, transpose ? GL_TRUE : GL_FALSE, &value[0]);
-}
-
-void gst::GraphicsDeviceImpl::uniform_matrix4(int location, int count, bool transpose, std::vector<float> const & value)
-{
-    glUniformMatrix4fv(location, count, transpose ? GL_TRUE : GL_FALSE, &value[0]);
+    switch (data.get_type()) {
+    case DataType::NONE:
+        // ignore
+        break;
+    case DataType::BOOL:
+    case DataType::INT:
+        glUniform1i(location, rint[0]);
+        break;
+    case DataType::UNSIGNED_INT:
+        glUniform1ui(location, ruint[0]);
+        break;
+    case DataType::FLOAT:
+        glUniform1f(location, rfloat[0]);
+        break;
+    case DataType::VEC2:
+        glUniform2f(location, rfloat[0], rfloat[1]);
+        break;
+    case DataType::VEC3:
+        glUniform3f(location, rfloat[0], rfloat[1], rfloat[2]);
+        break;
+    case DataType::VEC4:
+        glUniform4f(location, rfloat[0], rfloat[1], rfloat[2], rfloat[3]);
+        break;
+    case DataType::MAT3:
+    case DataType::MAT3_ARRAY:
+        glUniformMatrix3fv(location, data.get_count(), GL_FALSE, rfloat);
+        break;
+    case DataType::MAT4:
+    case DataType::MAT4_ARRAY:
+        glUniformMatrix4fv(location, data.get_count(), GL_FALSE, rfloat);
+        break;
+    case DataType::INT_ARRAY:
+        glUniform1iv(location, data.get_count(), rint);
+        break;
+    case DataType::UNSIGNED_INT_ARRAY:
+        glUniform1uiv(location, data.get_count(), ruint);
+        break;
+    case DataType::FLOAT_ARRAY:
+        glUniform1fv(location, data.get_count(), rfloat);
+        break;
+    case DataType::VEC2_ARRAY:
+        glUniform2fv(location, data.get_count(), rfloat);
+        break;
+    case DataType::VEC3_ARRAY:
+        glUniform3fv(location, data.get_count(), rfloat);
+        break;
+    case DataType::VEC4_ARRAY:
+        glUniform4fv(location, data.get_count(), rfloat);
+        break;
+    }
 }
 
 void gst::GraphicsDeviceImpl::use_program(ResourceName name)
@@ -238,11 +251,7 @@ void gst::GraphicsDeviceImpl::bind_buffer(ResourceName name, BufferTarget target
 
 void gst::GraphicsDeviceImpl::buffer_data(BufferTarget target, ShadowedData const & data, DataUsage usage)
 {
-    // shadowed data stores its data in a vector and we just want a pointer to
-    // the first element of that vector, that is why we do not care about
-    // array data type and just pick float for all
-    auto raw_data = data.get_float_array();
-    glBufferData(translator.translate(target), data.get_size_bytes(), &raw_data[0], translator.translate(usage));
+    glBufferData(translator.translate(target), data.get_size_bytes(), data.get_data().get(), translator.translate(usage));
 }
 
 gst::ResourceName gst::GraphicsDeviceImpl::create_vertex_array()
