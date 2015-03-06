@@ -9,9 +9,11 @@ namespace gst
     class Image;
     class Logger;
 
+    // The responsibility of this class is to build a image.
     class ImageFactory {
     public:
         ImageFactory(std::shared_ptr<Logger> logger);
+        // Return created image from file.
         Image create_from_file(std::string const & path);
     private:
         std::shared_ptr<Logger> logger;
