@@ -41,7 +41,7 @@ void gst::NodeTransformUpdater::update_local_transform(Node & node)
 
 void gst::NodeTransformUpdater::update_world_transform(Node & node)
 {
-    if (auto parent = node.parent.lock()) {
+    if (auto parent = node.get_parent().lock()) {
         node.world_transform = parent->world_transform * node.local_transform;
     } else {
         node.world_transform = node.local_transform;
