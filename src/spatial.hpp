@@ -10,6 +10,7 @@ namespace gst
     class Spatial {
     public:
         Spatial();
+        virtual ~Spatial() = default;
 
         // Translate distance on axis in current orientation.
         void translate(float distance, glm::vec3 axis);
