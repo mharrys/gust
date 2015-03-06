@@ -2,8 +2,6 @@
 
 #include "gmock/gmock.h"
 
-#include <iostream>
-
 static std::vector<float> create_random_float_vector(
     unsigned int num_elements,
     int min,
