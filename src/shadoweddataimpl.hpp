@@ -3,6 +3,7 @@
 
 #include "shadoweddata.hpp"
 
+#include <array>
 #include <cstring>
 #include <memory>
 
@@ -21,10 +22,10 @@ namespace gst
         ShadowedData & operator=(glm::mat3 const & data);
         ShadowedData & operator=(glm::mat4 const & data);
 
-        void set_bool(bool bool_data);
-        void set_int(int int_data);
-        void set_unsigned_int(unsigned int int_data);
-        void set_float(float float_data);
+        void set_bool(bool data);
+        void set_int(int data);
+        void set_unsigned_int(unsigned int data);
+        void set_float(float data);
         void set_vec2(glm::vec2 const & data);
         void set_vec3(glm::vec3 const & data);
         void set_vec4(glm::vec4 const & data);
@@ -37,102 +38,55 @@ namespace gst
         void set_vec2_array(std::vector<glm::vec2> const & array_data);
         void set_vec3_array(std::vector<glm::vec3> const & array_data);
         void set_vec4_array(std::vector<glm::vec4> const & array_data);
-
-        bool get_bool() const;
-        int get_int() const;
-        unsigned int get_unsigned_int() const;
-        float get_float() const;
-        glm::vec2 get_vec2() const;
-        glm::vec3 get_vec3() const;
-        glm::vec4 get_vec4() const;
-        glm::mat3 get_mat3() const;
-        glm::mat4 get_mat4() const;
-
-        std::vector<int> get_int_array() const;
-        std::vector<unsigned int> get_unsigned_int_array() const;
-        std::vector<float> get_float_array() const;
-        std::vector<glm::vec2> get_vec2_array() const;
-        std::vector<glm::vec3> get_vec3_array() const;
-        std::vector<glm::vec4> get_vec4_array() const;
+        void set_mat3_array(std::vector<glm::mat3> const & array_data);
+        void set_mat4_array(std::vector<glm::mat4> const & array_data);
 
         DataType get_type() const;
         unsigned int get_count() const;
         unsigned int get_size_bytes() const;
+        std::shared_ptr<int> get_as_int() const;
+        std::shared_ptr<unsigned int> get_as_unsigned_int() const;
+        std::shared_ptr<float> get_as_float() const;
     private:
-        bool need_new_storage(DataType type, unsigned int size_bytes);
+        bool need_new_storage(DataType type, unsigned int count, unsigned int size_bytes);
         template<typename T>
-        void set_data(T const & new_data, DataType new_type);
+        void set_data(std::vector<T> const & new_data, DataType new_type);
         template<typename T>
-        void set_array_data(std::vector<T> const & new_data, DataType new_type);
-        template<typename T>
-        void set_vec_array(std::vector<T> const & new_data, unsigned int components, DataType type);
-        template<typename T>
-        std::vector<T> get_vec_array(unsigned int components) const;
+        void set_glm_data(std::vector<T> const & new_data, DataType new_type, unsigned int components);
 
-        std::shared_ptr<void> data;
         DataType type;
         unsigned int count;
         unsigned int size_bytes;
+        std::shared_ptr<void> data;
     };
 }
 
-
 template<typename T>
-void gst::ShadowedDataImpl::set_data(T const & new_data, DataType new_type)
-{
-    const auto new_size_bytes = sizeof(T);
-    if (need_new_storage(new_type, new_size_bytes)) {
-        data = std::make_shared<T>(new_data);
-        type = new_type;
-        count = 1;
-        size_bytes = new_size_bytes;
-    } else {
-        std::memcpy(data.get(), &new_data, size_bytes);
-    }
-}
-
-template<typename T>
-void gst::ShadowedDataImpl::set_array_data(std::vector<T> const & new_data, DataType new_type)
+void gst::ShadowedDataImpl::set_data(std::vector<T> const & new_data, DataType new_type)
 {
     const auto new_count = new_data.size();
-    const auto new_size_bytes = sizeof(T) * new_count;
-    if (need_new_storage(new_type, new_size_bytes)) {
-        data = std::make_shared<std::vector<T>>(new_data);
+    const auto new_size_bytes = new_count * sizeof(T);
+    if (need_new_storage(new_type, new_count, new_size_bytes)) {
         type = new_type;
         count = new_count;
         size_bytes = new_size_bytes;
-    } else {
-        auto & current = *std::static_pointer_cast<std::vector<T>>(data);
-        std::memcpy(current.data(), new_data.data(), size_bytes);
+        data = std::shared_ptr<T>(new T[count]);
     }
+    std::memcpy(data.get(), &new_data[0], size_bytes);
 }
 
 template<typename T>
-void gst::ShadowedDataImpl::set_vec_array(std::vector<T> const & new_data, unsigned int components, DataType type)
+void gst::ShadowedDataImpl::set_glm_data(std::vector<T> const & new_data, DataType new_type, unsigned int components)
 {
-    std::vector<float> v;
-    v.reserve(components * new_data.size());
-    for (auto data : new_data) {
-        for (unsigned int i = 0; i < components; i++) {
-            v.push_back(data[i]);
-        }
+    const auto new_count = new_data.size();
+    const auto new_size_bytes = new_count * sizeof(float) * components;
+    if (need_new_storage(new_type, new_count, new_size_bytes)) {
+        type = new_type;
+        count = new_count;
+        size_bytes = new_size_bytes;
+        data = std::shared_ptr<float>(new float[count * components]);
     }
-    set_array_data<float>(v, type);
-}
-
-template<typename T>
-std::vector<T> gst::ShadowedDataImpl::get_vec_array(unsigned int components) const
-{
-    std::vector<T> result;
-    auto v = get_float_array();
-    for (unsigned int i = 0; i < v.size() / components; i++) {
-        T data;
-        for (unsigned int j = 0; j < components; j++) {
-            data[j] = v[i * components + j];
-        }
-        result.push_back(data);
-    }
-    return result;
+    std::memcpy(data.get(), &new_data[0], size_bytes);
 }
 
 #endif
