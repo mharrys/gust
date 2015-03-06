@@ -71,24 +71,8 @@ namespace gst
         virtual void bind_attribute_location(ResourceName program_name, int index, std::string const & name) = 0;
         // Return uniform location from specified name.
         virtual int get_uniform_location(ResourceName program_name, std::string const & name) = 0;
-        // Modify value of int uniform.
-        virtual void uniform_int(int location, int value) = 0;
-        // Modify value of float uniform.
-        virtual void uniform_float(int location, float value) = 0;
-        // Modify value of vec2 uniform.
-        virtual void uniform_vec2(int location, glm::vec2 const & value) = 0;
-        // Modify value of vec3 uniform.
-        virtual void uniform_vec3(int location, glm::vec3 const & value) = 0;
-        // Modify value of vec4 uniform.
-        virtual void uniform_vec4(int location, glm::vec4 const & value) = 0;
-        // Modify value of int array uniform.
-        virtual void uniform_int_array(int location, std::vector<int> const & value) = 0;
-        // Modify value of float array uniform.
-        virtual void uniform_float_array(int location, std::vector<float> const & value) = 0;
-        // Modify value of matrix uniform.
-        virtual void uniform_matrix3(int location, int count, bool transpose, std::vector<float> const & value) = 0;
-        // Modify value of matrix uniform.
-        virtual void uniform_matrix4(int location, int count, bool transpose, std::vector<float> const & value) = 0;
+        // Modify value of uniform.
+        virtual void uniform(int location, ShadowedData const & data) = 0;
         // Install specified program object as part of current rendering state.
         virtual void use_program(ResourceName name) = 0;
 

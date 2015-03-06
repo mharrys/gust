@@ -25,11 +25,13 @@ namespace gst
         FLOAT_ARRAY,
         VEC2_ARRAY,
         VEC3_ARRAY,
-        VEC4_ARRAY
+        VEC4_ARRAY,
+        MAT3_ARRAY,
+        MAT4_ARRAY
     };
 
     // The responsibility of this class is to store data types with a single
-    // data structure. It must allow for changing the data types at runtime.
+    // data structure that can be changed at runtime.
     class ShadowedData {
     public:
         virtual ~ShadowedData() = default;
@@ -79,44 +81,24 @@ namespace gst
         virtual void set_vec3_array(std::vector<glm::vec3> const & array_data) = 0;
         // Set shadowed data to vector of vec4 values.
         virtual void set_vec4_array(std::vector<glm::vec4> const & array_data) = 0;
-        // Return current shadowed data interpreted as bool value.
-        virtual bool get_bool() const = 0;
-        // Return current shadowed data interpreted as int value.
-        virtual int get_int() const = 0;
-        // Return current shadowed data interpreted as unsigned int value.
-        virtual unsigned int get_unsigned_int() const = 0;
-        // Return current shadowed data interpreted as float value.
-        virtual float get_float() const = 0;
-        // Return current shadowed data interpreted as vec2 value.
-        virtual glm::vec2 get_vec2() const = 0;
-        // Return current shadowed data interpreted as vec3 value.
-        virtual glm::vec3 get_vec3() const = 0;
-        // Return current shadowed data interpreted as vec4 value.
-        virtual glm::vec4 get_vec4() const = 0;
-        // Return current shadowed data interpreted as mat3 value.
-        virtual glm::mat3 get_mat3() const = 0;
-        // Return current shadowed data interpreted as mat4 value.
-        virtual glm::mat4 get_mat4() const = 0;
-        // Return current shadowed data interpreted as vector of int values.
-        virtual std::vector<int> get_int_array() const = 0;
-        // Return current shadowed data interpreted as vector of unsigned int values.
-        virtual std::vector<unsigned int> get_unsigned_int_array() const = 0;
-        // Return current shadowed data interpreted as vector of float values.
-        virtual std::vector<float> get_float_array() const = 0;
-        // Return current shadowed data interpreted as vector of vec2 values.
-        virtual std::vector<glm::vec2> get_vec2_array() const = 0;
-        // Return current shadowed data interpreted as vector of vec3 values.
-        virtual std::vector<glm::vec3> get_vec3_array() const = 0;
-        // Return current shadowed data interpreted as vector of vec4 values.
-        virtual std::vector<glm::vec4> get_vec4_array() const = 0;
+        // Set shadowed data to vector of mat3 values.
+        virtual void set_mat3_array(std::vector<glm::mat3> const & array_data) = 0;
+        // Set shadowed data to vector of mat4 values.
+        virtual void set_mat4_array(std::vector<glm::mat4> const & array_data) = 0;
         // Return data type for current shadowed data.
         virtual DataType get_type() const = 0;
-        // Return number of elements stored in shadowed data. Note for glm
-        // data structure it is their internal number of elements that is counted
-        // as well as the number of elements in an array.
+        // Return number of elements that is stored of current data type.
         virtual unsigned int get_count() const = 0;
         // Return size of shadowed data in bytes.
         virtual unsigned int get_size_bytes() const = 0;
+        // Return shadowed data.
+        virtual std::shared_ptr<void> get_data() const = 0;
+        // Return shadowed data interpreted as integer.
+        virtual std::shared_ptr<int> get_as_int() const = 0;
+        // Return shadowed data interpreted as unsigned integer.
+        virtual std::shared_ptr<unsigned int> get_as_unsigned_int() const = 0;
+        // Return shadowed data interpreted as float.
+        virtual std::shared_ptr<float> get_as_float() const = 0;
     };
 }
 

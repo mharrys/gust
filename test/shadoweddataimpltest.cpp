@@ -2,6 +2,8 @@
 
 #include "gmock/gmock.h"
 
+#include <iostream>
+
 static std::vector<float> create_random_float_vector(
     unsigned int num_elements,
     int min,
@@ -34,25 +36,6 @@ static std::vector<unsigned int> create_random_unsigned_int_vector(
     return std::vector<unsigned int>(v.begin(), v.end());
 }
 
-template<typename T>
-static std::vector<T> create_random_vec_vector(
-    unsigned int num_elements,
-    int min,
-    int max,
-    unsigned int components)
-{
-    auto r = create_random_float_vector(num_elements, min, max);
-    std::vector<T> v;
-    for (unsigned int i = 0; i < r.size(); i += components) {
-        T data;
-        for (unsigned int j = 0; j < components; j++) {
-            data[j] = r[i];
-        }
-        v.push_back(data);
-    }
-    return v;
-}
-
 TEST(ShadowedDataImplTest, NoDataTypeWhenCreated)
 {
     gst::ShadowedDataImpl shadowed_data;
@@ -63,10 +46,11 @@ TEST(ShadowedDataImplTest, SetAndGetBool)
 {
     gst::ShadowedDataImpl shadowed_data;
 
-    for (auto expected : { false, true }) {
+    for (auto expected : { false, true, true, false }) {
         shadowed_data.set_bool(expected);
-        auto actual = shadowed_data.get_bool();
-        EXPECT_EQ(expected, actual);
+        EXPECT_EQ(1, shadowed_data.get_count());
+        auto actual = shadowed_data.get_as_int();
+        EXPECT_EQ(expected, *actual);
     }
 }
 
@@ -76,8 +60,9 @@ TEST(ShadowedDataImplTest, SetAndGetInt)
 
     for (auto expected : create_random_int_vector(1000, -10, 10)) {
         shadowed_data.set_int(expected);
-        auto actual = shadowed_data.get_int();
-        EXPECT_EQ(expected, actual);
+        EXPECT_EQ(1, shadowed_data.get_count());
+        auto actual = shadowed_data.get_as_int();
+        EXPECT_EQ(expected, *actual);
     }
 }
 
@@ -87,8 +72,9 @@ TEST(ShadowedDataImplTest, SetAndGetUnsignedInt)
 
     for (auto expected : create_random_unsigned_int_vector(1000, 10)) {
         shadowed_data.set_unsigned_int(expected);
-        auto actual = shadowed_data.get_unsigned_int();
-        EXPECT_EQ(expected, actual);
+        EXPECT_EQ(1, shadowed_data.get_count());
+        auto actual = shadowed_data.get_as_unsigned_int();
+        EXPECT_EQ(expected, *actual);
     }
 }
 
@@ -98,8 +84,9 @@ TEST(ShadowedDataImplTest, SetAndGetFloat)
 
     for (auto expected : create_random_float_vector(1000, -10.0f, 10.0f)) {
         shadowed_data.set_float(expected);
-        auto actual = shadowed_data.get_float();
-        EXPECT_FLOAT_EQ(expected, actual);
+        EXPECT_EQ(1, shadowed_data.get_count());
+        auto actual = shadowed_data.get_as_float();
+        EXPECT_FLOAT_EQ(expected, *actual);
     }
 }
 
@@ -110,11 +97,14 @@ TEST(ShadowedDataImplTest, SetAndGetVec2)
     auto test_data = {
         glm::vec2(),
         glm::vec2(1.0f, 2.0f),
+        // invoke copy values since same size as previous but with different values
+        glm::vec2(3.0f, 4.0f),
     };
 
     for (auto expected : test_data) {
         shadowed_data.set_vec2(expected);
-        auto actual = shadowed_data.get_vec2();
+        EXPECT_EQ(1, shadowed_data.get_count());
+        auto actual = glm::make_vec2(shadowed_data.get_as_float().get());
         EXPECT_EQ(expected, actual);
     }
 }
@@ -126,11 +116,14 @@ TEST(ShadowedDataImplTest, SetAndGetVec3)
     auto test_data = {
         glm::vec3(),
         glm::vec3(1.0f, 2.0f, 3.0f),
+        // invoke copy values since same size as previous but with different values
+        glm::vec3(4.0f, 5.0f, 6.0f),
     };
 
     for (auto expected : test_data) {
         shadowed_data.set_vec3(expected);
-        auto actual = shadowed_data.get_vec3();
+        EXPECT_EQ(1, shadowed_data.get_count());
+        auto actual = glm::make_vec3(shadowed_data.get_as_float().get());
         EXPECT_EQ(expected, actual);
     }
 }
@@ -142,11 +135,14 @@ TEST(ShadowedDataImplTest, SetAndGetVec4)
     auto test_data = {
         glm::vec4(),
         glm::vec4(1.0f, 2.0f, 3.0f, 4.0f),
+        // invoke copy values since same size as previous but with different values
+        glm::vec4(5.0f, 6.0f, 7.0f, 8.0f),
     };
 
     for (auto expected : test_data) {
         shadowed_data.set_vec4(expected);
-        auto actual = shadowed_data.get_vec4();
+        EXPECT_EQ(1, shadowed_data.get_count());
+        auto actual = glm::make_vec4(shadowed_data.get_as_float().get());
         EXPECT_EQ(expected, actual);
     }
 }
@@ -158,11 +154,14 @@ TEST(ShadowedDataImplTest, SetAndGetMat3)
     auto test_data = {
         glm::mat3(),
         glm::mat3(42.0f),
+        // invoke copy values since same size as previous but with different values
+        glm::mat3(24.0f),
     };
 
     for (auto expected : test_data) {
         shadowed_data.set_mat3(expected);
-        auto actual = shadowed_data.get_mat3();
+        EXPECT_EQ(1, shadowed_data.get_count());
+        auto actual = glm::make_mat3(shadowed_data.get_as_float().get());
         EXPECT_EQ(expected, actual);
     }
 }
@@ -174,11 +173,14 @@ TEST(ShadowedDataImplTest, SetAndGetMat4)
     auto test_data = {
         glm::mat4(),
         glm::mat4(42.0f),
+        // invoke copy values since same size as previous but with different values
+        glm::mat4(24.0f),
     };
 
     for (auto expected : test_data) {
         shadowed_data.set_mat4(expected);
-        auto actual = shadowed_data.get_mat4();
+        EXPECT_EQ(1, shadowed_data.get_count());
+        auto actual = glm::make_mat4(shadowed_data.get_as_float().get());
         EXPECT_EQ(expected, actual);
     }
 }
@@ -191,14 +193,16 @@ TEST(ShadowedDataImplTest, SetAndGetIntArray)
         std::vector<int>{},
         std::vector<int>{ 42 },
         create_random_int_vector(1000, -10, 10),
-        // invoke copy values since same size as previous
+        // invoke copy values since same size as previous but with different values
         create_random_int_vector(1000, -10, 10),
     };
 
     for (auto expected : test_data) {
         shadowed_data.set_int_array(expected);
-        auto actual = shadowed_data.get_int_array();
-        EXPECT_THAT(expected, ::testing::ContainerEq(actual));
+        auto * actual = shadowed_data.get_as_int().get();
+        for (unsigned int i = 0; i < expected.size(); i++) {
+            EXPECT_EQ(expected[i], actual[i]);
+        }
     }
 }
 
@@ -210,14 +214,16 @@ TEST(ShadowedDataImplTest, SetAndGetUnsignedIntArray)
         std::vector<unsigned int>{},
         std::vector<unsigned int>{ 42 },
         create_random_unsigned_int_vector(1000, 10),
-        // invoke copy values since same size as previous
+        // invoke copy values since same size as previous but with different values
         create_random_unsigned_int_vector(1000, 10),
     };
 
     for (auto expected : test_data) {
         shadowed_data.set_unsigned_int_array(expected);
-        auto actual = shadowed_data.get_unsigned_int_array();
-        EXPECT_THAT(expected, ::testing::ContainerEq(actual));
+        auto * actual = shadowed_data.get_as_unsigned_int().get();
+        for (unsigned int i = 0; i < expected.size(); i++) {
+            EXPECT_EQ(expected[i], actual[i]);
+        }
     }
 }
 
@@ -229,14 +235,46 @@ TEST(ShadowedDataImplTest, SetAndGetFloatArray)
         std::vector<float>{},
         std::vector<float>{ 42.0f },
         create_random_float_vector(1000, -10.0f, 10.0f),
-        // invoke copy values since same size as previous
+        // invoke copy values since same size as previous but with different values
         create_random_float_vector(1000, -10.0f, 10.0f),
     };
 
     for (auto expected : test_data) {
         shadowed_data.set_float_array(expected);
-        auto actual = shadowed_data.get_float_array();
-        EXPECT_THAT(expected, ::testing::ContainerEq(actual));
+        auto * actual = shadowed_data.get_as_float().get();
+        for (unsigned int i = 0; i < expected.size(); i++) {
+            EXPECT_FLOAT_EQ(expected[i], actual[i]);
+        }
+    }
+}
+
+template<typename T>
+static std::vector<T> create_random_glm_vector(
+    unsigned int num_elements,
+    int min,
+    int max,
+    unsigned int components)
+{
+    auto r = create_random_float_vector(num_elements, min, max);
+    std::vector<T> v;
+    for (unsigned int i = 0; i < r.size(); i += components) {
+        T data;
+        for (unsigned int j = 0; j < components; j++) {
+            glm::value_ptr(data)[j] = r[i];
+        }
+        v.push_back(data);
+    }
+    return v;
+}
+
+template<typename T>
+static void compare_glm_array(std::vector<T> expected, unsigned int components, float * actual)
+{
+    for (unsigned int i = 0; i < expected.size(); i++) {
+        for (unsigned int j = 0; j < components; j++) {
+            auto index = i * components + j;
+            EXPECT_FLOAT_EQ(glm::value_ptr(expected[i])[j], actual[index]);
+        }
     }
 }
 
@@ -247,15 +285,15 @@ TEST(ShadowedDataImplTest, SetAndGetVec2Array)
     auto test_data = {
         std::vector<glm::vec2>{},
         std::vector<glm::vec2>{ glm::vec2(1.0f, 2.0f) },
-        create_random_vec_vector<glm::vec2>(1000, -10.0f, 10.0f, 2),
-        // invoke copy values since same size as previous
-        create_random_vec_vector<glm::vec2>(1000, -10.0f, 10.0f, 2),
+        create_random_glm_vector<glm::vec2>(1000, -10.0f, 10.0f, 2),
+        // invoke copy values since same size as previous but with different values
+        create_random_glm_vector<glm::vec2>(1000, -10.0f, 10.0f, 2),
     };
 
     for (auto expected : test_data) {
         shadowed_data.set_vec2_array(expected);
-        auto actual = shadowed_data.get_vec2_array();
-        EXPECT_THAT(expected, ::testing::ContainerEq(actual));
+        auto * actual = shadowed_data.get_as_float().get();
+        compare_glm_array(expected, 2, actual);
     }
 }
 
@@ -266,15 +304,15 @@ TEST(ShadowedDataImplTest, SetAndGetVec3Array)
     auto test_data = {
         std::vector<glm::vec3>{},
         std::vector<glm::vec3>{ glm::vec3(1.0f, 2.0f, 3.0f) },
-        create_random_vec_vector<glm::vec3>(1000, -10.0f, 10.0f, 3),
-        // invoke copy values since same size as previous
-        create_random_vec_vector<glm::vec3>(1000, -10.0f, 10.0f, 3),
+        create_random_glm_vector<glm::vec3>(1000, -10.0f, 10.0f, 3),
+        // invoke copy values since same size as previous but with different values
+        create_random_glm_vector<glm::vec3>(1000, -10.0f, 10.0f, 3),
     };
 
     for (auto expected : test_data) {
         shadowed_data.set_vec3_array(expected);
-        auto actual = shadowed_data.get_vec3_array();
-        EXPECT_THAT(expected, ::testing::ContainerEq(actual));
+        auto * actual = shadowed_data.get_as_float().get();
+        compare_glm_array(expected, 3, actual);
     }
 }
 
@@ -285,15 +323,73 @@ TEST(ShadowedDataImplTest, SetAndGetVec4Array)
     auto test_data = {
         std::vector<glm::vec4>{},
         std::vector<glm::vec4>{ glm::vec4(1.0f, 2.0f, 3.0f, 4.0f) },
-        create_random_vec_vector<glm::vec4>(1000, -10.0f, 10.0f, 4),
-        // invoke copy values since same size as previous
-        create_random_vec_vector<glm::vec4>(1000, -10.0f, 10.0f, 4),
+        create_random_glm_vector<glm::vec4>(1000, -10.0f, 10.0f, 4),
+        // invoke copy values since same size as previous but with different values
+        create_random_glm_vector<glm::vec4>(1000, -10.0f, 10.0f, 4),
     };
 
     for (auto expected : test_data) {
         shadowed_data.set_vec4_array(expected);
-        auto actual = shadowed_data.get_vec4_array();
-        EXPECT_THAT(expected, ::testing::ContainerEq(actual));
+        auto * actual = shadowed_data.get_as_float().get();
+        compare_glm_array(expected, 4, actual);
+    }
+}
+
+template<typename T>
+static std::vector<T> create_random_mat_vector(
+    unsigned int num_elements,
+    int min,
+    int max,
+    unsigned int components)
+{
+    auto r = create_random_float_vector(num_elements, min, max);
+    std::vector<T> v;
+    for (unsigned int i = 0; i < r.size(); i += components) {
+        T data;
+        for (unsigned int j = 0; j < components; j++) {
+            glm::value_ptr(data)[j] = r[i];
+            //data[j] = r[i];
+        }
+        v.push_back(data);
+    }
+    return v;
+}
+
+TEST(ShadowedDataImplTest, SetAndGetMat3Array)
+{
+    gst::ShadowedDataImpl shadowed_data;
+
+    auto test_data = {
+        std::vector<glm::mat3>{},
+        std::vector<glm::mat3>{ glm::mat3(42.0f) },
+        create_random_glm_vector<glm::mat3>(1000, -10.0f, 10.0f, 9),
+        // invoke copy values since same size as previous but with different values
+        create_random_glm_vector<glm::mat3>(1000, -10.0f, 10.0f, 9),
+    };
+
+    for (auto expected : test_data) {
+        shadowed_data.set_mat3_array(expected);
+        auto * actual = shadowed_data.get_as_float().get();
+        compare_glm_array(expected, 9, actual);
+    }
+}
+
+TEST(ShadowedDataImplTest, SetAndGetMat4Array)
+{
+    gst::ShadowedDataImpl shadowed_data;
+
+    auto test_data = {
+        std::vector<glm::mat4>{},
+        std::vector<glm::mat4>{ glm::mat4(42.0f) },
+        create_random_glm_vector<glm::mat4>(1000, -10.0f, 10.0f, 16),
+        // invoke copy values since same size as previous but with different values
+        create_random_glm_vector<glm::mat4>(1000, -10.0f, 10.0f, 16),
+    };
+
+    for (auto expected : test_data) {
+        shadowed_data.set_mat4_array(expected);
+        auto * actual = shadowed_data.get_as_float().get();
+        compare_glm_array(expected, 16, actual);
     }
 }
 
@@ -345,4 +441,10 @@ TEST(ShadowedDataImplTest, DataTypeReflectsDataStorage)
 
     shadowed_data.set_vec4_array({});
     EXPECT_EQ(gst::DataType::VEC4_ARRAY, shadowed_data.get_type());
+
+    shadowed_data.set_mat3_array({});
+    EXPECT_EQ(gst::DataType::MAT3_ARRAY, shadowed_data.get_type());
+
+    shadowed_data.set_mat4_array({});
+    EXPECT_EQ(gst::DataType::MAT4_ARRAY, shadowed_data.get_type());
 }
