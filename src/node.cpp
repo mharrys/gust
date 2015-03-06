@@ -11,8 +11,3 @@ gst::Node::Node(std::string name)
     : name(name)
 {
 }
-
-void gst::Node::accept(NodeVisitor & visitor)
-{
-    visitor.visit(*this);
-}

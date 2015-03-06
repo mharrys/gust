@@ -16,7 +16,7 @@ namespace gst
         Node();
         Node(std::string name);
         virtual ~Node() = default;
-        virtual void accept(NodeVisitor & visitor);
+        virtual void accept(NodeVisitor & visitor) = 0;
 
         std::weak_ptr<Node> parent;
 
