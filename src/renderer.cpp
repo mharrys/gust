@@ -34,7 +34,7 @@ void gst::Renderer::render(Scene & scene)
     LightNodeCollector collector;
     scene.traverse(collector);
 
-    NodeRenderer renderer(render_state, scene.eye, std::move(collector.get_lights()));
+    NodeRenderer renderer(render_state, scene.get_eye(), std::move(collector.get_lights()));
     scene.traverse(renderer);
 }
 

@@ -8,24 +8,24 @@
 
 namespace gst
 {
-    class Camera;
-    class CameraNode;
-    class GroupNode;
-    class NodeVisitor;
-
+    // The responsibility of this class is to associate a collection of nodes
+    // and a camera as a scene.
     class Scene {
     public:
         Scene() = default;
-        Scene(std::shared_ptr<Camera> camera);
-
+        Scene(std::shared_ptr<CameraNode> eye);
+        // Add scene node to root.
         void add(std::shared_ptr<Node> node);
+        // Remove scene node from root.
         void remove(std::shared_ptr<Node> node);
-
+        // Traverse scene and perform a node transform update on all nodes.
         void update();
+        // Traverse scene and perform a specified operation on all nodes.
         void traverse(NodeVisitor & visitor);
-
-        std::shared_ptr<CameraNode> eye;
+        // Return scene eye/viewpoint.
+        std::shared_ptr<CameraNode> get_eye() const;
     private:
+        std::shared_ptr<CameraNode> eye;
         std::shared_ptr<GroupNode> root;
         NodeTransformUpdater updater;
     };
