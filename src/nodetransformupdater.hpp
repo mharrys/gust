@@ -5,13 +5,14 @@
 
 namespace gst
 {
-    // TODO: update transform only when flagged
+    // The responsibility of this class is to update the spatial matrices for
+    // all nodes in a node structure.
     class NodeTransformUpdater : public NodeVisitor {
     public:
-        void visit(CameraNode & node);
-        void visit(GroupNode & node);
-        void visit(LightNode & node);
-        void visit(ModelNode & node);
+        void visit(CameraNode & node) override;
+        void visit(GroupNode & node) override;
+        void visit(LightNode & node) override;
+        void visit(ModelNode & node) override;
     private:
         void update(Node & node);
         void update_local_transform(Node & node);
