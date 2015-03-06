@@ -27,10 +27,6 @@ gst::NodeRenderer::NodeRenderer(
 
 void gst::NodeRenderer::visit(ModelNode & node)
 {
-    if (!node.enabled) {
-        return;
-    }
-
     MatrixState matrices;
     matrices.model = node.world_transform;
     matrices.view = eye->get_view();
@@ -42,7 +38,7 @@ void gst::NodeRenderer::visit(ModelNode & node)
         auto light = lights[i].get_light();
         // special uniforms
         auto uniforms = light->get_uniforms();
-        uniforms->get_uniform("enabled") = lights[i].enabled;
+        uniforms->get_uniform("enabled") = light->get_enabled();
         uniforms->get_uniform("position") = matrices.view * glm::vec4(lights[i].position, 1.0f);
         // special case if annotation array
         if (auto formatter = std::dynamic_pointer_cast<AnnotationArray>(uniforms->get_formatter())) {

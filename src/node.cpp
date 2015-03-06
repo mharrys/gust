@@ -8,8 +8,7 @@ gst::Node::Node()
 }
 
 gst::Node::Node(std::string name)
-    : name(name),
-      enabled(true)
+    : name(name)
 {
 }
 

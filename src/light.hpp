@@ -13,10 +13,15 @@ namespace gst
     class Light {
     public:
         Light(std::shared_ptr<UniformCollection> uniforms);
+        // Set light enabled/disabled.
+        void set_enabled(bool enabled);
         // Return uniforms for this light.
         std::shared_ptr<UniformCollection> get_uniforms() const;
+        // Return true if enabled, false otherwise.
+        bool get_enabled() const;
     private:
         std::shared_ptr<UniformCollection> uniforms;
+        bool enabled;
     };
 }
 

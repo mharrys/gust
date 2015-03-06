@@ -5,10 +5,8 @@
 void gst::GroupNode::accept(NodeVisitor & visitor)
 {
     visitor.visit(*this);
-    if (enabled) {
-        for (auto child : children) {
-            child->accept(visitor);
-        }
+    for (auto child : children) {
+        child->accept(visitor);
     }
 }
 

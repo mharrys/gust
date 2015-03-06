@@ -20,7 +20,6 @@ namespace gst
         std::weak_ptr<Node> parent;
 
         std::string name;
-        bool enabled;
     };
 }
 
