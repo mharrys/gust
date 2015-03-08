@@ -337,7 +337,7 @@ void gst::GraphicsDeviceImpl::bind_texture(ResourceName name, TextureTarget targ
     glBindTexture(translator.translate(target), name);
 }
 
-void gst::GraphicsDeviceImpl::update_texture_storage(Texture2d const & texture)
+void gst::GraphicsDeviceImpl::update_texture_storage(Texture2D const & texture)
 {
     const auto target = translator.translate(texture.get_target());
     const auto internal = translator.translate(texture.get_internal_format());

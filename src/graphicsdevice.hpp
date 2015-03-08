@@ -19,7 +19,7 @@ namespace gst
     class Image;
     class Resolution;
     class ShadowedData;
-    class Texture2d;
+    class Texture2D;
     class TextureCube;
     class Viewport;
 
@@ -116,7 +116,7 @@ namespace gst
         // Bind texture object.
         virtual void bind_texture(ResourceName name, TextureTarget target, int unit) = 0;
         // Update texture storage for 2-dimensional texture.
-        virtual void update_texture_storage(Texture2d const & texture) = 0;
+        virtual void update_texture_storage(Texture2D const & texture) = 0;
         // Update texture storage for texture cube.
         virtual void update_texture_storage(TextureCube const & texture) = 0;
         // Update texture parameters.

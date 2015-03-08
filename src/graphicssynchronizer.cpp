@@ -197,7 +197,7 @@ void gst::GraphicsSynchronizer::update(Texture & texture)
 
     switch (texture.get_target()) {
     case TextureTarget::TEXTURE_2D:
-        device->update_texture_storage(static_cast<Texture2d&>(texture));
+        device->update_texture_storage(static_cast<Texture2D&>(texture));
         break;
     case TextureTarget::TEXTURE_CUBE:
         device->update_texture_storage(static_cast<TextureCube&>(texture));
