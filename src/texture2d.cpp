@@ -1,14 +1,10 @@
 #include "texture2d.hpp"
 
-#include "image.hpp"
-
 gst::Texture2d::Texture2d(
     Resolution size,
-    std::vector<unsigned char> const & data,
-    TextureParam const & param)
+    std::vector<unsigned char> const & data)
     : size(size),
-      data(data),
-      param(param)
+      data(data)
 {
     needs_update();
 }
@@ -25,12 +21,6 @@ void gst::Texture2d::set_data(std::vector<unsigned char> const & data)
     needs_update();
 }
 
-void gst::Texture2d::set_param(TextureParam const & param)
-{
-    this->param = param;
-    needs_update();
-}
-
 gst::TextureTarget gst::Texture2d::get_target() const
 {
     return TextureTarget::TEXTURE_2D;
@@ -44,9 +34,4 @@ gst::Resolution gst::Texture2d::get_size() const
 std::vector<unsigned char> gst::Texture2d::get_data() const
 {
     return data;
-}
-
-gst::TextureParam gst::Texture2d::get_param() const
-{
-    return param;
 }

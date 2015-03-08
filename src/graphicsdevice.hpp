@@ -7,7 +7,7 @@
 #include "graphicsresource.hpp"
 #include "renderbuffer.hpp"
 #include "shadertype.hpp"
-#include "textureparam.hpp"
+#include "texture.hpp"
 #include "vertexarray.hpp"
 
 #include <string>
@@ -19,6 +19,8 @@ namespace gst
     class Image;
     class Resolution;
     class ShadowedData;
+    class Texture2d;
+    class TextureCube;
     class Viewport;
 
     // The responsibility of this class is to interact with a graphics card.
@@ -113,10 +115,12 @@ namespace gst
         virtual void destroy_texture(ResourceName name) = 0;
         // Bind texture object.
         virtual void bind_texture(ResourceName name, TextureTarget target, int unit) = 0;
-        // Specify 2D texture image.
-        virtual void texture_image_2d(TextureTarget target, Image const & image, TextureParam const & param) = 0;
-        // Set texture parameters.
-        virtual void texture_parameters(TextureTarget target, TextureParam const & param) = 0;
+        // Update texture storage for 2-dimensional texture.
+        virtual void update_texture_storage(Texture2d const & texture) = 0;
+        // Update texture storage for texture cube.
+        virtual void update_texture_storage(TextureCube const & texture) = 0;
+        // Update texture parameters.
+        virtual void update_texture_parameters(Texture const & texture) = 0;
 
         // Create new framebuffer object.
         virtual ResourceName create_framebuffer() = 0;

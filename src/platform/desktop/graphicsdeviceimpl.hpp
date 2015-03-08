@@ -55,8 +55,9 @@ namespace gst
         ResourceName create_texture();
         void destroy_texture(ResourceName name);
         void bind_texture(ResourceName name, TextureTarget target, int unit);
-        void texture_image_2d(TextureTarget target, Image const & image, TextureParam const & param);
-        void texture_parameters(TextureTarget target, TextureParam const & param);
+        void update_texture_storage(Texture2d const & texture);
+        void update_texture_storage(TextureCube const & texture);
+        void update_texture_parameters(Texture const & texture);
 
         ResourceName create_framebuffer();
         void destroy_framebuffer(ResourceName name);

@@ -9,7 +9,8 @@
 #include "shadoweddata.hpp"
 #include "shader.hpp"
 #include "program.hpp"
-#include "texture.hpp"
+#include "texture2d.hpp"
+#include "texturecube.hpp"
 #include "vertexarray.hpp"
 
 gst::GraphicsSynchronizer::GraphicsSynchronizer(
@@ -194,11 +195,16 @@ void gst::GraphicsSynchronizer::update(Texture & texture)
         return;
     }
 
-    const auto target = texture.get_target();
-    const auto param = texture.get_param();
-    const auto image = gst::Image(texture.get_size(), texture.get_data());
-    device->texture_parameters(target, param);
-    device->texture_image_2d(target, image, param);
+    switch (texture.get_target()) {
+    case TextureTarget::TEXTURE_2D:
+        device->update_texture_storage(static_cast<Texture2d&>(texture));
+        break;
+    case TextureTarget::TEXTURE_CUBE:
+        device->update_texture_storage(static_cast<TextureCube&>(texture));
+        break;
+    }
+
+    device->update_texture_parameters(texture);
     texture.dirty = false;
 }
 

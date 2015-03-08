@@ -3,6 +3,9 @@
 #include "color.hpp"
 #include "image.hpp"
 #include "shadoweddata.hpp"
+#include "texture.hpp"
+#include "texture2d.hpp"
+#include "texturecube.hpp"
 #include "viewport.hpp"
 
 void gst::GraphicsDeviceImpl::clear(bool color, bool depth)
@@ -334,36 +337,69 @@ void gst::GraphicsDeviceImpl::bind_texture(ResourceName name, TextureTarget targ
     glBindTexture(translator.translate(target), name);
 }
 
-void gst::GraphicsDeviceImpl::texture_image_2d(TextureTarget target, Image const & image, TextureParam const & param)
+void gst::GraphicsDeviceImpl::update_texture_storage(Texture2d const & texture)
 {
-    auto size = image.get_size();
+    const auto target = translator.translate(texture.get_target());
+    const auto internal = translator.translate(texture.get_internal_format());
+    const auto source = translator.translate(texture.get_source_format());
+    const auto size = texture.get_size();
 
     glTexImage2D(
-        translator.translate(target),
+        target,
         0,
-        translator.translate(param.internal_format),
+        internal,
         size.get_width(),
         size.get_height(),
         0,
-        translator.translate(param.source_format),
+        source,
         GL_UNSIGNED_BYTE,
-        &image.get_data()[0]
+        &texture.get_data()[0]
     );
 }
 
-void gst::GraphicsDeviceImpl::texture_parameters(TextureTarget target, TextureParam const & param)
+void gst::GraphicsDeviceImpl::update_texture_storage(TextureCube const & texture)
 {
-    auto tex_target = translator.translate(target);
-    auto min_filter = translator.translate(param.min_filter);
-    auto mag_filter = translator.translate(param.mag_filter);
-    auto wrap_s = translator.translate(param.wrap_s);
-    auto wrap_t = translator.translate(param.wrap_t);
-    auto depth_compare = translator.translate(param.depth_compare);
+    const auto internal = translator.translate(texture.get_internal_format());
+    const auto source = translator.translate(texture.get_source_format());
+    const auto size = texture.get_size();
+
+    auto image = [&texture, internal, source, size](GLenum target, CubeFace face)
+    {
+        glTexImage2D(
+            target,
+            0,
+            internal,
+            size.get_width(),
+            size.get_height(),
+            0,
+            source,
+            GL_UNSIGNED_BYTE,
+            &texture.get_data(face)[0]
+        );
+    };
+
+    image(GL_TEXTURE_CUBE_MAP_POSITIVE_X, CubeFace::POSITIVE_X);
+    image(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, CubeFace::NEGATIVE_X);
+    image(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, CubeFace::POSITIVE_Y);
+    image(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, CubeFace::NEGATIVE_Y);
+    image(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, CubeFace::POSITIVE_Z);
+    image(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, CubeFace::NEGATIVE_Z);
+}
+
+void gst::GraphicsDeviceImpl::update_texture_parameters(Texture const & texture)
+{
+    auto tex_target = translator.translate(texture.get_target());
+    auto min_filter = translator.translate(texture.get_min_filter());
+    auto mag_filter = translator.translate(texture.get_mag_filter());
+    auto wrap_s = translator.translate(texture.get_wrap_s());
+    auto wrap_t = translator.translate(texture.get_wrap_t());
+    auto depth_compare = translator.translate(texture.get_depth_compare());
 
     glTexParameteri(tex_target, GL_TEXTURE_MIN_FILTER, min_filter);
     glTexParameteri(tex_target, GL_TEXTURE_MAG_FILTER, mag_filter);
     glTexParameteri(tex_target, GL_TEXTURE_WRAP_S, wrap_s);
     glTexParameteri(tex_target, GL_TEXTURE_WRAP_T, wrap_t);
+
     if (depth_compare == -1) {
         glTexParameteri(tex_target, GL_TEXTURE_COMPARE_MODE, GL_NONE);
     } else {

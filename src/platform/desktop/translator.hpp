@@ -7,7 +7,7 @@
 #include "gl.hpp"
 #include "shader.hpp"
 #include "renderbufferformat.hpp"
-#include "textureparam.hpp"
+#include "texture.hpp"
 #include "vertexarray.hpp"
 
 namespace gst
