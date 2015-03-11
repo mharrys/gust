@@ -209,6 +209,8 @@ GLenum gst::Translator::translate(TextureTarget target) const
     switch (target) {
     case TextureTarget::TEXTURE_2D:
         return GL_TEXTURE_2D;
+    case TextureTarget::TEXTURE_CUBE:
+        return GL_TEXTURE_CUBE_MAP;
     default:
         return 0;
     }
