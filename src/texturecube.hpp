@@ -18,6 +18,16 @@ namespace gst
         NEGATIVE_Z
     };
 
+    // Homemade enum iterator.
+    const std::array<CubeFace, 6> CUBE_FACES = {
+        CubeFace::POSITIVE_X,
+        CubeFace::NEGATIVE_X,
+        CubeFace::POSITIVE_Y,
+        CubeFace::NEGATIVE_Y,
+        CubeFace::POSITIVE_Z,
+        CubeFace::NEGATIVE_Z
+    };
+
     typedef std::array<TextureData, 6> CubeData;
 
     // The responsibility of this class is to mirror a texture cube map
