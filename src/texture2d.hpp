@@ -4,27 +4,27 @@
 #include "resolution.hpp"
 #include "texture.hpp"
 
-#include <memory>
-
 namespace gst
 {
-    class Texture2d : public Texture {
+    // The responsibility of this class is to mirror a 2-dimensional texture.
+    class Texture2D : public Texture {
     public:
-        Texture2d(
+        Texture2D(
             Resolution size,
-            std::vector<unsigned char> const & data,
-            TextureParam const & param);
+            TextureData const & data);
+        // Set storage size.
         void set_size(Resolution size);
-        void set_data(std::vector<unsigned char> const & data);
-        void set_param(TextureParam const & param);
-        TextureTarget get_target() const;
+        // Set storage data.
+        void set_data(TextureData const & data);
+
+        TextureTarget get_target() const override;
+        // Return storage size.
         Resolution get_size() const;
-        std::vector<unsigned char> get_data() const;
-        TextureParam get_param() const;
+        // Return storage data.
+        TextureData get_data() const;
     private:
         Resolution size;
-        std::vector<unsigned char> data;
-        TextureParam param;
+        TextureData data;
     };
 }
 

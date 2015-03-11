@@ -1,8 +1,16 @@
 #include "graphicsdeviceimpl.hpp"
 
+#include "buffer.hpp"
+#include "blendmode.hpp"
 #include "color.hpp"
+#include "cullface.hpp"
+#include "framebufferattachment.hpp"
 #include "image.hpp"
+#include "renderbuffer.hpp"
 #include "shadoweddata.hpp"
+#include "shadertype.hpp"
+#include "texture2d.hpp"
+#include "texturecube.hpp"
 #include "viewport.hpp"
 
 void gst::GraphicsDeviceImpl::clear(bool color, bool depth)
@@ -334,36 +342,53 @@ void gst::GraphicsDeviceImpl::bind_texture(ResourceName name, TextureTarget targ
     glBindTexture(translator.translate(target), name);
 }
 
-void gst::GraphicsDeviceImpl::texture_image_2d(TextureTarget target, Image const & image, TextureParam const & param)
+void gst::GraphicsDeviceImpl::update_texture_storage(
+    TextureFormat internal_format,
+    PixelFormat source_format,
+    Resolution size,
+    std::vector<unsigned char> data)
 {
-    auto size = image.get_size();
-
-    glTexImage2D(
-        translator.translate(target),
-        0,
-        translator.translate(param.internal_format),
+    update_texture_storage(
+        GL_TEXTURE_2D,
+        translator.translate(internal_format),
+        translator.translate(source_format),
         size.get_width(),
         size.get_height(),
-        0,
-        translator.translate(param.source_format),
-        GL_UNSIGNED_BYTE,
-        &image.get_data()[0]
+        data
     );
 }
 
-void gst::GraphicsDeviceImpl::texture_parameters(TextureTarget target, TextureParam const & param)
+void gst::GraphicsDeviceImpl::update_texture_storage(
+    TextureFormat internal_format,
+    PixelFormat source_format,
+    Resolution size,
+    std::vector<unsigned char> data,
+    CubeFace face)
 {
-    auto tex_target = translator.translate(target);
-    auto min_filter = translator.translate(param.min_filter);
-    auto mag_filter = translator.translate(param.mag_filter);
-    auto wrap_s = translator.translate(param.wrap_s);
-    auto wrap_t = translator.translate(param.wrap_t);
-    auto depth_compare = translator.translate(param.depth_compare);
+    update_texture_storage(
+        translator.translate(face),
+        translator.translate(internal_format),
+        translator.translate(source_format),
+        size.get_width(),
+        size.get_height(),
+        data
+    );
+}
+
+void gst::GraphicsDeviceImpl::update_texture_parameters(Texture const & texture)
+{
+    auto tex_target = translator.translate(texture.get_target());
+    auto min_filter = translator.translate(texture.get_min_filter());
+    auto mag_filter = translator.translate(texture.get_mag_filter());
+    auto wrap_s = translator.translate(texture.get_wrap_s());
+    auto wrap_t = translator.translate(texture.get_wrap_t());
+    auto depth_compare = translator.translate(texture.get_depth_compare());
 
     glTexParameteri(tex_target, GL_TEXTURE_MIN_FILTER, min_filter);
     glTexParameteri(tex_target, GL_TEXTURE_MAG_FILTER, mag_filter);
     glTexParameteri(tex_target, GL_TEXTURE_WRAP_S, wrap_s);
     glTexParameteri(tex_target, GL_TEXTURE_WRAP_T, wrap_t);
+
     if (depth_compare == -1) {
         glTexParameteri(tex_target, GL_TEXTURE_COMPARE_MODE, GL_NONE);
     } else {
@@ -389,17 +414,21 @@ void gst::GraphicsDeviceImpl::bind_framebuffer(ResourceName name)
     glBindFramebuffer(GL_FRAMEBUFFER, name);
 }
 
-void gst::GraphicsDeviceImpl::framebuffer_texture_2d(ResourceName name)
+void gst::GraphicsDeviceImpl::attach_to_framebuffer(ResourceName attachment, AttachmentType type, AttachmentPoint point)
 {
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, name, 0);
+    auto attachment_type = translator.translate(type);
+    auto attachment_point = translator.translate(point);
 
-    GLenum draw_buffers[] = { GL_COLOR_ATTACHMENT0 };
-    glDrawBuffers(1, draw_buffers);
-}
+    if (type == AttachmentType::RENDERBUFFER) {
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, attachment_point, GL_RENDERBUFFER, attachment);
+    } else {
+        glFramebufferTexture2D(GL_FRAMEBUFFER, attachment_point, attachment_type, attachment, 0);
+    }
 
-void gst::GraphicsDeviceImpl::framebuffer_renderbuffer(ResourceName name)
-{
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, name);
+    if (point == AttachmentPoint::COLOR) {
+        GLenum draw_buffers[] = { GL_COLOR_ATTACHMENT0 };
+        glDrawBuffers(1, draw_buffers);
+    }
 }
 
 std::vector<std::string> gst::GraphicsDeviceImpl::check_framebuffer_status() const
@@ -479,4 +508,25 @@ std::vector<std::string> gst::GraphicsDeviceImpl::get_errors() const
     }
 
     return errors;
+}
+
+void gst::GraphicsDeviceImpl::update_texture_storage(
+    GLenum target,
+    GLenum internal_format,
+    GLenum source_format,
+    unsigned int width,
+    unsigned int height,
+    std::vector<unsigned char> const & data)
+{
+    glTexImage2D(
+        target,
+        0,
+        internal_format,
+        width,
+        height,
+        0,
+        source_format,
+        GL_UNSIGNED_BYTE,
+        &data[0]
+    );
 }

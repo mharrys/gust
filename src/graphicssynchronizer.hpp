@@ -8,13 +8,18 @@ namespace gst
 {
     class Buffer;
     class Framebuffer;
+    class FramebufferAttachment;
     class GraphicsDevice;
     class Logger;
     class Renderbuffer;
     class Program;
     class Shader;
     class Texture;
+    class Texture2D;
+    class TextureCube;
     class VertexArray;
+
+    enum class AttachmentPoint;
 
     // The responsibility of this class is to synchronize client state of
     // mirrored graphics resources with the graphics card.
@@ -52,6 +57,10 @@ namespace gst
         // Replace graphics card state with specified vertex array.
         void update(VertexArray & vertex_array);
     private:
+        void attach(FramebufferAttachment const & attachment, AttachmentPoint attachment_point);
+        void update_storage(Texture2D const & texture);
+        void update_storage(TextureCube const & texture);
+
         std::shared_ptr<GraphicsDevice> device;
         std::shared_ptr<Logger> logger;
     };

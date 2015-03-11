@@ -2,6 +2,7 @@
 
 #include "buffer.hpp"
 #include "framebuffer.hpp"
+#include "framebufferattachment.hpp"
 #include "graphicsdevice.hpp"
 #include "graphicssynchronizer.hpp"
 #include "program.hpp"
@@ -81,8 +82,9 @@ void gst::RenderState::set_framebuffer(std::shared_ptr<Framebuffer> framebuffer)
     }
 
     if (framebuffer) {
-        set_texture(framebuffer->get_color());
-        set_renderbuffer(framebuffer->get_depth());
+        // keep attachment up-to-date
+        set_framebuffer_attachment(framebuffer->get_color());
+        set_framebuffer_attachment(framebuffer->get_depth());
         synchronizer->update(*framebuffer);
     }
 }
@@ -130,5 +132,20 @@ void gst::RenderState::set_viewport(Viewport const & viewport)
     if (this->viewport != viewport) {
         this->viewport = viewport;
         device->set_viewport(viewport);
+    }
+}
+
+void gst::RenderState::set_framebuffer_attachment(FramebufferAttachment const & attachment)
+{
+    auto resource = attachment.get_attachment();
+
+    if (!resource) {
+        return;
+    }
+
+    if (attachment.get_type() == AttachmentType::RENDERBUFFER) {
+        set_renderbuffer(std::static_pointer_cast<Renderbuffer>(resource));
+    } else {
+        set_texture(std::static_pointer_cast<Texture>(resource));
     }
 }

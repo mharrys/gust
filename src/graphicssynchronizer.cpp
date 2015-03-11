@@ -1,6 +1,8 @@
 #include "graphicssynchronizer.hpp"
 
+#include "buffer.hpp"
 #include "framebuffer.hpp"
+#include "framebufferattachment.hpp"
 #include "image.hpp"
 #include "graphicsdevice.hpp"
 #include "logger.hpp"
@@ -9,7 +11,8 @@
 #include "shadoweddata.hpp"
 #include "shader.hpp"
 #include "program.hpp"
-#include "texture.hpp"
+#include "texture2d.hpp"
+#include "texturecube.hpp"
 #include "vertexarray.hpp"
 
 gst::GraphicsSynchronizer::GraphicsSynchronizer(
@@ -130,10 +133,8 @@ void gst::GraphicsSynchronizer::update(Framebuffer & framebuffer)
         return;
     }
 
-    const auto color = framebuffer.get_color();
-    const auto depth = framebuffer.get_depth();
-    device->framebuffer_texture_2d(color->name);
-    device->framebuffer_renderbuffer(depth->name);
+    attach(framebuffer.get_color(), AttachmentPoint::COLOR);
+    attach(framebuffer.get_depth(), AttachmentPoint::DEPTH);
     framebuffer.dirty = false;
 }
 
@@ -194,11 +195,16 @@ void gst::GraphicsSynchronizer::update(Texture & texture)
         return;
     }
 
-    const auto target = texture.get_target();
-    const auto param = texture.get_param();
-    const auto image = gst::Image(texture.get_size(), texture.get_data());
-    device->texture_parameters(target, param);
-    device->texture_image_2d(target, image, param);
+    switch (texture.get_target()) {
+    case TextureTarget::TEXTURE_2D:
+        update_storage(static_cast<Texture2D&>(texture));
+        break;
+    case TextureTarget::TEXTURE_CUBE:
+        update_storage(static_cast<TextureCube&>(texture));
+        break;
+    }
+
+    device->update_texture_parameters(texture);
     texture.dirty = false;
 }
 
@@ -218,4 +224,37 @@ void gst::GraphicsSynchronizer::update(VertexArray & vertex_array)
     bind(*vertex_array.get_index_buffer());
     update(*vertex_array.get_index_buffer());
     vertex_array.dirty = false;
+}
+
+void gst::GraphicsSynchronizer::attach(FramebufferAttachment const & attachment, AttachmentPoint attachment_point)
+{
+    auto resource = attachment.get_attachment();
+
+    if (!resource) {
+        return;
+    }
+
+    auto attachment_name = resource->name;
+    auto attachment_type = attachment.get_type();
+    device->attach_to_framebuffer(attachment_name, attachment_type, attachment_point);
+}
+
+void gst::GraphicsSynchronizer::update_storage(Texture2D const & texture)
+{
+    const auto internal = texture.get_internal_format();
+    const auto source = texture.get_source_format();
+    const auto size = texture.get_size();
+
+    device->update_texture_storage(internal, source, size, texture.get_data());
+}
+
+void gst::GraphicsSynchronizer::update_storage(TextureCube const & texture)
+{
+    const auto internal = texture.get_internal_format();
+    const auto source = texture.get_source_format();
+    const auto size = texture.get_size();
+
+    for (auto face : CUBE_FACES) {
+        device->update_texture_storage(internal, source, size, texture.get_data(face), face);
+    }
 }

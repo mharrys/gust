@@ -1,13 +1,7 @@
 #ifndef GRAPHICSDEVICE_HPP_INCLUDED
 #define GRAPHICSDEVICE_HPP_INCLUDED
 
-#include "blendmode.hpp"
-#include "buffer.hpp"
-#include "cullface.hpp"
 #include "graphicsresource.hpp"
-#include "renderbuffer.hpp"
-#include "shadertype.hpp"
-#include "textureparam.hpp"
 #include "vertexarray.hpp"
 
 #include <string>
@@ -19,7 +13,23 @@ namespace gst
     class Image;
     class Resolution;
     class ShadowedData;
+    class Texture;
+    class Texture2D;
+    class TextureCube;
     class Viewport;
+
+    enum class AttachmentType;
+    enum class AttachmentPoint;
+    enum class BlendMode;
+    enum class BufferTarget;
+    enum class CubeFace;
+    enum class CullFace;
+    enum class DataUsage;
+    enum class PixelFormat;
+    enum class RenderbufferFormat;
+    enum class ShaderType;
+    enum class TextureFormat;
+    enum class TextureTarget;
 
     // The responsibility of this class is to interact with a graphics card.
     class GraphicsDevice {
@@ -113,10 +123,21 @@ namespace gst
         virtual void destroy_texture(ResourceName name) = 0;
         // Bind texture object.
         virtual void bind_texture(ResourceName name, TextureTarget target, int unit) = 0;
-        // Specify 2D texture image.
-        virtual void texture_image_2d(TextureTarget target, Image const & image, TextureParam const & param) = 0;
-        // Set texture parameters.
-        virtual void texture_parameters(TextureTarget target, TextureParam const & param) = 0;
+        // Update texture storage for 2-dimensional texture.
+        virtual void update_texture_storage(
+            TextureFormat internal_format,
+            PixelFormat source_format,
+            Resolution size,
+            std::vector<unsigned char> data) = 0;
+        // Update texture storage for texture cube face.
+        virtual void update_texture_storage(
+            TextureFormat internal_format,
+            PixelFormat source_format,
+            Resolution size,
+            std::vector<unsigned char> data,
+            CubeFace face) = 0;
+        // Update texture parameters.
+        virtual void update_texture_parameters(Texture const & texture) = 0;
 
         // Create new framebuffer object.
         virtual ResourceName create_framebuffer() = 0;
@@ -124,12 +145,8 @@ namespace gst
         virtual void destroy_framebuffer(ResourceName name) = 0;
         // Bind framebuffer object.
         virtual void bind_framebuffer(ResourceName name) = 0;
-        // Attach a level of a texture object to the currently bound
-        // framebuffer object.
-        virtual void framebuffer_texture_2d(ResourceName name) = 0;
-        // Attach a renderbuffer object to the currently bound framebuffer
-        // object.
-        virtual void framebuffer_renderbuffer(ResourceName name) = 0;
+        // Attach a texture/renderbuffer object to the currently bound framebuffer object.
+        virtual void attach_to_framebuffer(ResourceName attachment, AttachmentType type, AttachmentPoint point) = 0;
         // Return array of status messages for currently bound framebuffer object.
         virtual std::vector<std::string> check_framebuffer_status() const = 0;
 

@@ -3,26 +3,23 @@
 
 #include "graphicsresource.hpp"
 
-#include <memory>
-
 namespace gst
 {
-    class Renderbuffer;
-    class Texture;
+    class FramebufferAttachment;
 
     // The responsibility of this class is to mirror a framebuffer object on
     // the graphics card.
     class Framebuffer : public GraphicsResource {
     public:
         virtual ~Framebuffer() = default;
-        // Attach color.
-        virtual void attach(std::shared_ptr<Texture> color) = 0;
-        // Attach depth.
-        virtual void attach(std::shared_ptr<Renderbuffer> depth) = 0;
-        // Return attached color.
-        virtual std::shared_ptr<Texture> get_color() const = 0;
-        // Return attached depth.
-        virtual std::shared_ptr<Renderbuffer> get_depth() const = 0;
+        // Set color attachment for specified buffer.
+        virtual void set_color(FramebufferAttachment color) = 0;
+        // Set depth attachment.
+        virtual void set_depth(FramebufferAttachment depth) = 0;
+        // Return color attachment.
+        virtual FramebufferAttachment get_color() const = 0;
+        // Return depth attachment.
+        virtual FramebufferAttachment get_depth() const = 0;
     };
 }
 
