@@ -1,5 +1,6 @@
 #include "graphicssynchronizer.hpp"
 
+#include "buffer.hpp"
 #include "framebuffer.hpp"
 #include "framebufferattachment.hpp"
 #include "image.hpp"

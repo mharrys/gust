@@ -1,13 +1,7 @@
 #ifndef GRAPHICSDEVICE_HPP_INCLUDED
 #define GRAPHICSDEVICE_HPP_INCLUDED
 
-#include "blendmode.hpp"
-#include "buffer.hpp"
-#include "cullface.hpp"
 #include "graphicsresource.hpp"
-#include "renderbuffer.hpp"
-#include "shadertype.hpp"
-#include "texture.hpp"
 #include "vertexarray.hpp"
 
 #include <string>
@@ -19,12 +13,20 @@ namespace gst
     class Image;
     class Resolution;
     class ShadowedData;
+    class Texture;
     class Texture2D;
     class TextureCube;
     class Viewport;
 
     enum class AttachmentType;
     enum class AttachmentPoint;
+    enum class BlendMode;
+    enum class BufferTarget;
+    enum class CullFace;
+    enum class DataUsage;
+    enum class RenderbufferFormat;
+    enum class ShaderType;
+    enum class TextureTarget;
 
     // The responsibility of this class is to interact with a graphics card.
     class GraphicsDevice {
