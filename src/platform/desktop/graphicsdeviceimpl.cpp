@@ -1,6 +1,7 @@
 #include "graphicsdeviceimpl.hpp"
 
 #include "color.hpp"
+#include "framebufferattachment.hpp"
 #include "image.hpp"
 #include "shadoweddata.hpp"
 #include "texture.hpp"
@@ -425,17 +426,21 @@ void gst::GraphicsDeviceImpl::bind_framebuffer(ResourceName name)
     glBindFramebuffer(GL_FRAMEBUFFER, name);
 }
 
-void gst::GraphicsDeviceImpl::framebuffer_texture_2d(ResourceName name)
+void gst::GraphicsDeviceImpl::attach_to_framebuffer(ResourceName attachment, AttachmentType type, AttachmentPoint point)
 {
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, name, 0);
+    auto attachment_type = translator.translate(type);
+    auto attachment_point = translator.translate(point);
 
-    GLenum draw_buffers[] = { GL_COLOR_ATTACHMENT0 };
-    glDrawBuffers(1, draw_buffers);
-}
+    if (type == AttachmentType::RENDERBUFFER) {
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, attachment_point, GL_RENDERBUFFER, attachment);
+    } else {
+        glFramebufferTexture2D(GL_FRAMEBUFFER, attachment_point, attachment_type, attachment, 0);
+    }
 
-void gst::GraphicsDeviceImpl::framebuffer_renderbuffer(ResourceName name)
-{
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, name);
+    if (point == AttachmentPoint::COLOR) {
+        GLenum draw_buffers[] = { GL_COLOR_ATTACHMENT0 };
+        glDrawBuffers(1, draw_buffers);
+    }
 }
 
 std::vector<std::string> gst::GraphicsDeviceImpl::check_framebuffer_status() const

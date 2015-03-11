@@ -14,6 +14,7 @@ namespace gst
 {
     class Buffer;
     class Framebuffer;
+    class FramebufferAttachment;
     class GraphicsDevice;
     class GraphicsSynchronizer;
     class Program;
@@ -55,6 +56,8 @@ namespace gst
         // Set viewport.
         void set_viewport(Viewport const & viewport);
     private:
+        void set_framebuffer_attachment(FramebufferAttachment const & attachment);
+
         std::shared_ptr<GraphicsDevice> device;
         std::shared_ptr<GraphicsSynchronizer> synchronizer;
         Color clear_color;

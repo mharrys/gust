@@ -62,8 +62,7 @@ namespace gst
         ResourceName create_framebuffer();
         void destroy_framebuffer(ResourceName name);
         void bind_framebuffer(ResourceName name);
-        void framebuffer_texture_2d(ResourceName name);
-        void framebuffer_renderbuffer(ResourceName name);
+        void attach_to_framebuffer(ResourceName attachment, AttachmentType type, AttachmentPoint point);
         std::vector<std::string> check_framebuffer_status() const;
 
         std::vector<std::string> get_errors() const;

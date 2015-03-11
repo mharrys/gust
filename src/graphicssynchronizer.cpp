@@ -1,6 +1,7 @@
 #include "graphicssynchronizer.hpp"
 
 #include "framebuffer.hpp"
+#include "framebufferattachment.hpp"
 #include "image.hpp"
 #include "graphicsdevice.hpp"
 #include "logger.hpp"
@@ -131,10 +132,8 @@ void gst::GraphicsSynchronizer::update(Framebuffer & framebuffer)
         return;
     }
 
-    const auto color = framebuffer.get_color();
-    const auto depth = framebuffer.get_depth();
-    device->framebuffer_texture_2d(color->name);
-    device->framebuffer_renderbuffer(depth->name);
+    attach(framebuffer.get_color(), AttachmentPoint::COLOR);
+    attach(framebuffer.get_depth(), AttachmentPoint::DEPTH);
     framebuffer.dirty = false;
 }
 
@@ -224,4 +223,17 @@ void gst::GraphicsSynchronizer::update(VertexArray & vertex_array)
     bind(*vertex_array.get_index_buffer());
     update(*vertex_array.get_index_buffer());
     vertex_array.dirty = false;
+}
+
+void gst::GraphicsSynchronizer::attach(FramebufferAttachment const & attachment, AttachmentPoint attachment_point)
+{
+    auto resource = attachment.get_attachment();
+
+    if (!resource) {
+        return;
+    }
+
+    auto attachment_name = resource->name;
+    auto attachment_type = attachment.get_type();
+    device->attach_to_framebuffer(attachment_name, attachment_type, attachment_point);
 }

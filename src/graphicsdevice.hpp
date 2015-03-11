@@ -23,6 +23,9 @@ namespace gst
     class TextureCube;
     class Viewport;
 
+    enum class AttachmentType;
+    enum class AttachmentPoint;
+
     // The responsibility of this class is to interact with a graphics card.
     class GraphicsDevice {
     public:
@@ -128,12 +131,8 @@ namespace gst
         virtual void destroy_framebuffer(ResourceName name) = 0;
         // Bind framebuffer object.
         virtual void bind_framebuffer(ResourceName name) = 0;
-        // Attach a level of a texture object to the currently bound
-        // framebuffer object.
-        virtual void framebuffer_texture_2d(ResourceName name) = 0;
-        // Attach a renderbuffer object to the currently bound framebuffer
-        // object.
-        virtual void framebuffer_renderbuffer(ResourceName name) = 0;
+        // Attach a texture/renderbuffer object to the currently bound framebuffer object.
+        virtual void attach_to_framebuffer(ResourceName attachment, AttachmentType type, AttachmentPoint point) = 0;
         // Return array of status messages for currently bound framebuffer object.
         virtual std::vector<std::string> check_framebuffer_status() const = 0;
 
