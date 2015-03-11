@@ -55,8 +55,17 @@ namespace gst
         ResourceName create_texture();
         void destroy_texture(ResourceName name);
         void bind_texture(ResourceName name, TextureTarget target, int unit);
-        void update_texture_storage(Texture2D const & texture);
-        void update_texture_storage(TextureCube const & texture);
+        void update_texture_storage(
+            TextureFormat internal_format,
+            PixelFormat source_format,
+            Resolution size,
+            std::vector<unsigned char> data) final;
+        void update_texture_storage(
+            TextureFormat internal_format,
+            PixelFormat source_format,
+            Resolution size,
+            std::vector<unsigned char> data,
+            CubeFace face) final;
         void update_texture_parameters(Texture const & texture);
 
         ResourceName create_framebuffer();
@@ -67,6 +76,14 @@ namespace gst
 
         std::vector<std::string> get_errors() const;
     private:
+        void update_texture_storage(
+            GLenum target,
+            GLenum internal_format,
+            GLenum source_format,
+            unsigned int width,
+            unsigned int height,
+            std::vector<unsigned char> const & data);
+
         Translator translator;
     };
 }

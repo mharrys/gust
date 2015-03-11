@@ -22,10 +22,13 @@ namespace gst
     enum class AttachmentPoint;
     enum class BlendMode;
     enum class BufferTarget;
+    enum class CubeFace;
     enum class CullFace;
     enum class DataUsage;
+    enum class PixelFormat;
     enum class RenderbufferFormat;
     enum class ShaderType;
+    enum class TextureFormat;
     enum class TextureTarget;
 
     // The responsibility of this class is to interact with a graphics card.
@@ -121,9 +124,18 @@ namespace gst
         // Bind texture object.
         virtual void bind_texture(ResourceName name, TextureTarget target, int unit) = 0;
         // Update texture storage for 2-dimensional texture.
-        virtual void update_texture_storage(Texture2D const & texture) = 0;
-        // Update texture storage for texture cube.
-        virtual void update_texture_storage(TextureCube const & texture) = 0;
+        virtual void update_texture_storage(
+            TextureFormat internal_format,
+            PixelFormat source_format,
+            Resolution size,
+            std::vector<unsigned char> data) = 0;
+        // Update texture storage for texture cube face.
+        virtual void update_texture_storage(
+            TextureFormat internal_format,
+            PixelFormat source_format,
+            Resolution size,
+            std::vector<unsigned char> data,
+            CubeFace face) = 0;
         // Update texture parameters.
         virtual void update_texture_parameters(Texture const & texture) = 0;
 

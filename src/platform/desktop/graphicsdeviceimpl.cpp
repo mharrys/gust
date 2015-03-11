@@ -342,53 +342,37 @@ void gst::GraphicsDeviceImpl::bind_texture(ResourceName name, TextureTarget targ
     glBindTexture(translator.translate(target), name);
 }
 
-void gst::GraphicsDeviceImpl::update_texture_storage(Texture2D const & texture)
+void gst::GraphicsDeviceImpl::update_texture_storage(
+    TextureFormat internal_format,
+    PixelFormat source_format,
+    Resolution size,
+    std::vector<unsigned char> data)
 {
-    const auto target = translator.translate(texture.get_target());
-    const auto internal = translator.translate(texture.get_internal_format());
-    const auto source = translator.translate(texture.get_source_format());
-    const auto size = texture.get_size();
-
-    glTexImage2D(
-        target,
-        0,
-        internal,
+    update_texture_storage(
+        GL_TEXTURE_2D,
+        translator.translate(internal_format),
+        translator.translate(source_format),
         size.get_width(),
         size.get_height(),
-        0,
-        source,
-        GL_UNSIGNED_BYTE,
-        &texture.get_data()[0]
+        data
     );
 }
 
-void gst::GraphicsDeviceImpl::update_texture_storage(TextureCube const & texture)
+void gst::GraphicsDeviceImpl::update_texture_storage(
+    TextureFormat internal_format,
+    PixelFormat source_format,
+    Resolution size,
+    std::vector<unsigned char> data,
+    CubeFace face)
 {
-    const auto internal = translator.translate(texture.get_internal_format());
-    const auto source = translator.translate(texture.get_source_format());
-    const auto size = texture.get_size();
-
-    auto image = [&texture, internal, source, size](GLenum target, CubeFace face)
-    {
-        glTexImage2D(
-            target,
-            0,
-            internal,
-            size.get_width(),
-            size.get_height(),
-            0,
-            source,
-            GL_UNSIGNED_BYTE,
-            &texture.get_data(face)[0]
-        );
-    };
-
-    image(GL_TEXTURE_CUBE_MAP_POSITIVE_X, CubeFace::POSITIVE_X);
-    image(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, CubeFace::NEGATIVE_X);
-    image(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, CubeFace::POSITIVE_Y);
-    image(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, CubeFace::NEGATIVE_Y);
-    image(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, CubeFace::POSITIVE_Z);
-    image(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, CubeFace::NEGATIVE_Z);
+    update_texture_storage(
+        translator.translate(face),
+        translator.translate(internal_format),
+        translator.translate(source_format),
+        size.get_width(),
+        size.get_height(),
+        data
+    );
 }
 
 void gst::GraphicsDeviceImpl::update_texture_parameters(Texture const & texture)
@@ -524,4 +508,25 @@ std::vector<std::string> gst::GraphicsDeviceImpl::get_errors() const
     }
 
     return errors;
+}
+
+void gst::GraphicsDeviceImpl::update_texture_storage(
+    GLenum target,
+    GLenum internal_format,
+    GLenum source_format,
+    unsigned int width,
+    unsigned int height,
+    std::vector<unsigned char> const & data)
+{
+    glTexImage2D(
+        target,
+        0,
+        internal_format,
+        width,
+        height,
+        0,
+        source_format,
+        GL_UNSIGNED_BYTE,
+        &data[0]
+    );
 }

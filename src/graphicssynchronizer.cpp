@@ -197,10 +197,10 @@ void gst::GraphicsSynchronizer::update(Texture & texture)
 
     switch (texture.get_target()) {
     case TextureTarget::TEXTURE_2D:
-        device->update_texture_storage(static_cast<Texture2D&>(texture));
+        update_storage(static_cast<Texture2D&>(texture));
         break;
     case TextureTarget::TEXTURE_CUBE:
-        device->update_texture_storage(static_cast<TextureCube&>(texture));
+        update_storage(static_cast<TextureCube&>(texture));
         break;
     }
 
@@ -237,4 +237,24 @@ void gst::GraphicsSynchronizer::attach(FramebufferAttachment const & attachment,
     auto attachment_name = resource->name;
     auto attachment_type = attachment.get_type();
     device->attach_to_framebuffer(attachment_name, attachment_type, attachment_point);
+}
+
+void gst::GraphicsSynchronizer::update_storage(Texture2D const & texture)
+{
+    const auto internal = texture.get_internal_format();
+    const auto source = texture.get_source_format();
+    const auto size = texture.get_size();
+
+    device->update_texture_storage(internal, source, size, texture.get_data());
+}
+
+void gst::GraphicsSynchronizer::update_storage(TextureCube const & texture)
+{
+    const auto internal = texture.get_internal_format();
+    const auto source = texture.get_source_format();
+    const auto size = texture.get_size();
+
+    for (auto face : CUBE_FACES) {
+        device->update_texture_storage(internal, source, size, texture.get_data(face), face);
+    }
 }

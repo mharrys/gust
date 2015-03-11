@@ -15,6 +15,8 @@ namespace gst
     class Program;
     class Shader;
     class Texture;
+    class Texture2D;
+    class TextureCube;
     class VertexArray;
 
     enum class AttachmentPoint;
@@ -56,6 +58,8 @@ namespace gst
         void update(VertexArray & vertex_array);
     private:
         void attach(FramebufferAttachment const & attachment, AttachmentPoint attachment_point);
+        void update_storage(Texture2D const & texture);
+        void update_storage(TextureCube const & texture);
 
         std::shared_ptr<GraphicsDevice> device;
         std::shared_ptr<Logger> logger;
