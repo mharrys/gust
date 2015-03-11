@@ -4,8 +4,6 @@
 #include "resolution.hpp"
 #include "texture.hpp"
 
-#include <vector>
-
 namespace gst
 {
     // The responsibility of this class is to mirror a 2-dimensional texture.
@@ -13,20 +11,20 @@ namespace gst
     public:
         Texture2D(
             Resolution size,
-            std::vector<unsigned char> const & data);
+            TextureData const & data);
         // Set storage size.
         void set_size(Resolution size);
         // Set storage data.
-        void set_data(std::vector<unsigned char> const & data);
+        void set_data(TextureData const & data);
 
         TextureTarget get_target() const override;
         // Return storage size.
         Resolution get_size() const;
         // Return storage data.
-        std::vector<unsigned char> get_data() const;
+        TextureData get_data() const;
     private:
         Resolution size;
-        std::vector<unsigned char> data;
+        TextureData data;
     };
 }
 

@@ -2,7 +2,7 @@
 
 gst::Texture2D::Texture2D(
     Resolution size,
-    std::vector<unsigned char> const & data)
+    TextureData const & data)
     : size(size),
       data(data)
 {
@@ -15,7 +15,7 @@ void gst::Texture2D::set_size(Resolution size)
     needs_update();
 }
 
-void gst::Texture2D::set_data(std::vector<unsigned char> const & data)
+void gst::Texture2D::set_data(TextureData const & data)
 {
     this->data = data;
     needs_update();
@@ -31,7 +31,7 @@ gst::Resolution gst::Texture2D::get_size() const
     return size;
 }
 
-std::vector<unsigned char> gst::Texture2D::get_data() const
+gst::TextureData gst::Texture2D::get_data() const
 {
     return data;
 }

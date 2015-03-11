@@ -15,7 +15,7 @@ void gst::TextureCube::set_size(unsigned int size)
     needs_update();
 }
 
-void gst::TextureCube::set_data(CubeFace face, std::vector<unsigned char> const & data)
+void gst::TextureCube::set_data(CubeFace face, TextureData const & data)
 {
     cube_data[static_cast<int>(face)] = data;
     needs_update();
@@ -31,7 +31,7 @@ gst::Resolution gst::TextureCube::get_size() const
     return size;
 }
 
-std::vector<unsigned char> gst::TextureCube::get_data(CubeFace face) const
+gst::TextureData gst::TextureCube::get_data(CubeFace face) const
 {
     return cube_data[static_cast<int>(face)];
 }

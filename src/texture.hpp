@@ -3,6 +3,8 @@
 
 #include "graphicsresource.hpp"
 
+#include <vector>
+
 namespace gst
 {
     // Supported texture targets.
@@ -53,6 +55,8 @@ namespace gst
         NEVER,
         NONE
     };
+
+    typedef std::vector<unsigned char> TextureData;
 
     // The responsibility of this class is to mirror a texture object on the
     // graphics card.
