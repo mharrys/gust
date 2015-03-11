@@ -6,6 +6,7 @@
 #include "renderbufferformat.hpp"
 #include "shadertype.hpp"
 #include "texture.hpp"
+#include "texturecube.hpp"
 #include "vertexarray.hpp"
 
 GLenum gst::Translator::translate(AttachmentType attachment_type) const
@@ -51,6 +52,26 @@ GLenum gst::Translator::translate(BufferTarget target) const
         return GL_ARRAY_BUFFER;
     case BufferTarget::ELEMENT_ARRAY:
         return GL_ELEMENT_ARRAY_BUFFER;
+    default:
+        return 0;
+    }
+}
+
+GLenum gst::Translator::translate(CubeFace cube_face) const
+{
+    switch (cube_face) {
+    case CubeFace::POSITIVE_X:
+        return GL_TEXTURE_CUBE_MAP_POSITIVE_X;
+    case CubeFace::NEGATIVE_X:
+        return GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
+    case CubeFace::POSITIVE_Y:
+        return GL_TEXTURE_CUBE_MAP_POSITIVE_Y;
+    case CubeFace::NEGATIVE_Y:
+        return GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
+    case CubeFace::POSITIVE_Z:
+        return GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
+    case CubeFace::NEGATIVE_Z:
+        return GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
     default:
         return 0;
     }

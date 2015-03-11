@@ -8,6 +8,7 @@ namespace gst
     enum class AttachmentPoint;
     enum class AttachmentType;
     enum class BufferTarget;
+    enum class CubeFace;
     enum class CullFace;
     enum class CompareFunc;
     enum class DataUsage;
@@ -26,6 +27,7 @@ namespace gst
         GLenum translate(AttachmentPoint attachment_point) const;
         GLenum translate(AttachmentType attachment_type) const;
         GLenum translate(BufferTarget target) const;
+        GLenum translate(CubeFace cube_face) const;
         GLenum translate(CullFace cull_face) const;
         GLint translate(CompareFunc compare_func) const;
         GLenum translate(DataUsage usage) const;
