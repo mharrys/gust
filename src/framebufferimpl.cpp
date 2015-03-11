@@ -1,35 +1,30 @@
 #include "framebufferimpl.hpp"
 
-#include "renderbuffer.hpp"
-#include "texture.hpp"
-
-gst::FramebufferImpl::FramebufferImpl(
-    std::shared_ptr<Texture> color,
-    std::shared_ptr<Renderbuffer> depth)
+gst::FramebufferImpl::FramebufferImpl(FramebufferAttachment color, FramebufferAttachment depth)
     : color(color),
       depth(depth)
 {
     needs_update();
 }
 
-void gst::FramebufferImpl::attach(std::shared_ptr<Texture> color)
+void gst::FramebufferImpl::set_color(FramebufferAttachment color)
 {
     this->color = color;
     needs_update();
 }
 
-void gst::FramebufferImpl::attach(std::shared_ptr<Renderbuffer> depth)
+void gst::FramebufferImpl::set_depth(FramebufferAttachment depth)
 {
     this->depth = depth;
     needs_update();
 }
 
-std::shared_ptr<gst::Texture> gst::FramebufferImpl::get_color() const
+gst::FramebufferAttachment gst::FramebufferImpl::get_color() const
 {
     return color;
 }
 
-std::shared_ptr<gst::Renderbuffer> gst::FramebufferImpl::get_depth() const
+gst::FramebufferAttachment gst::FramebufferImpl::get_depth() const
 {
     return depth;
 }

@@ -24,7 +24,8 @@ namespace gst
     // Supported pixel formats.
     enum class PixelFormat {
         RGB,
-        RGBA
+        RGBA,
+        DEPTH_COMPONENT
     };
 
     // Specifies texture filter mode.

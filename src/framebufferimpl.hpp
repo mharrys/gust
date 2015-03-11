@@ -2,22 +2,21 @@
 #define FRAMEBUFFERIMPL_HPP_INCLUDED
 
 #include "framebuffer.hpp"
+#include "framebufferattachment.hpp"
 
 namespace gst
 {
     class FramebufferImpl : public Framebuffer {
     public:
         FramebufferImpl() = default;
-        FramebufferImpl(
-            std::shared_ptr<Texture> color,
-            std::shared_ptr<Renderbuffer> depth);
-        void attach(std::shared_ptr<Texture> color);
-        void attach(std::shared_ptr<Renderbuffer> depth);
-        std::shared_ptr<Texture> get_color() const;
-        std::shared_ptr<Renderbuffer> get_depth() const;
+        FramebufferImpl(FramebufferAttachment color, FramebufferAttachment depth);
+        void set_color(FramebufferAttachment color) final;
+        void set_depth(FramebufferAttachment depth) final;
+        FramebufferAttachment get_color() const final;
+        FramebufferAttachment get_depth() const final;
     private:
-        std::shared_ptr<Texture> color;
-        std::shared_ptr<Renderbuffer> depth;
+        FramebufferAttachment color;
+        FramebufferAttachment depth;
     };
 }
 
