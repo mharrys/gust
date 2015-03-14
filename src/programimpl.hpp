@@ -9,12 +9,12 @@ namespace gst
 {
     class ProgramImpl : public Program {
     public:
-        void attach(std::shared_ptr<Shader> shader) override;
-        void set_attributes(std::vector<AttributeLocation> attribute_locations) override;
-        void set_uniforms(std::shared_ptr<UniformCollection> collection) override;
-        std::vector<std::shared_ptr<Shader>> get_shaders() const override;
-        std::vector<AttributeLocation> get_attribute_locations() const override;
-        std::vector<UniformAnnotation> get_uniforms() const override;
+        void attach(std::shared_ptr<Shader> shader) final;
+        void set_attributes(std::vector<AttributeLocation> attribute_locations) final;
+        void set_uniforms(std::shared_ptr<UniformCollection> collection) final;
+        std::vector<std::shared_ptr<Shader>> get_shaders() const final;
+        std::vector<AttributeLocation> get_attribute_locations() const final;
+        std::vector<UniformAnnotation> get_uniforms() const final;
     private:
         std::vector<std::shared_ptr<Shader>> shaders;
         std::vector<AttributeLocation> attribute_locations;

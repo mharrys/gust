@@ -11,7 +11,7 @@ namespace gst
     class ModelNode : public Node {
     public:
         ModelNode(std::shared_ptr<Model> model);
-        void accept(NodeVisitor & visitor) override;
+        void accept(NodeVisitor & visitor) final;
         // Return model.
         const std::shared_ptr<Model> get_model() const;
     private:

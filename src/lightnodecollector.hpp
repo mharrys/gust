@@ -12,7 +12,7 @@ namespace gst
     // node structure.
     class LightNodeCollector : public NodeVisitor {
     public:
-        void visit(LightNode & node) override;
+        void visit(LightNode & node) final;
         // Return collected lights.
         std::vector<LightNode> get_lights() const;
     private:

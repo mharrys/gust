@@ -9,7 +9,7 @@ namespace gst
     // output.
     class StdoutLogger : public Logger {
     public:
-        void log(std::string const & message) override;
+        void log(std::string const & message) final;
     };
 }
 

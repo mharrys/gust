@@ -43,7 +43,7 @@ namespace gst
         // Set storage for specified face.
         void set_data(CubeFace face, TextureData const & data);
 
-        TextureTarget get_target() const override;
+        TextureTarget get_target() const final;
         // Return storage size for one face.
         Resolution get_size() const;
         // Return storage data for specified face.

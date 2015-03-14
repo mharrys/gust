@@ -22,7 +22,7 @@ namespace gst
             std::shared_ptr<RenderState> render_state,
             std::shared_ptr<CameraNode> eye,
             std::vector<LightNode> lights);
-        void visit(ModelNode & node) override;
+        void visit(ModelNode & node) final;
     private:
         std::shared_ptr<RenderState> render_state;
         std::shared_ptr<CameraNode> eye;

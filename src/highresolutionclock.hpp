@@ -13,8 +13,8 @@ namespace gst
     class HighResolutionClock : public Clock {
     public:
         HighResolutionClock();
-        float elapsed() const override;
-        float delta() override;
+        float elapsed() const final;
+        float delta() final;
     private:
         time_point start;
         time_point last;

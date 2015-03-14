@@ -17,7 +17,7 @@ namespace gst
         // Set storage data.
         void set_data(TextureData const & data);
 
-        TextureTarget get_target() const override;
+        TextureTarget get_target() const final;
         // Return storage size.
         Resolution get_size() const;
         // Return storage data.

@@ -11,7 +11,7 @@ namespace gst
     class LightNode : public Node {
     public:
         LightNode(std::shared_ptr<Light> light);
-        void accept(NodeVisitor & visitor) override;
+        void accept(NodeVisitor & visitor) final;
         // Return light.
         const std::shared_ptr<Light> get_light() const;
     private:

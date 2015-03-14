@@ -11,7 +11,7 @@ namespace gst
     class CameraNode : public Node {
     public:
         CameraNode(std::shared_ptr<Camera> camera);
-        void accept(NodeVisitor & visitor) override;
+        void accept(NodeVisitor & visitor) final;
         // Return camera space.
         glm::mat4 get_view() const;
         // Return camera projection.

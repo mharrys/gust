@@ -12,7 +12,7 @@ namespace gst
     // collection of nodes may also be group nodes (composite pattern).
     class GroupNode : public Node, public std::enable_shared_from_this<GroupNode> {
     public:
-        void accept(NodeVisitor & visitor) override;
+        void accept(NodeVisitor & visitor) final;
         // Add child node.
         void add(std::shared_ptr<Node> node);
         // Remove child node.
