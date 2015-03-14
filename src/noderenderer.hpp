@@ -1,8 +1,9 @@
 #ifndef NODERENDERER_HPP_INCLUDED
 #define NODERENDERER_HPP_INCLUDED
 
-#include "glm.hpp"
 #include "nodevisitor.hpp"
+
+#include "glm.hpp"
 
 #include <memory>
 #include <vector>

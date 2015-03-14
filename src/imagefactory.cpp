@@ -1,8 +1,9 @@
 #include "imagefactory.hpp"
 
 #include "image.hpp"
-#include "lodepng.hpp"
 #include "logger.hpp"
+
+#include "lodepng.hpp"
 
 gst::ImageFactory::ImageFactory(std::shared_ptr<Logger> logger)
     : logger(logger)

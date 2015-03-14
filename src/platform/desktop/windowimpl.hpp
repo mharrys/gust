@@ -1,10 +1,10 @@
 #ifndef WINDOWIMPL_HPP_INCLUDED
 #define WINDOWIMPL_HPP_INCLUDED
 
-#include "window.hpp"
 #include "keyboard.hpp"
 #include "mouse.hpp"
 #include "resolution.hpp"
+#include "window.hpp"
 
 #include "gl.hpp"
 #include "sdl.hpp"

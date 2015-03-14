@@ -1,10 +1,11 @@
 #include "meshfactory.hpp"
 
-#include "assimp.hpp"
 #include "graphicsdevice.hpp"
 #include "logger.hpp"
 #include "mesh.hpp"
 #include "vertexarrayimpl.hpp"
+
+#include "assimp.hpp"
 
 gst::MeshFactory::MeshFactory(std::shared_ptr<GraphicsDevice> device, std::shared_ptr<Logger> logger)
     : device(device),

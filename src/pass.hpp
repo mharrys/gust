@@ -3,10 +3,11 @@
 
 #include "blendmode.hpp"
 #include "cullface.hpp"
-#include "glm.hpp"
 #include "light.hpp"
 #include "lightnode.hpp"
 #include "viewport.hpp"
+
+#include "glm.hpp"
 
 #include <memory>
 

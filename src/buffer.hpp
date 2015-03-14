@@ -1,8 +1,9 @@
 #ifndef BUFFER_HPP_INCLUDED
 #define BUFFER_HPP_INCLUDED
 
-#include "glm.hpp"
 #include "graphicsresource.hpp"
+
+#include "glm.hpp"
 
 #include <memory>
 #include <vector>
