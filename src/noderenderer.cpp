@@ -13,7 +13,7 @@
 #include "renderstate.hpp"
 #include "technique.hpp"
 #include "shadoweddata.hpp"
-#include "uniformcollection.hpp"
+#include "uniformmap.hpp"
 
 gst::NodeRenderer::NodeRenderer(
     std::shared_ptr<RenderState> render_state,

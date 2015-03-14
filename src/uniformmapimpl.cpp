@@ -1,14 +1,14 @@
-#include "uniformmap.hpp"
+#include "uniformmapimpl.hpp"
 
 #include "annotationformatter.hpp"
 #include "shadoweddataimpl.hpp"
 
-gst::UniformMap::UniformMap(std::shared_ptr<AnnotationFormatter> formatter)
+gst::UniformMapImpl::UniformMapImpl(std::shared_ptr<AnnotationFormatter> formatter)
     : formatter(formatter)
 {
 }
 
-gst::ShadowedData & gst::UniformMap::get_uniform(std::string const & annotation)
+gst::ShadowedData & gst::UniformMapImpl::get_uniform(std::string const & annotation)
 {
     if (uniforms.count(annotation) == 0) {
         uniforms[annotation] = std::make_shared<ShadowedDataImpl>();
@@ -16,12 +16,12 @@ gst::ShadowedData & gst::UniformMap::get_uniform(std::string const & annotation)
     return *uniforms.at(annotation);
 }
 
-std::vector<gst::UniformAnnotation> gst::UniformMap::get_uniforms() const
+std::vector<gst::UniformAnnotation> gst::UniformMapImpl::get_uniforms() const
 {
     return std::vector<UniformAnnotation>(uniforms.begin(), uniforms.end());
 }
 
-std::shared_ptr<gst::AnnotationFormatter> gst::UniformMap::get_formatter() const
+std::shared_ptr<gst::AnnotationFormatter> gst::UniformMapImpl::get_formatter() const
 {
     return formatter;
 }

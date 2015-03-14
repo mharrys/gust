@@ -16,7 +16,7 @@ void gst::ProgramImpl::set_attributes(std::vector<AttributeLocation> attibute_lo
     needs_update();
 }
 
-void gst::ProgramImpl::set_uniforms(std::shared_ptr<UniformCollection> collection)
+void gst::ProgramImpl::set_uniforms(std::shared_ptr<UniformMap> collection)
 {
     auto formatter = collection->get_formatter();
     for (auto uniform : collection->get_uniforms()) {

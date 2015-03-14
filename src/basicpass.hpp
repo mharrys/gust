@@ -12,14 +12,14 @@ namespace gst
     class BasicPass : public Pass {
     public:
         BasicPass();
-        BasicPass(std::shared_ptr<UniformCollection> uniforms);
+        BasicPass(std::shared_ptr<UniformMap> uniforms);
         void apply(MatrixState & matrices, LightNodes & light_nodes) final;
         // Set model view matrix annotation.
         void set_model_view_annotation(std::string const & model_view);
         // Set projection matrix annotation.
         void set_projection_annotation(std::string const & projection);
     private:
-        std::shared_ptr<UniformCollection> uniforms;
+        std::shared_ptr<UniformMap> uniforms;
         std::string model_view;
         std::string projection;
     };

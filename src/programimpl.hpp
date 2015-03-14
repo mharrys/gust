@@ -11,7 +11,7 @@ namespace gst
     public:
         void attach(std::shared_ptr<Shader> shader) final;
         void set_attributes(std::vector<AttributeLocation> attribute_locations) final;
-        void set_uniforms(std::shared_ptr<UniformCollection> collection) final;
+        void set_uniforms(std::shared_ptr<UniformMap> collection) final;
         std::vector<std::shared_ptr<Shader>> get_shaders() const final;
         std::vector<AttributeLocation> get_attribute_locations() const final;
         std::vector<UniformAnnotation> get_uniforms() const final;

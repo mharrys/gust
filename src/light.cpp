@@ -1,6 +1,6 @@
 #include "light.hpp"
 
-gst::Light::Light(std::shared_ptr<UniformCollection> uniforms)
+gst::Light::Light(std::shared_ptr<UniformMap> uniforms)
     : uniforms(uniforms),
       enabled(true)
 {
@@ -11,7 +11,7 @@ void gst::Light::set_enabled(bool enabled)
     this->enabled = enabled;
 }
 
-std::shared_ptr<gst::UniformCollection> gst::Light::get_uniforms() const
+std::shared_ptr<gst::UniformMap> gst::Light::get_uniforms() const
 {
     return uniforms;
 }

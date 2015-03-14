@@ -2,7 +2,7 @@
 #define PROGRAM_HPP_INCLUDED
 
 #include "graphicsresource.hpp"
-#include "uniformcollection.hpp"
+#include "uniformmap.hpp"
 
 #include <memory>
 #include <vector>
@@ -25,7 +25,7 @@ namespace gst
         virtual void set_attributes(std::vector<AttributeLocation> attribute_locations) = 0;
         // Set uniforms, note that this will only update uniforms from
         // specified collection of uniforms.
-        virtual void set_uniforms(std::shared_ptr<UniformCollection> uniforms) = 0;
+        virtual void set_uniforms(std::shared_ptr<UniformMap> uniforms) = 0;
         // Return attached shaders.
         virtual std::vector<std::shared_ptr<Shader>> get_shaders() const = 0;
         // Return attribute locations.

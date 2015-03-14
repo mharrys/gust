@@ -3,14 +3,14 @@
 #include "annotationbasic.hpp"
 #include "program.hpp"
 #include "shadoweddata.hpp"
-#include "uniformmap.hpp"
+#include "uniformmapimpl.hpp"
 
 gst::ShadedPass::ShadedPass()
-    : ShadedPass(std::make_shared<gst::UniformMap>(std::make_shared<gst::AnnotationBasic>()))
+    : ShadedPass(std::make_shared<gst::UniformMapImpl>(std::make_shared<gst::AnnotationBasic>()))
 {
 }
 
-gst::ShadedPass::ShadedPass(std::shared_ptr<gst::UniformCollection> uniforms)
+gst::ShadedPass::ShadedPass(std::shared_ptr<gst::UniformMap> uniforms)
     : uniforms(uniforms),
       model_view("model_view"),
       projection("projection"),
