@@ -15,7 +15,7 @@
 
 void gst::GraphicsDeviceImpl::clear(bool color, bool depth)
 {
-    int mask = 0;
+    auto mask = 0;
     mask |= color ? GL_COLOR_BUFFER_BIT : 0;
     mask |= depth ? GL_DEPTH_BUFFER_BIT : 0;
     glClear(mask);
@@ -99,7 +99,7 @@ void gst::GraphicsDeviceImpl::destroy_shader(ResourceName name)
 
 void gst::GraphicsDeviceImpl::compile_shader(ResourceName name, std::string const & source)
 {
-    char const * shader_source = source.c_str();
+    auto const * shader_source = source.c_str();
     // replace source code in shader
     glShaderSource(name, 1, &shader_source, NULL);
     // compile current set source code in shader
@@ -179,9 +179,9 @@ int gst::GraphicsDeviceImpl::get_uniform_location(ResourceName program_name, std
 
 void gst::GraphicsDeviceImpl::uniform(int location, ShadowedData const & data)
 {
-    int const * rint = data.get_as_int().get();
-    unsigned int const * ruint = data.get_as_unsigned_int().get();
-    float const * rfloat = data.get_as_float().get();
+    auto const * rint = data.get_as_int().get();
+    auto const * ruint = data.get_as_unsigned_int().get();
+    auto const * rfloat = data.get_as_float().get();
 
     switch (data.get_type()) {
     case DataType::NONE:
