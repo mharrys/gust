@@ -128,13 +128,13 @@ namespace gst
             TextureFormat internal_format,
             PixelFormat source_format,
             Resolution size,
-            std::vector<unsigned char> data) = 0;
+            std::vector<unsigned char> const & data) = 0;
         // Update texture storage for texture cube face.
         virtual void update_texture_storage(
             TextureFormat internal_format,
             PixelFormat source_format,
             Resolution size,
-            std::vector<unsigned char> data,
+            std::vector<unsigned char> const & data,
             CubeFace face) = 0;
         // Update texture parameters.
         virtual void update_texture_parameters(Texture const & texture) = 0;

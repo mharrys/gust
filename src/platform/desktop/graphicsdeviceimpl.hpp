@@ -59,12 +59,12 @@ namespace gst
             TextureFormat internal_format,
             PixelFormat source_format,
             Resolution size,
-            std::vector<unsigned char> data) final;
+            std::vector<unsigned char> const & data) final;
         void update_texture_storage(
             TextureFormat internal_format,
             PixelFormat source_format,
             Resolution size,
-            std::vector<unsigned char> data,
+            std::vector<unsigned char> const & data,
             CubeFace face) final;
         void update_texture_parameters(Texture const & texture);
 

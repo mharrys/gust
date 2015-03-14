@@ -346,7 +346,7 @@ void gst::GraphicsDeviceImpl::update_texture_storage(
     TextureFormat internal_format,
     PixelFormat source_format,
     Resolution size,
-    std::vector<unsigned char> data)
+    std::vector<unsigned char> const & data)
 {
     update_texture_storage(
         GL_TEXTURE_2D,
@@ -362,7 +362,7 @@ void gst::GraphicsDeviceImpl::update_texture_storage(
     TextureFormat internal_format,
     PixelFormat source_format,
     Resolution size,
-    std::vector<unsigned char> data,
+    std::vector<unsigned char> const & data,
     CubeFace face)
 {
     update_texture_storage(
