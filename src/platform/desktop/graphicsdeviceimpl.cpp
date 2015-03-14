@@ -8,7 +8,7 @@
 #include "image.hpp"
 #include "renderbuffer.hpp"
 #include "shadoweddata.hpp"
-#include "shadertype.hpp"
+#include "shader.hpp"
 #include "texture2d.hpp"
 #include "texturecube.hpp"
 #include "viewport.hpp"
