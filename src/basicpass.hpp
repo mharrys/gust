@@ -7,16 +7,16 @@ namespace gst
 {
     class AnnotationFormatter;
 
-    // The responsibility of this class is to setup everything for a basic
-    // shader pass.
+    // The responsibility of this class is to setup a program object for a
+    // basic shader pass.
     class BasicPass : public Pass {
     public:
         BasicPass();
         BasicPass(std::shared_ptr<UniformCollection> uniforms);
         void apply(MatrixState & matrices, LightNodes & light_nodes) final;
-        // Set model view annotation.
+        // Set model view matrix annotation.
         void set_model_view_annotation(std::string const & model_view);
-        // Set projection annotation.
+        // Set projection matrix annotation.
         void set_projection_annotation(std::string const & projection);
     private:
         std::shared_ptr<UniformCollection> uniforms;
