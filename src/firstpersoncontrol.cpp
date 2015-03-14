@@ -4,9 +4,14 @@
 #include "spatial.hpp"
 
 gst::FirstPersonControl::FirstPersonControl()
-    : freelook(false),
-      rotation_speed(2.8f),
-      movement_speed(5.0f),
+    : FirstPersonControl(false, 2.8f, 5.0f)
+{
+}
+
+gst::FirstPersonControl::FirstPersonControl(bool freelook, float rotation_speed, float movement_speed)
+    : freelook(freelook),
+      rotation_speed(rotation_speed),
+      movement_speed(movement_speed),
       yaw_angle(0.0f),
       pitch_angle(0.0f)
 {
