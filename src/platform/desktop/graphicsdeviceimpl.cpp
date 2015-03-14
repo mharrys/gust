@@ -9,8 +9,7 @@
 #include "renderbuffer.hpp"
 #include "shadoweddata.hpp"
 #include "shader.hpp"
-#include "texture2d.hpp"
-#include "texturecube.hpp"
+#include "texture.hpp"
 #include "viewport.hpp"
 
 void gst::GraphicsDeviceImpl::clear(bool color, bool depth)
