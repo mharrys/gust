@@ -12,7 +12,7 @@ namespace gst
         OrthoCamera();
         OrthoCamera(float left, float right, float bottom, float top);
         OrthoCamera(float left, float right, float bottom, float top, float near, float far);
-        glm::mat4 get_projection() const override;
+        glm::mat4 get_projection() const final;
         // Return coordinate for left vertical clipping plane.
         float get_left() const;
         // Return coordinate for right vertical clipping plane.

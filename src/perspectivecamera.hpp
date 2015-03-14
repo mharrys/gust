@@ -13,7 +13,7 @@ namespace gst
         PerspectiveCamera();
         PerspectiveCamera(float fov, Resolution resolution, float near, float far);
         PerspectiveCamera(float fov, float aspect_ratio, float near, float far);
-        glm::mat4 get_projection() const override;
+        glm::mat4 get_projection() const final;
         // Return field of view.
         float get_fov() const;
         // Return aspect ratio.
