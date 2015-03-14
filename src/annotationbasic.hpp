@@ -10,7 +10,7 @@ namespace gst
     class AnnotationBasic : public AnnotationFormatter {
     public:
         // Return annotation without modification.
-        std::string format(std::string const & annotation) const;
+        std::string format(std::string const & annotation) const final;
     };
 }
 

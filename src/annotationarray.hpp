@@ -16,7 +16,7 @@ namespace gst
         // Create annotation array with specified name.
         AnnotationArray(std::string name);
         // Return annotation with a named array index prefix.
-        std::string format(std::string const & annotation) const;
+        std::string format(std::string const & annotation) const final;
         // Set the current array element position that will be used in the
         // format.
         void set_current_index(unsigned int index);

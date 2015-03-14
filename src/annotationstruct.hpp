@@ -11,7 +11,7 @@ namespace gst
         // Create annotation struct with specified name.
         AnnotationStruct(std::string name);
         // Return annoation with a named struct prefix.
-        std::string format(std::string const & annotation) const;
+        std::string format(std::string const & annotation) const final;
     private:
         std::string name;
     };
