@@ -6,7 +6,7 @@
 #include "uniformmapimpl.hpp"
 
 gst::BasicPass::BasicPass()
-    : BasicPass(std::make_shared<gst::UniformMapImpl>(std::make_shared<gst::AnnotationBasic>()))
+    : BasicPass(std::make_shared<UniformMapImpl>(std::make_shared<AnnotationBasic>()))
 {
 }
 
@@ -17,7 +17,7 @@ gst::BasicPass::BasicPass(std::shared_ptr<UniformMap> uniforms)
 {
 }
 
-void gst::BasicPass::apply(gst::MatrixState & matrices, gst::LightNodes &)
+void gst::BasicPass::apply(MatrixState & matrices, LightNodes &)
 {
     uniforms->get_uniform(model_view) = matrices.model_view;
     uniforms->get_uniform(projection) = matrices.projection;

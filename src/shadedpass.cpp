@@ -6,11 +6,11 @@
 #include "uniformmapimpl.hpp"
 
 gst::ShadedPass::ShadedPass()
-    : ShadedPass(std::make_shared<gst::UniformMapImpl>(std::make_shared<gst::AnnotationBasic>()))
+    : ShadedPass(std::make_shared<UniformMapImpl>(std::make_shared<AnnotationBasic>()))
 {
 }
 
-gst::ShadedPass::ShadedPass(std::shared_ptr<gst::UniformMap> uniforms)
+gst::ShadedPass::ShadedPass(std::shared_ptr<UniformMap> uniforms)
     : uniforms(uniforms),
       model_view("model_view"),
       projection("projection"),
@@ -18,7 +18,7 @@ gst::ShadedPass::ShadedPass(std::shared_ptr<gst::UniformMap> uniforms)
 {
 }
 
-void gst::ShadedPass::apply(gst::MatrixState & matrices, gst::LightNodes & light_nodes)
+void gst::ShadedPass::apply(MatrixState & matrices, LightNodes & light_nodes)
 {
     uniforms->get_uniform(model_view) = matrices.model_view;
     uniforms->get_uniform(projection) = matrices.projection;

@@ -8,11 +8,11 @@ namespace gst
 {
     // The responsibility of this class is to setup a program object for a
     // shaded shader pass.
-    class ShadedPass : public gst::Pass {
+    class ShadedPass : public Pass {
     public:
         ShadedPass();
-        ShadedPass(std::shared_ptr<gst::UniformMap> uniforms);
-        void apply(gst::MatrixState & matrices, gst::LightNodes & light_nodes) final;
+        ShadedPass(std::shared_ptr<UniformMap> uniforms);
+        void apply(MatrixState & matrices, LightNodes & light_nodes) final;
         // Set model view matrix annotation.
         void set_model_view_annotation(std::string const & model_view);
         // Set projection matrix annotation.
@@ -20,7 +20,7 @@ namespace gst
         // Set normal matrix annotation.
         void set_normal_annotation(std::string const & normal);
     private:
-        std::shared_ptr<gst::UniformMap> uniforms;
+        std::shared_ptr<UniformMap> uniforms;
         std::string model_view;
         std::string projection;
         std::string normal;
