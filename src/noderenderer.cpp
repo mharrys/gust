@@ -57,7 +57,7 @@ void gst::NodeRenderer::visit(ModelNode & node)
     }
 
     if (effect.uniforms) {
-        pass->program->set_uniforms(effect.uniforms);
+        pass->program->set_uniforms(*effect.uniforms);
     }
     pass->apply(matrices, lights);
 

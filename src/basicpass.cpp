@@ -21,7 +21,7 @@ void gst::BasicPass::apply(MatrixState & matrices, LightNodes &)
 {
     uniforms->get_uniform(model_view) = matrices.model_view;
     uniforms->get_uniform(projection) = matrices.projection;
-    program->set_uniforms(uniforms);
+    program->set_uniforms(*uniforms);
 }
 
 void gst::BasicPass::set_model_view_annotation(std::string const & model_view)

@@ -16,11 +16,11 @@ void gst::ProgramImpl::set_attributes(std::vector<AttributeLocation> attibute_lo
     needs_update();
 }
 
-void gst::ProgramImpl::set_uniforms(std::shared_ptr<UniformMap> collection)
+void gst::ProgramImpl::set_uniforms(UniformMap const & uniforms)
 {
-    auto formatter = collection->get_formatter();
-    for (auto uniform : collection->get_uniforms()) {
-        uniforms[formatter->format(uniform.first)] = uniform.second;
+    auto formatter = uniforms.get_formatter();
+    for (auto uniform : uniforms.get_uniforms()) {
+        this->uniforms[formatter->format(uniform.first)] = uniform.second;
     }
     needs_update();
 }

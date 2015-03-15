@@ -23,11 +23,11 @@ void gst::ShadedPass::apply(MatrixState & matrices, LightNodes & light_nodes)
     uniforms->get_uniform(model_view) = matrices.model_view;
     uniforms->get_uniform(projection) = matrices.projection;
     uniforms->get_uniform(normal) = matrices.normal;
-    program->set_uniforms(uniforms);
+    program->set_uniforms(*uniforms);
 
     for (auto & light_node : light_nodes) {
         auto light = light_node.get_light();
-        program->set_uniforms(light->get_uniforms());
+        program->set_uniforms(*light->get_uniforms());
     }
 }
 
