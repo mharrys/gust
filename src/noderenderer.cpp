@@ -23,23 +23,24 @@ void gst::NodeRenderer::visit(ModelNode & node)
 
     auto & mesh = node.get_mesh();
     auto & effect = node.get_effect();
-    auto pass = effect.pass;
+    auto & pass = effect.get_pass();
+    auto & textures = effect.get_textures();
 
-    for (unsigned int i = 0; i < effect.textures.size(); i++) {
-        render_state->set_texture(effect.textures[i], i);
+    // set textures at the texture unit in the order they are stored in,
+    // effect uniforms will associate which unit belongs to which annotation
+    for (auto i = 0u; i < textures.size(); i++) {
+        render_state->set_texture(textures[i], i);
     }
 
-    if (effect.uniforms) {
-        pass->program->set_uniforms(*effect.uniforms);
-    }
-    pass->apply(state);
+    pass.program->set_uniforms(effect.get_uniforms());
+    pass.apply(state);
 
-    render_state->set_blend_mode(pass->blend_mode);
-    render_state->set_cull_face(pass->cull_face);
-    render_state->set_depth_mask(pass->depth_mask);
-    render_state->set_depth_test(pass->depth_test);
-    render_state->set_viewport(pass->viewport);
-    render_state->set_program(pass->program);
+    render_state->set_blend_mode(pass.blend_mode);
+    render_state->set_cull_face(pass.cull_face);
+    render_state->set_depth_mask(pass.depth_mask);
+    render_state->set_depth_test(pass.depth_test);
+    render_state->set_viewport(pass.viewport);
+    render_state->set_program(pass.program);
     render_state->set_vertex_array(mesh.vertex_array);
 
     mesh.draw();
