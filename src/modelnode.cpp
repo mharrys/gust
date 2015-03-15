@@ -13,7 +13,12 @@ void gst::ModelNode::accept(NodeVisitor & visitor)
     visitor.visit(*this);
 }
 
-const std::shared_ptr<gst::Model> gst::ModelNode::get_model() const
+gst::Mesh & gst::ModelNode::get_mesh() const
 {
-    return model;
+    return model->mesh;
+}
+
+gst::Effect & gst::ModelNode::get_effect() const
+{
+    return model->effect;
 }

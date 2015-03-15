@@ -21,9 +21,8 @@ void gst::NodeRenderer::visit(ModelNode & node)
     state.model_view = state.view * state.model;
     state.normal = glm::inverseTranspose(glm::mat3(state.model_view));
 
-    auto model = node.get_model();
-    auto & mesh = model->mesh;
-    auto & effect = model->effect;
+    auto & mesh = node.get_mesh();
+    auto & effect = node.get_effect();
     auto pass = effect.pass;
 
     for (unsigned int i = 0; i < effect.textures.size(); i++) {
@@ -41,7 +40,7 @@ void gst::NodeRenderer::visit(ModelNode & node)
     render_state->set_depth_test(pass->depth_test);
     render_state->set_viewport(pass->viewport);
     render_state->set_program(pass->program);
-
     render_state->set_vertex_array(mesh.vertex_array);
+
     mesh.draw();
 }
