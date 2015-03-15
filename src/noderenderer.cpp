@@ -40,7 +40,7 @@ void gst::NodeRenderer::visit(ModelNode & node)
         uniforms->get_uniform("enabled") = light->get_enabled();
         uniforms->get_uniform("position") = matrices.view * glm::vec4(lights[i].position, 1.0f);
         // special case if annotation array
-        if (auto formatter = std::dynamic_pointer_cast<AnnotationArray>(uniforms->get_formatter())) {
+        if (auto * formatter = dynamic_cast<AnnotationArray *>(&uniforms->get_formatter())) {
             formatter->set_current_index(i);
         }
     }

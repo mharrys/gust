@@ -24,7 +24,7 @@ namespace gst
         // Return all stored uniforms with its associated annotation.
         virtual std::vector<UniformAnnotation> get_uniforms() const = 0;
         // Return associated formatter.
-        virtual std::shared_ptr<AnnotationFormatter> get_formatter() const = 0;
+        virtual AnnotationFormatter & get_formatter() const = 0;
     };
 }
 

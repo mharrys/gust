@@ -18,9 +18,9 @@ void gst::ProgramImpl::set_attributes(std::vector<AttributeLocation> attibute_lo
 
 void gst::ProgramImpl::set_uniforms(UniformMap const & uniforms)
 {
-    auto formatter = uniforms.get_formatter();
+    auto & formatter = uniforms.get_formatter();
     for (auto uniform : uniforms.get_uniforms()) {
-        this->uniforms[formatter->format(uniform.first)] = uniform.second;
+        this->uniforms[formatter.format(uniform.first)] = uniform.second;
     }
     needs_update();
 }
