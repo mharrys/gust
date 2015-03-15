@@ -11,7 +11,6 @@
 #include "pass.hpp"
 #include "program.hpp"
 #include "renderstate.hpp"
-#include "technique.hpp"
 #include "shadoweddata.hpp"
 #include "uniformmap.hpp"
 
@@ -47,28 +46,27 @@ void gst::NodeRenderer::visit(ModelNode & node)
     }
 
     auto model = node.get_model();
-
     auto & mesh = model->mesh;
+    auto & effect = model->effect;
+    auto pass = effect.pass;
+
     render_state->set_vertex_array(mesh.vertex_array);
 
-    auto & effect = model->effect;
     for (unsigned int i = 0; i < effect.textures.size(); i++) {
         render_state->set_texture(effect.textures[i], i);
     }
 
-    for (auto technique : effect.techniques) {
-        for (auto pass : technique->passes) {
-            render_state->set_blend_mode(pass->blend_mode);
-            render_state->set_cull_face(pass->cull_face);
-            render_state->set_depth_mask(pass->depth_mask);
-            render_state->set_depth_test(pass->depth_test);
-            render_state->set_viewport(pass->viewport);
-            if (effect.uniforms) {
-                pass->program->set_uniforms(effect.uniforms);
-            }
-            pass->apply(matrices, lights);
-            render_state->set_program(pass->program);
-            mesh.draw();
-        }
+    if (effect.uniforms) {
+        pass->program->set_uniforms(effect.uniforms);
     }
+    pass->apply(matrices, lights);
+
+    render_state->set_blend_mode(pass->blend_mode);
+    render_state->set_cull_face(pass->cull_face);
+    render_state->set_depth_mask(pass->depth_mask);
+    render_state->set_depth_test(pass->depth_test);
+    render_state->set_viewport(pass->viewport);
+    render_state->set_program(pass->program);
+
+    mesh.draw();
 }

@@ -8,14 +8,14 @@
 
 namespace gst
 {
-    class Technique;
+    class Pass;
     class UniformMap;
 
     class Effect {
     public:
         std::shared_ptr<UniformMap> uniforms;
         std::vector<std::shared_ptr<Texture>> textures;
-        std::vector<std::shared_ptr<Technique>> techniques;
+        std::shared_ptr<Pass> pass;
     };
 }
 
