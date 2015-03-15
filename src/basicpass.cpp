@@ -17,10 +17,10 @@ gst::BasicPass::BasicPass(std::shared_ptr<UniformMap> uniforms)
 {
 }
 
-void gst::BasicPass::apply(MatrixState & matrices, LightNodes &)
+void gst::BasicPass::apply(ModelState const & state)
 {
-    uniforms->get_uniform(model_view) = matrices.model_view;
-    uniforms->get_uniform(projection) = matrices.projection;
+    uniforms->get_uniform(model_view) = state.model_view;
+    uniforms->get_uniform(projection) = state.projection;
     program->set_uniforms(*uniforms);
 }
 

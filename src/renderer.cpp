@@ -37,17 +37,18 @@ void gst::Renderer::render(Scene & scene)
         clear(auto_clear_color, auto_clear_depth);
     }
 
+    auto eye = scene.get_eye();
+
     LightNodeCollector collector;
     scene.traverse(collector);
 
-    auto eye = scene.get_eye();
-    auto view = eye->get_view();
-    auto projection = eye->get_projection();
+    ModelState model_state;
+    model_state.view = eye->get_view();
+    model_state.projection = eye->get_projection();
+    model_state.light_nodes = collector.get_light_nodes();
+    prepare_lights(model_state.view, model_state.light_nodes);
 
-    auto lights = collector.get_lights();
-    prepare_lights(view, lights);
-
-    NodeRenderer renderer(render_state, view, projection, std::move(lights));
+    NodeRenderer renderer(render_state, std::move(model_state));
     scene.traverse(renderer);
 }
 

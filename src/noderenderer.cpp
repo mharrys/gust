@@ -1,34 +1,25 @@
 #include "noderenderer.hpp"
 
 #include "effect.hpp"
-#include "lightnode.hpp"
 #include "mesh.hpp"
 #include "model.hpp"
 #include "modelnode.hpp"
-#include "pass.hpp"
 #include "program.hpp"
 #include "renderstate.hpp"
 
 gst::NodeRenderer::NodeRenderer(
     std::shared_ptr<RenderState> render_state,
-    glm::mat4 view,
-    glm::mat4 projection,
-    std::vector<LightNode> && lights)
+    ModelState && state)
     : render_state(render_state),
-      view(view),
-      projection(projection),
-      lights(std::move(lights))
+      state(std::move(state))
 {
 }
 
 void gst::NodeRenderer::visit(ModelNode & node)
 {
-    MatrixState matrices;
-    matrices.model = node.world_transform;
-    matrices.view = view;
-    matrices.model_view = matrices.view * matrices.model;
-    matrices.projection = projection;
-    matrices.normal = glm::inverseTranspose(glm::mat3(matrices.model_view));
+    state.model = node.world_transform;
+    state.model_view = state.view * state.model;
+    state.normal = glm::inverseTranspose(glm::mat3(state.model_view));
 
     auto model = node.get_model();
     auto & mesh = model->mesh;
@@ -42,7 +33,7 @@ void gst::NodeRenderer::visit(ModelNode & node)
     if (effect.uniforms) {
         pass->program->set_uniforms(*effect.uniforms);
     }
-    pass->apply(matrices, lights);
+    pass->apply(state);
 
     render_state->set_blend_mode(pass->blend_mode);
     render_state->set_cull_face(pass->cull_face);

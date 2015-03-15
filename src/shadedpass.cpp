@@ -18,14 +18,14 @@ gst::ShadedPass::ShadedPass(std::shared_ptr<UniformMap> uniforms)
 {
 }
 
-void gst::ShadedPass::apply(MatrixState & matrices, LightNodes & light_nodes)
+void gst::ShadedPass::apply(ModelState const & state)
 {
-    uniforms->get_uniform(model_view) = matrices.model_view;
-    uniforms->get_uniform(projection) = matrices.projection;
-    uniforms->get_uniform(normal) = matrices.normal;
+    uniforms->get_uniform(model_view) = state.model_view;
+    uniforms->get_uniform(projection) = state.projection;
+    uniforms->get_uniform(normal) = state.normal;
     program->set_uniforms(*uniforms);
 
-    for (auto & light_node : light_nodes) {
+    for (auto & light_node : state.light_nodes) {
         auto light = light_node.get_light();
         program->set_uniforms(*light->get_uniforms());
     }
