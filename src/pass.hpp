@@ -15,6 +15,7 @@ namespace gst
 {
     class Program;
 
+    // Describes model properties during the render stage.
     struct ModelState {
         glm::mat4 model;
         glm::mat4 view;
@@ -24,10 +25,13 @@ namespace gst
         std::vector<LightNode> light_nodes;
     };
 
+    // The responsibility of this class is to setup a program object from a
+    // model state in a specialized way.
     class Pass {
     public:
         Pass() = default;
         Pass(std::shared_ptr<Program> program);
+        // Setup the program object from the model state.
         virtual void apply(ModelState const & state) = 0;
 
         BlendMode blend_mode;
