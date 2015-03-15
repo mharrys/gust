@@ -10,7 +10,6 @@
 
 namespace gst
 {
-    class CameraNode;
     class LightNode;
     class RenderState;
 
@@ -20,12 +19,14 @@ namespace gst
     public:
         NodeRenderer(
             std::shared_ptr<RenderState> render_state,
-            std::shared_ptr<CameraNode> eye,
-            std::vector<LightNode> lights);
+            glm::mat4 view,
+            glm::mat4 projection,
+            std::vector<LightNode> && lights);
         void visit(ModelNode & node) final;
     private:
         std::shared_ptr<RenderState> render_state;
-        std::shared_ptr<CameraNode> eye;
+        glm::mat4 view;
+        glm::mat4 projection;
         std::vector<LightNode> lights;
     };
 }

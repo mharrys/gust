@@ -1,12 +1,16 @@
 #ifndef RENDERER_HPP_INCLUDED
 #define RENDERER_HPP_INCLUDED
 
+#include "glm.hpp"
+
 #include <memory>
+#include <vector>
 
 namespace gst
 {
     class Framebuffer;
     class GraphicsDevice;
+    class LightNode;
     class Logger;
     class RenderState;
     class Scene;
@@ -32,6 +36,8 @@ namespace gst
         // Set auto clear flag on specified buffers.
         void set_auto_clear(bool auto_clear_color, bool auto_clear_depth);
     private:
+        void prepare_lights(glm::mat4 view, std::vector<LightNode> & lights) const;
+
         std::shared_ptr<GraphicsDevice> device;
         std::shared_ptr<RenderState> render_state;
         std::shared_ptr<Logger> logger;

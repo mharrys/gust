@@ -1,12 +1,18 @@
 #include "renderer.hpp"
 
+#include "annotationarray.hpp"
+#include "cameranode.hpp"
 #include "graphicsdevice.hpp"
 #include "framebuffer.hpp"
+#include "light.hpp"
+#include "lightnode.hpp"
 #include "lightnodecollector.hpp"
 #include "logger.hpp"
 #include "noderenderer.hpp"
 #include "renderstate.hpp"
 #include "scene.hpp"
+#include "shadoweddata.hpp"
+#include "uniformmap.hpp"
 
 gst::Renderer::Renderer(
     std::shared_ptr<GraphicsDevice> device,
@@ -34,7 +40,14 @@ void gst::Renderer::render(Scene & scene)
     LightNodeCollector collector;
     scene.traverse(collector);
 
-    NodeRenderer renderer(render_state, scene.get_eye(), std::move(collector.get_lights()));
+    auto eye = scene.get_eye();
+    auto view = eye->get_view();
+    auto projection = eye->get_projection();
+
+    auto lights = collector.get_lights();
+    prepare_lights(view, lights);
+
+    NodeRenderer renderer(render_state, view, projection, std::move(lights));
     scene.traverse(renderer);
 }
 
@@ -59,4 +72,21 @@ void gst::Renderer::set_auto_clear(bool auto_clear_color, bool auto_clear_depth)
 {
     this->auto_clear_color = auto_clear_color;
     this->auto_clear_depth = auto_clear_depth;
+}
+
+void gst::Renderer::prepare_lights(glm::mat4 view, std::vector<LightNode> & lights) const
+{
+    for (unsigned int i = 0; i < lights.size(); i++) {
+        auto light = lights[i].get_light();
+
+        // special uniforms
+        auto uniforms = light->get_uniforms();
+        uniforms->get_uniform("enabled") = light->get_enabled();
+        uniforms->get_uniform("position") = view * glm::vec4(lights[i].position, 1.0f);
+
+        // special case if annotation array
+        if (auto * formatter = dynamic_cast<AnnotationArray *>(&uniforms->get_formatter())) {
+            formatter->set_current_index(i);
+        }
+    }
 }
