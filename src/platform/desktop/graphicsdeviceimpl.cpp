@@ -388,7 +388,7 @@ void gst::GraphicsDeviceImpl::update_texture_parameters(Texture const & texture)
     glTexParameteri(tex_target, GL_TEXTURE_WRAP_S, wrap_s);
     glTexParameteri(tex_target, GL_TEXTURE_WRAP_T, wrap_t);
 
-    if (depth_compare == -1) {
+    if (depth_compare == 0) {
         glTexParameteri(tex_target, GL_TEXTURE_COMPARE_MODE, GL_NONE);
     } else {
         glTexParameteri(tex_target, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
