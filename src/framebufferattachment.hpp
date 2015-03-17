@@ -7,6 +7,8 @@ namespace gst
 {
     class GraphicsResource;
 
+    enum class CubeFace;
+
     // Specifices framebuffer attachment types.
     enum class AttachmentType {
         RENDERBUFFER,            // Renderbuffer, sampling will not be possible.
@@ -32,6 +34,9 @@ namespace gst
         FramebufferAttachment() = default;
         FramebufferAttachment(
             AttachmentType type,
+            std::shared_ptr<GraphicsResource> attachment);
+        FramebufferAttachment(
+            CubeFace face,
             std::shared_ptr<GraphicsResource> attachment);
         // Return type of attachment.
         AttachmentType get_type() const;
