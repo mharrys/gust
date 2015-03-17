@@ -22,7 +22,8 @@ gst::Renderer::Renderer(
       render_state(render_state),
       logger(logger),
       auto_clear_color(true),
-      auto_clear_depth(true)
+      auto_clear_depth(true),
+      use_effect_override(false)
 {
 }
 
@@ -49,6 +50,9 @@ void gst::Renderer::render(Scene & scene)
     prepare_lights(model_state.view, model_state.light_nodes);
 
     NodeRenderer renderer(render_state, std::move(model_state));
+    if (use_effect_override) {
+        renderer.set_effect_override(effect_override);
+    }
     scene.traverse(renderer);
 }
 
@@ -60,6 +64,14 @@ void gst::Renderer::render(Scene & scene, std::shared_ptr<Framebuffer> target)
     }
     render(scene);
     render_state->set_framebuffer(nullptr);
+}
+
+void gst::Renderer::render(Scene & scene, Effect & effect, std::shared_ptr<Framebuffer> target)
+{
+    effect_override = effect;
+    use_effect_override = true;
+    render(scene, target);
+    use_effect_override = false;
 }
 
 void gst::Renderer::check_errors()

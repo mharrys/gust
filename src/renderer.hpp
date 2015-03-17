@@ -1,6 +1,8 @@
 #ifndef RENDERER_HPP_INCLUDED
 #define RENDERER_HPP_INCLUDED
 
+#include "effect.hpp"
+
 #include "glm.hpp"
 
 #include <memory>
@@ -27,10 +29,11 @@ namespace gst
         void clear(bool color, bool depth);
         // Render scene.
         void render(Scene & scene);
-        // Render scene into framebuffer. Once the framebuffer is set, the
-        // renderer will check its status and print any messages to the
-        // logger.
+        // Render scene into framebuffer.
         void render(Scene & scene, std::shared_ptr<Framebuffer> target);
+        // Render scene into framebuffer but override all effects with
+        // specified effect.
+        void render(Scene & scene, Effect & effect, std::shared_ptr<Framebuffer> target);
         // Check graphical errors, it will print errors using the logger.
         void check_errors();
         // Set auto clear flag on specified buffers.
@@ -44,6 +47,9 @@ namespace gst
 
         bool auto_clear_color;
         bool auto_clear_depth;
+
+        Effect effect_override;
+        bool use_effect_override;
     };
 }
 
