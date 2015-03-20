@@ -76,6 +76,8 @@ namespace gst
         virtual void set_wrap_s(WrapMode wrap_s);
         // Set wrap parameter for texture coordinate t.
         virtual void set_wrap_t(WrapMode wrap_t);
+        // Set wrap parameter for texture coordinate t.
+        virtual void set_wrap_r(WrapMode wrap_t);
         // Set depth comparison function/operator.
         virtual void set_depth_compare(CompareFunc depth_compare);
         // Return texture target.
@@ -92,6 +94,8 @@ namespace gst
         virtual WrapMode get_wrap_s() const;
         // Return wrap parameter for texture coordinate t.
         virtual WrapMode get_wrap_t() const;
+        // Return wrap parameter for texture coordinate r.
+        virtual WrapMode get_wrap_r() const;
         // Return depth comparison function/operator.
         virtual CompareFunc get_depth_compare() const;
     private:
@@ -101,6 +105,7 @@ namespace gst
         FilterMode mag_filter;
         WrapMode wrap_s;
         WrapMode wrap_t;
+        WrapMode wrap_r;
         CompareFunc depth_compare;
     };
 }
