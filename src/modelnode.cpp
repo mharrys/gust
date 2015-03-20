@@ -15,10 +15,10 @@ void gst::ModelNode::accept(NodeVisitor & visitor)
 
 gst::Mesh & gst::ModelNode::get_mesh() const
 {
-    return model->mesh;
+    return model->get_mesh();
 }
 
 gst::Effect & gst::ModelNode::get_effect() const
 {
-    return model->effect;
+    return model->get_effect();
 }

@@ -5,3 +5,13 @@ gst::Model::Model(Mesh mesh, Effect effect)
       effect(effect)
 {
 }
+
+gst::Mesh & gst::Model::get_mesh()
+{
+    return mesh;
+}
+
+gst::Effect & gst::Model::get_effect()
+{
+    return effect;
+}
