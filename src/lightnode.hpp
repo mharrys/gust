@@ -13,7 +13,7 @@ namespace gst
         LightNode(std::shared_ptr<Light> light);
         void accept(NodeVisitor & visitor) final;
         // Return light.
-        const std::shared_ptr<Light> get_light() const;
+        Light & get_light() const;
     private:
         std::shared_ptr<Light> light;
     };

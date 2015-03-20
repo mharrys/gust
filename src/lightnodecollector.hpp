@@ -14,9 +14,9 @@ namespace gst
     public:
         void visit(LightNode & node) final;
         // Return collected lights.
-        std::vector<LightNode> get_lights() const;
+        std::vector<LightNode> get_light_nodes() const;
     private:
-        std::vector<LightNode> lights;
+        std::vector<LightNode> light_nodes;
     };
 }
 

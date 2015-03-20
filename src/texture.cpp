@@ -7,6 +7,7 @@ gst::Texture::Texture()
       mag_filter(FilterMode::LINEAR),
       wrap_s(WrapMode::REPEAT),
       wrap_t(WrapMode::REPEAT),
+      wrap_r(WrapMode::REPEAT),
       depth_compare(CompareFunc::NONE)
 {
 }
@@ -47,6 +48,12 @@ void gst::Texture::set_wrap_t(WrapMode wrap_t)
     needs_update();
 }
 
+void gst::Texture::set_wrap_r(WrapMode wrap_r)
+{
+    this->wrap_r = wrap_r;
+    needs_update();
+}
+
 void gst::Texture::set_depth_compare(CompareFunc depth_compare)
 {
     this->depth_compare = depth_compare;
@@ -81,6 +88,11 @@ gst::WrapMode gst::Texture::get_wrap_s() const
 gst::WrapMode gst::Texture::get_wrap_t() const
 {
     return wrap_t;
+}
+
+gst::WrapMode gst::Texture::get_wrap_r() const
+{
+    return wrap_r;
 }
 
 gst::CompareFunc gst::Texture::get_depth_compare() const

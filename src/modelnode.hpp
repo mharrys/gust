@@ -5,6 +5,8 @@
 
 namespace gst
 {
+    class Effect;
+    class Mesh;
     class Model;
 
     // The responsibility of this class is to position a model.
@@ -12,8 +14,10 @@ namespace gst
     public:
         ModelNode(std::shared_ptr<Model> model);
         void accept(NodeVisitor & visitor) final;
-        // Return model.
-        const std::shared_ptr<Model> get_model() const;
+        // Return model mesh.
+        Mesh & get_mesh() const;
+        // Return model effect.
+        Effect & get_effect() const;
     private:
         std::shared_ptr<Model> model;
     };

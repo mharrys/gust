@@ -82,6 +82,10 @@ void gst::FirstPersonControl::move(float dt, Input const & input, Spatial & spat
     if (displacement != glm::vec3(0.0f)) {
         displacement = glm::normalize(displacement);
         if (freelook) {
+            // translate y on the world y-axis and not the object y-axis, this
+            // is the expected behaviour of the "traditional" freelook controls
+            spatial.position.y += speed * displacement.y;
+            displacement.y = 0.0f;
             spatial.translate(speed, displacement);
         } else {
             // limit translation to the xz-plane

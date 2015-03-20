@@ -381,14 +381,16 @@ void gst::GraphicsDeviceImpl::update_texture_parameters(Texture const & texture)
     auto mag_filter = translator.translate(texture.get_mag_filter());
     auto wrap_s = translator.translate(texture.get_wrap_s());
     auto wrap_t = translator.translate(texture.get_wrap_t());
+    auto wrap_r = translator.translate(texture.get_wrap_r());
     auto depth_compare = translator.translate(texture.get_depth_compare());
 
     glTexParameteri(tex_target, GL_TEXTURE_MIN_FILTER, min_filter);
     glTexParameteri(tex_target, GL_TEXTURE_MAG_FILTER, mag_filter);
     glTexParameteri(tex_target, GL_TEXTURE_WRAP_S, wrap_s);
     glTexParameteri(tex_target, GL_TEXTURE_WRAP_T, wrap_t);
+    glTexParameteri(tex_target, GL_TEXTURE_WRAP_R, wrap_r);
 
-    if (depth_compare == -1) {
+    if (depth_compare == 0) {
         glTexParameteri(tex_target, GL_TEXTURE_COMPARE_MODE, GL_NONE);
     } else {
         glTexParameteri(tex_target, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);

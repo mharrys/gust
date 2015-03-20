@@ -13,7 +13,7 @@ namespace gst
     public:
         BasicPass();
         BasicPass(std::shared_ptr<UniformMap> uniforms);
-        void apply(MatrixState & matrices, LightNodes & light_nodes) final;
+        void apply(ModelState const & state) final;
         // Set model view matrix annotation.
         void set_model_view_annotation(std::string const & model_view);
         // Set projection matrix annotation.

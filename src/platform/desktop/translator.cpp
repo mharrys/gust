@@ -111,7 +111,7 @@ GLint gst::Translator::translate(CompareFunc compare_func) const
     case CompareFunc::NEVER:
         return GL_NEVER;
     case CompareFunc::NONE:
-        return -1;
+        // fallthrough
     default:
         return 0;
     }

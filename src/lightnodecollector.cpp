@@ -2,10 +2,10 @@
 
 void gst::LightNodeCollector::visit(LightNode & node)
 {
-    lights.push_back(node);
+    light_nodes.push_back(node);
 }
 
-std::vector<gst::LightNode> gst::LightNodeCollector::get_lights() const
+std::vector<gst::LightNode> gst::LightNodeCollector::get_light_nodes() const
 {
-    return lights;
+    return light_nodes;
 }

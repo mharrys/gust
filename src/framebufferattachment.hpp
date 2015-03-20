@@ -6,6 +6,11 @@
 namespace gst
 {
     class GraphicsResource;
+    class Renderbuffer;
+    class Texture2D;
+    class TextureCube;
+
+    enum class CubeFace;
 
     // Specifices framebuffer attachment types.
     enum class AttachmentType {
@@ -31,8 +36,12 @@ namespace gst
     public:
         FramebufferAttachment() = default;
         FramebufferAttachment(
-            AttachmentType type,
-            std::shared_ptr<GraphicsResource> attachment);
+            std::shared_ptr<Renderbuffer> attachment);
+        FramebufferAttachment(
+            std::shared_ptr<Texture2D> attachment);
+        FramebufferAttachment(
+            std::shared_ptr<TextureCube> attachment,
+            CubeFace face);
         // Return type of attachment.
         AttachmentType get_type() const;
         // Return attachment.

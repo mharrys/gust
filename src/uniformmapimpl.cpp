@@ -21,7 +21,7 @@ std::vector<gst::UniformAnnotation> gst::UniformMapImpl::get_uniforms() const
     return std::vector<UniformAnnotation>(uniforms.begin(), uniforms.end());
 }
 
-std::shared_ptr<gst::AnnotationFormatter> gst::UniformMapImpl::get_formatter() const
+gst::AnnotationFormatter & gst::UniformMapImpl::get_formatter() const
 {
-    return formatter;
+    return *formatter;
 }
