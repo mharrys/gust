@@ -1,18 +1,26 @@
 #include "framebufferattachment.hpp"
 
+#include "renderbuffer.hpp"
+#include "texture2d.hpp"
 #include "texturecube.hpp"
 
 gst::FramebufferAttachment::FramebufferAttachment(
-    AttachmentType type,
-    std::shared_ptr<GraphicsResource> attachment)
-    : type(type),
+    std::shared_ptr<Renderbuffer> attachment)
+    : type(AttachmentType::RENDERBUFFER),
       attachment(attachment)
 {
 }
 
 gst::FramebufferAttachment::FramebufferAttachment(
-    CubeFace face,
-    std::shared_ptr<GraphicsResource> attachment)
+    std::shared_ptr<Texture2D> attachment)
+    : type(AttachmentType::TEXTURE_2D),
+      attachment(attachment)
+{
+}
+
+gst::FramebufferAttachment::FramebufferAttachment(
+    std::shared_ptr<TextureCube> attachment,
+    CubeFace face)
     : attachment(attachment)
 {
     switch (face) {
