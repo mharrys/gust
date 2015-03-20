@@ -46,3 +46,7 @@ Following are projects that depends on this engine.
 ### [Arcball Rotation Control](https://github.com/mharrys/arcball)
 
 ![arcball](https://github.com/mharrys/arcball/raw/master/scrot.png)
+
+### [Omnidirectional Shadow Mapping](https://github.com/mharrys/omni)
+
+![omni](https://github.com/mharrys/omni/raw/master/scrot.png)
