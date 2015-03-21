@@ -1,6 +1,8 @@
 #ifndef GRAPHICSSYNCHRONIZER_HPP_INCLUDED
 #define GRAPHICSSYNCHRONIZER_HPP_INCLUDED
 
+#include "graphicsresource.hpp"
+
 #include <memory>
 #include <unordered_map>
 
@@ -20,6 +22,9 @@ namespace gst
     class VertexArray;
 
     enum class AttachmentPoint;
+
+    typedef std::unordered_map<std::string, int> LocationCache;
+    typedef std::unordered_map<ResourceName, LocationCache> ProgramLocationCache;
 
     // The responsibility of this class is to synchronize client state of
     // mirrored graphics resources with the graphics card.
@@ -57,12 +62,18 @@ namespace gst
         // Replace graphics card state with specified vertex array.
         void update(VertexArray & vertex_array);
     private:
-        void attach(FramebufferAttachment const & attachment, AttachmentPoint attachment_point);
+        int get_cached_uniform_location(
+            ResourceName name,
+            std::string const & annotation);
+        void attach(
+            FramebufferAttachment const & attachment,
+            AttachmentPoint attachment_point);
         void update_storage(Texture2D const & texture);
         void update_storage(TextureCube const & texture);
 
         std::shared_ptr<GraphicsDevice> device;
         std::shared_ptr<Logger> logger;
+        ProgramLocationCache program_location_cache;
     };
 }
 

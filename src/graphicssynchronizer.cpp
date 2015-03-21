@@ -48,6 +48,7 @@ void gst::GraphicsSynchronizer::bind(Program & program)
     if (!program.name) {
         program.name = device->create_program();
         program.cleanup = std::bind(&GraphicsDevice::destroy_program, device, program.name);
+        program_location_cache[program.name] = LocationCache();
     }
 
     // synchronize shaders first since program must have shaders attached
@@ -148,10 +149,9 @@ void gst::GraphicsSynchronizer::update(Program & program)
 
     for (auto uniform : program.get_uniforms()) {
         const auto annotation = uniform.first;
-        const auto location = device->get_uniform_location(program.name, annotation);
+        const auto location = get_cached_uniform_location(program.name, annotation);
 
         if (location == -1) {
-            logger->log(TRACE("could not get uniform location for \"" + annotation + "\""));
             continue;
         }
 
@@ -210,6 +210,23 @@ void gst::GraphicsSynchronizer::update(Texture & texture)
     texture.dirty = false;
 }
 
+int gst::GraphicsSynchronizer::get_cached_uniform_location(
+    ResourceName name,
+    std::string const & annotation)
+{
+    auto & locations = program_location_cache.at(name);
+
+    if (locations.count(annotation) == 0) {
+        const int location = device->get_uniform_location(name, annotation);
+        locations[annotation] = location;
+        if (location == -1) {
+            logger->log(TRACE("could not get uniform location for \"" + annotation + "\""));
+        }
+    }
+
+    return locations.at(annotation);
+}
+
 void gst::GraphicsSynchronizer::update(VertexArray & vertex_array)
 {
     if (!vertex_array.dirty) {
@@ -231,7 +248,9 @@ void gst::GraphicsSynchronizer::update(VertexArray & vertex_array)
     vertex_array.dirty = false;
 }
 
-void gst::GraphicsSynchronizer::attach(FramebufferAttachment const & attachment, AttachmentPoint attachment_point)
+void gst::GraphicsSynchronizer::attach(
+    FramebufferAttachment const & attachment,
+    AttachmentPoint attachment_point)
 {
     auto resource = attachment.get_attachment();
 
