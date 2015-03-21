@@ -4,9 +4,15 @@
 #include "shader.hpp"
 #include "shadoweddata.hpp"
 
-void gst::ProgramImpl::attach(std::shared_ptr<Shader> shader)
+void gst::ProgramImpl::set_vertex_shader(std::shared_ptr<Shader> vertex_shader)
 {
-    shaders.push_back(shader);
+    this->vertex_shader = vertex_shader;
+    needs_update();
+}
+
+void gst::ProgramImpl::set_fragment_shader(std::shared_ptr<Shader> fragment_shader)
+{
+    this->fragment_shader = fragment_shader;
     needs_update();
 }
 
@@ -25,9 +31,9 @@ void gst::ProgramImpl::set_uniforms(UniformMap const & uniforms)
     needs_update();
 }
 
-std::vector<std::shared_ptr<gst::Shader>> gst::ProgramImpl::get_shaders() const
+std::vector<gst::Shader *> gst::ProgramImpl::get_shaders()
 {
-    return shaders;
+    return { vertex_shader.get(), fragment_shader.get() };
 }
 
 std::vector<gst::AttributeLocation> gst::ProgramImpl::get_attribute_locations() const

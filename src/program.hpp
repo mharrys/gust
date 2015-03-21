@@ -18,8 +18,10 @@ namespace gst
     class Program : public GraphicsResource {
     public:
         virtual ~Program() = default;
-        // Attach shader to this program.
-        virtual void attach(std::shared_ptr<Shader> shader) = 0;
+        // Attach vertex shader.
+        virtual void set_vertex_shader(std::shared_ptr<Shader> vertex_shader) = 0;
+        // Attach fragment shader.
+        virtual void set_fragment_shader(std::shared_ptr<Shader> fragment_shader) = 0;
         // Set attribute locations. It will bind vertex attribute indices with
         // attribute names.
         virtual void set_attributes(std::vector<AttributeLocation> attribute_locations) = 0;
@@ -27,7 +29,7 @@ namespace gst
         // specified collection of uniforms.
         virtual void set_uniforms(UniformMap const & uniforms) = 0;
         // Return attached shaders.
-        virtual std::vector<std::shared_ptr<Shader>> get_shaders() const = 0;
+        virtual std::vector<Shader *> get_shaders() = 0;
         // Return attribute locations.
         virtual std::vector<AttributeLocation> get_attribute_locations() const = 0;
         // Return uniforms.

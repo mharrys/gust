@@ -55,7 +55,7 @@ void gst::GraphicsSynchronizer::bind(Program & program)
     // before installing it
 
     bool shader_dirty = false;
-    for (auto shader : program.get_shaders()) {
+    for (auto * shader : program.get_shaders()) {
         shader_dirty = shader->dirty ? true : shader_dirty;
         bind(*shader);
         update(*shader);
