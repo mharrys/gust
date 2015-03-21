@@ -13,24 +13,24 @@ namespace gst
     class Image;
     class Resolution;
     class ShadowedData;
-    class Texture;
-    class Texture2D;
-    class TextureCube;
     class Viewport;
 
     enum class AttachmentType;
     enum class AttachmentPoint;
     enum class BlendMode;
     enum class BufferTarget;
+    enum class CompareFunc;
     enum class CubeFace;
     enum class CullFace;
     enum class DataUsage;
     enum class DrawMode;
+    enum class FilterMode;
     enum class PixelFormat;
     enum class RenderbufferFormat;
     enum class ShaderType;
     enum class TextureFormat;
     enum class TextureTarget;
+    enum class WrapMode;
 
     // The responsibility of this class is to interact with a graphics card.
     class GraphicsDevice {
@@ -137,8 +137,18 @@ namespace gst
             Resolution size,
             std::vector<unsigned char> const & data,
             CubeFace face) = 0;
-        // Update texture parameters.
-        virtual void update_texture_parameters(Texture const & texture) = 0;
+        // Update texture min filter parameter.
+        virtual void update_texture_min_filter(TextureTarget target, FilterMode filter_mode) = 0;
+        // Update texture mag filter parameter.
+        virtual void update_texture_mag_filter(TextureTarget target, FilterMode filter_mode) = 0;
+        // Update texture wrap s parameter.
+        virtual void update_texture_wrap_s(TextureTarget target, WrapMode wrap_mode) = 0;
+        // Update texture wrap t parameter.
+        virtual void update_texture_wrap_t(TextureTarget target, WrapMode wrap_mode) = 0;
+        // Update texture wrap r parameter.
+        virtual void update_texture_wrap_r(TextureTarget target, WrapMode wrap_mode) = 0;
+        // Update texture compare function.
+        virtual void update_texture_compare_func(TextureTarget target, CompareFunc compare_func) = 0;
 
         // Create new framebuffer object.
         virtual ResourceName create_framebuffer() = 0;

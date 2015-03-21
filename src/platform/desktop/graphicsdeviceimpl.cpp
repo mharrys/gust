@@ -374,27 +374,50 @@ void gst::GraphicsDeviceImpl::update_texture_storage(
     );
 }
 
-void gst::GraphicsDeviceImpl::update_texture_parameters(Texture const & texture)
+void gst::GraphicsDeviceImpl::update_texture_min_filter(TextureTarget target, FilterMode min_filter)
 {
-    auto tex_target = translator.translate(texture.get_target());
-    auto min_filter = translator.translate(texture.get_min_filter());
-    auto mag_filter = translator.translate(texture.get_mag_filter());
-    auto wrap_s = translator.translate(texture.get_wrap_s());
-    auto wrap_t = translator.translate(texture.get_wrap_t());
-    auto wrap_r = translator.translate(texture.get_wrap_r());
-    auto depth_compare = translator.translate(texture.get_depth_compare());
+    const auto tex_target = translator.translate(target);
+    const auto tex_min_filter = translator.translate(min_filter);
+    glTexParameteri(tex_target, GL_TEXTURE_MIN_FILTER, tex_min_filter);
+}
 
-    glTexParameteri(tex_target, GL_TEXTURE_MIN_FILTER, min_filter);
-    glTexParameteri(tex_target, GL_TEXTURE_MAG_FILTER, mag_filter);
-    glTexParameteri(tex_target, GL_TEXTURE_WRAP_S, wrap_s);
-    glTexParameteri(tex_target, GL_TEXTURE_WRAP_T, wrap_t);
-    glTexParameteri(tex_target, GL_TEXTURE_WRAP_R, wrap_r);
+void gst::GraphicsDeviceImpl::update_texture_mag_filter(TextureTarget target, FilterMode mag_filter)
+{
+    const auto tex_target = translator.translate(target);
+    const auto tex_mag_filter = translator.translate(mag_filter);
+    glTexParameteri(tex_target, GL_TEXTURE_MAG_FILTER, tex_mag_filter);
+}
 
-    if (depth_compare == 0) {
+void gst::GraphicsDeviceImpl::update_texture_wrap_s(TextureTarget target, WrapMode wrap_s)
+{
+    const auto tex_target = translator.translate(target);
+    const auto tex_wrap_s = translator.translate(wrap_s);
+    glTexParameteri(tex_target, GL_TEXTURE_WRAP_S, tex_wrap_s);
+}
+
+void gst::GraphicsDeviceImpl::update_texture_wrap_t(TextureTarget target, WrapMode wrap_t)
+{
+    const auto tex_target = translator.translate(target);
+    const auto tex_wrap_t = translator.translate(wrap_t);
+    glTexParameteri(tex_target, GL_TEXTURE_WRAP_T, tex_wrap_t);
+}
+
+void gst::GraphicsDeviceImpl::update_texture_wrap_r(TextureTarget target, WrapMode wrap_r)
+{
+    const auto tex_target = translator.translate(target);
+    const auto tex_wrap_r = translator.translate(wrap_r);
+    glTexParameteri(tex_target, GL_TEXTURE_WRAP_R, tex_wrap_r);
+}
+
+void gst::GraphicsDeviceImpl::update_texture_compare_func(TextureTarget target, CompareFunc compare_func)
+{
+    const auto tex_target = translator.translate(target);
+    const auto tex_compare_func = translator.translate(compare_func);
+    if (tex_compare_func == 0) {
         glTexParameteri(tex_target, GL_TEXTURE_COMPARE_MODE, GL_NONE);
     } else {
         glTexParameteri(tex_target, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
-        glTexParameteri(tex_target, GL_TEXTURE_COMPARE_FUNC, depth_compare);
+        glTexParameteri(tex_target, GL_TEXTURE_COMPARE_FUNC, tex_compare_func);
     }
 }
 
@@ -417,8 +440,8 @@ void gst::GraphicsDeviceImpl::bind_framebuffer(ResourceName name)
 
 void gst::GraphicsDeviceImpl::attach_to_framebuffer(ResourceName attachment, AttachmentType type, AttachmentPoint point)
 {
-    auto attachment_type = translator.translate(type);
-    auto attachment_point = translator.translate(point);
+    const auto attachment_type = translator.translate(type);
+    const auto attachment_point = translator.translate(point);
 
     if (type == AttachmentType::RENDERBUFFER) {
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, attachment_point, GL_RENDERBUFFER, attachment);

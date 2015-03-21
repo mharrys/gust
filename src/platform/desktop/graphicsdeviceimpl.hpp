@@ -66,7 +66,12 @@ namespace gst
             Resolution size,
             std::vector<unsigned char> const & data,
             CubeFace face) final;
-        void update_texture_parameters(Texture const & texture);
+        void update_texture_min_filter(TextureTarget target, FilterMode min_filter);
+        void update_texture_mag_filter(TextureTarget target, FilterMode mag_filter);
+        void update_texture_wrap_s(TextureTarget target, WrapMode wrap_s);
+        void update_texture_wrap_t(TextureTarget target, WrapMode wrap_t);
+        void update_texture_wrap_r(TextureTarget target, WrapMode wrap_r);
+        void update_texture_compare_func(TextureTarget target, CompareFunc compare_func);
 
         ResourceName create_framebuffer();
         void destroy_framebuffer(ResourceName name);

@@ -197,7 +197,9 @@ void gst::GraphicsSynchronizer::update(Texture & texture)
         return;
     }
 
-    switch (texture.get_target()) {
+    const auto target = texture.get_target();
+
+    switch (target) {
     case TextureTarget::TEXTURE_2D:
         update_storage(static_cast<Texture2D&>(texture));
         break;
@@ -206,7 +208,12 @@ void gst::GraphicsSynchronizer::update(Texture & texture)
         break;
     }
 
-    device->update_texture_parameters(texture);
+    device->update_texture_min_filter(target, texture.get_min_filter());
+    device->update_texture_mag_filter(target, texture.get_mag_filter());
+    device->update_texture_wrap_s(target, texture.get_wrap_s());
+    device->update_texture_wrap_t(target, texture.get_wrap_t());
+    device->update_texture_wrap_r(target, texture.get_wrap_r());
+    device->update_texture_compare_func(target, texture.get_depth_compare());
     texture.dirty = false;
 }
 
