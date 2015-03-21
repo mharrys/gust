@@ -8,11 +8,8 @@
 #include <fstream>
 #include <sstream>
 
-gst::ProgramFactory::ProgramFactory(
-    std::shared_ptr<GraphicsDevice> device,
-    std::shared_ptr<Logger> logger)
-    : device(device),
-      logger(logger)
+gst::ProgramFactory::ProgramFactory(std::shared_ptr<Logger> logger)
+    : logger(logger)
 {
 }
 
