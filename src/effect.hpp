@@ -20,7 +20,8 @@ namespace gst
         Effect() = default;
         Effect(
             std::shared_ptr<Pass> pass,
-            std::shared_ptr<UniformMap> uniforms);
+            std::shared_ptr<UniformMap> uniforms,
+            EffectTextures const & textures = {});
         // Return pass.
         Pass & get_pass() const;
         // Return uniforms.

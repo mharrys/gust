@@ -4,9 +4,11 @@
 
 gst::Effect::Effect(
     std::shared_ptr<Pass> pass,
-    std::shared_ptr<UniformMap> uniforms)
+    std::shared_ptr<UniformMap> uniforms,
+    EffectTextures const & textures)
     : pass(pass),
-      uniforms(uniforms)
+      uniforms(uniforms),
+      textures(textures)
 {
 }
 
