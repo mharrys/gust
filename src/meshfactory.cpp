@@ -1,22 +1,20 @@
 #include "meshfactory.hpp"
 
-#include "graphicsdevice.hpp"
 #include "logger.hpp"
 #include "mesh.hpp"
 #include "vertexarrayimpl.hpp"
 
 #include "assimp.hpp"
 
-gst::MeshFactory::MeshFactory(std::shared_ptr<GraphicsDevice> device, std::shared_ptr<Logger> logger)
-    : device(device),
-      logger(logger)
+gst::MeshFactory::MeshFactory(std::shared_ptr<Logger> logger)
+    : logger(logger)
 {
 }
 
 gst::Mesh gst::MeshFactory::create_quad(float width, float height)
 {
     auto vertex_array = std::make_shared<VertexArrayImpl>();
-    auto mesh = Mesh(device, vertex_array);
+    auto mesh = Mesh(vertex_array);
 
     mesh.set_positions({
         glm::vec3(-width, -height, 0.0f),
@@ -78,7 +76,7 @@ std::vector<gst::Mesh> gst::MeshFactory::create_from_file(std::string const & pa
             }
 
             auto vertex_array = std::make_shared<VertexArrayImpl>();
-            auto mesh = Mesh(device, vertex_array);
+            auto mesh = Mesh(vertex_array);
 
             if (!positions.empty()) {
                 mesh.set_positions(positions);

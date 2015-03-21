@@ -1,15 +1,20 @@
 #include "noderenderer.hpp"
 
+#include "graphicsdevice.hpp"
+#include "indexbuffer.hpp"
 #include "mesh.hpp"
 #include "model.hpp"
 #include "modelnode.hpp"
 #include "program.hpp"
 #include "renderstate.hpp"
+#include "vertexbuffer.hpp"
 
 gst::NodeRenderer::NodeRenderer(
+    std::shared_ptr<GraphicsDevice> device,
     std::shared_ptr<RenderState> render_state,
     ModelState && state)
-    : render_state(render_state),
+    : device(device),
+      render_state(render_state),
       state(std::move(state)),
       use_effect_override(false)
 {
@@ -43,7 +48,11 @@ void gst::NodeRenderer::visit(ModelNode & node)
     render_state->set_program(pass.program);
     render_state->set_vertex_array(mesh.vertex_array);
 
-    mesh.draw();
+    if (mesh.index) {
+        device->draw_elements(mesh.mode, mesh.index->get_count());
+    } else {
+        device->draw_arrays(mesh.mode, 0, mesh.positions->get_count());
+    }
 }
 
 void gst::NodeRenderer::set_effect_override(Effect & effect)

@@ -49,7 +49,7 @@ void gst::Renderer::render(Scene & scene)
     model_state.light_nodes = collector.get_light_nodes();
     prepare_lights(model_state.view, model_state.light_nodes);
 
-    NodeRenderer renderer(render_state, std::move(model_state));
+    NodeRenderer renderer(device, render_state, std::move(model_state));
     if (use_effect_override) {
         renderer.set_effect_override(effect_override);
     }

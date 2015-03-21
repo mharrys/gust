@@ -1,23 +1,12 @@
 #include "mesh.hpp"
 
 #include "indexbuffer.hpp"
-#include "graphicsdevice.hpp"
 #include "vertexbuffer.hpp"
 
-gst::Mesh::Mesh(std::shared_ptr<GraphicsDevice> device, std::shared_ptr<VertexArray> vertex_array)
-    : device(device),
-      vertex_array(vertex_array),
+gst::Mesh::Mesh(std::shared_ptr<VertexArray> vertex_array)
+    : vertex_array(vertex_array),
       mode(DrawMode::TRIANGLES)
 {
-}
-
-void gst::Mesh::draw() const
-{
-    if (index) {
-        device->draw_elements(mode, index->get_count());
-    } else {
-        device->draw_arrays(mode, 0, positions->get_count());
-    }
 }
 
 void gst::Mesh::set_draw_mode(DrawMode mode)
