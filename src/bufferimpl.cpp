@@ -2,8 +2,10 @@
 
 #include "shadoweddata.hpp"
 
-gst::BufferImpl::BufferImpl(std::shared_ptr<ShadowedData> shadowed_data)
-    : target(BufferTarget::ELEMENT_ARRAY),
+gst::BufferImpl::BufferImpl(
+    BufferTarget target,
+    std::shared_ptr<ShadowedData> shadowed_data)
+    : target(target),
       shadowed_data(shadowed_data),
       usage(DataUsage::STATIC)
 {
@@ -45,11 +47,6 @@ void gst::BufferImpl::set_vec4_array(std::vector<glm::vec4> const & data)
     needs_update();
 }
 
-void gst::BufferImpl::set_target(BufferTarget target)
-{
-    this->target = target;
-}
-
 void gst::BufferImpl::set_usage(DataUsage usage)
 {
     this->usage = usage;
@@ -65,9 +62,9 @@ gst::DataUsage gst::BufferImpl::get_usage() const
     return usage;
 }
 
-std::shared_ptr<gst::ShadowedData> gst::BufferImpl::get_shadowed_data() const
+gst::ShadowedData & gst::BufferImpl::get_shadowed_data()
 {
-    return shadowed_data;
+    return *shadowed_data;
 }
 
 unsigned int gst::BufferImpl::get_count() const

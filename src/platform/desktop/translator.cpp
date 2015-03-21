@@ -8,6 +8,7 @@
 #include "texture.hpp"
 #include "texturecube.hpp"
 #include "vertexarray.hpp"
+#include "vertexattribute.hpp"
 
 GLenum gst::Translator::translate(AttachmentType attachment_type) const
 {

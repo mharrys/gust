@@ -2,7 +2,7 @@
 #define GRAPHICSDEVICE_HPP_INCLUDED
 
 #include "graphicsresource.hpp"
-#include "vertexarray.hpp"
+#include "vertexattribute.hpp"
 
 #include <string>
 #include <vector>
@@ -25,6 +25,7 @@ namespace gst
     enum class CubeFace;
     enum class CullFace;
     enum class DataUsage;
+    enum class DrawMode;
     enum class PixelFormat;
     enum class RenderbufferFormat;
     enum class ShaderType;

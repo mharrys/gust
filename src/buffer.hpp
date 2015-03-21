@@ -41,8 +41,6 @@ namespace gst
         virtual void set_vec3_array(std::vector<glm::vec3> const & data) = 0;
         // Set client side data to vec4 array.
         virtual void set_vec4_array(std::vector<glm::vec4> const & data) = 0;
-        // Set buffer target.
-        virtual void set_target(BufferTarget target) = 0;
         // Set buffer data usage.
         virtual void set_usage(DataUsage usage) = 0;
         // Return buffer target.
@@ -50,7 +48,7 @@ namespace gst
         // Return buffer data usage.
         virtual DataUsage get_usage() const = 0;
         // Return buffer data.
-        virtual std::shared_ptr<ShadowedData> get_shadowed_data() const = 0;
+        virtual ShadowedData & get_shadowed_data() = 0;
         // Return the number of elements in the buffer data.
         virtual unsigned int get_count() const = 0;
         // Return buffer data size in bytes.

@@ -4,6 +4,7 @@
 #include "framebuffer.hpp"
 #include "framebufferattachment.hpp"
 #include "image.hpp"
+#include "indexbuffer.hpp"
 #include "graphicsdevice.hpp"
 #include "logger.hpp"
 #include "renderbuffer.hpp"
@@ -14,6 +15,7 @@
 #include "texture2d.hpp"
 #include "texturecube.hpp"
 #include "vertexarray.hpp"
+#include "vertexbuffer.hpp"
 
 gst::GraphicsSynchronizer::GraphicsSynchronizer(
     std::shared_ptr<GraphicsDevice> device,
@@ -123,7 +125,7 @@ void gst::GraphicsSynchronizer::update(Buffer & buffer)
         return;
     }
 
-    device->buffer_data(buffer.get_target(), *buffer.get_shadowed_data(), buffer.get_usage());
+    device->buffer_data(buffer.get_target(), buffer.get_shadowed_data(), buffer.get_usage());
     buffer.dirty = false;
 }
 
@@ -214,15 +216,18 @@ void gst::GraphicsSynchronizer::update(VertexArray & vertex_array)
         return;
     }
 
-    for (auto vertex_buffer : vertex_array.get_vertex_buffers()) {
-        bind(*vertex_buffer.first);
-        update(*vertex_buffer.first);
-        for (auto attribute : vertex_buffer.second) {
+    for (auto * vertex_buffer : vertex_array.get_vertex_buffers()) {
+        bind(*vertex_buffer);
+        update(*vertex_buffer);
+        for (auto attribute : vertex_buffer->get_attributes()) {
             device->enable_vertex_attribute(attribute);
         }
     }
-    bind(*vertex_array.get_index_buffer());
-    update(*vertex_array.get_index_buffer());
+
+    auto & index_buffer = vertex_array.get_index_buffer();
+    bind(index_buffer);
+    update(index_buffer);
+
     vertex_array.dirty = false;
 }
 

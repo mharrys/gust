@@ -1,8 +1,8 @@
 #include "mesh.hpp"
 
-#include "bufferimpl.hpp"
+#include "indexbuffer.hpp"
 #include "graphicsdevice.hpp"
-#include "shadoweddataimpl.hpp"
+#include "vertexbuffer.hpp"
 
 gst::Mesh::Mesh(std::shared_ptr<GraphicsDevice> device, std::shared_ptr<VertexArray> vertex_array)
     : device(device),
@@ -13,10 +13,10 @@ gst::Mesh::Mesh(std::shared_ptr<GraphicsDevice> device, std::shared_ptr<VertexAr
 
 void gst::Mesh::draw() const
 {
-    if (index_buffer) {
-        device->draw_elements(mode, index_buffer->get_count());
+    if (index) {
+        device->draw_elements(mode, index->get_count());
     } else {
-        device->draw_arrays(mode, 0, positions_buffer->get_count());
+        device->draw_arrays(mode, 0, positions->get_count());
     }
 }
 
@@ -27,65 +27,57 @@ void gst::Mesh::set_draw_mode(DrawMode mode)
 
 void gst::Mesh::set_positions(std::vector<glm::vec3> const & data)
 {
-    if (!positions_buffer) {
-        positions_buffer = make_buffer(BufferTarget::ARRAY);
-        vertex_array->add_vertex_buffer(
-            positions_buffer,
-            { VertexAttribute(AttributeIndex::POSITION, 3, VertexDataType::FLOAT) }
-        );
+    if (!positions) {
+        VertexAttribute attribute = {
+            AttributeIndex::POSITION, 3, VertexDataType::FLOAT, 0, 0
+        };
+        positions = std::make_shared<VertexBuffer>(attribute);
+        vertex_array->add_vertex_buffer(positions);
     }
-    positions_buffer->set_vec3_array(data);
+    positions->set_vec3_array(data);
 }
 
 void gst::Mesh::set_normals(std::vector<glm::vec3> const & data)
 {
-    if (!normals_buffer) {
-        normals_buffer = make_buffer(BufferTarget::ARRAY);
-        vertex_array->add_vertex_buffer(
-            normals_buffer,
-            { VertexAttribute(AttributeIndex::NORMAL, 3, VertexDataType::FLOAT) }
-        );
+    if (!normals) {
+        VertexAttribute attribute = {
+            AttributeIndex::NORMAL, 3, VertexDataType::FLOAT, 0, 0
+        };
+        normals = std::make_shared<VertexBuffer>(attribute);
+        vertex_array->add_vertex_buffer(normals);
     }
-    normals_buffer->set_vec3_array(data);
+    normals->set_vec3_array(data);
 }
 
 void gst::Mesh::set_colors(std::vector<glm::vec3> const & data)
 {
-    if (!colors_buffer) {
-        colors_buffer = make_buffer(BufferTarget::ARRAY);
-        vertex_array->add_vertex_buffer(
-            colors_buffer,
-            { VertexAttribute(AttributeIndex::COLOR, 3, VertexDataType::FLOAT) }
-        );
+    if (!colors) {
+        VertexAttribute attribute = {
+            AttributeIndex::COLOR, 3, VertexDataType::FLOAT, 0, 0
+        };
+        colors = std::make_shared<VertexBuffer>(attribute);
+        vertex_array->add_vertex_buffer(colors);
     }
-    colors_buffer->set_vec3_array(data);
+    colors->set_vec3_array(data);
 }
 
 void gst::Mesh::set_tex_coords(std::vector<glm::vec2> const & data)
 {
-    if (!tex_coords_buffer) {
-        tex_coords_buffer = make_buffer(BufferTarget::ARRAY);
-        vertex_array->add_vertex_buffer(
-            tex_coords_buffer,
-            { VertexAttribute(AttributeIndex::TEX_COORD, 2, VertexDataType::FLOAT) }
-        );
+    if (!tex_coords) {
+        VertexAttribute attribute = {
+            AttributeIndex::TEX_COORD, 2, VertexDataType::FLOAT, 0, 0
+        };
+        tex_coords = std::make_shared<VertexBuffer>(attribute);
+        vertex_array->add_vertex_buffer(tex_coords);
     }
-    tex_coords_buffer->set_vec2_array(data);
+    tex_coords->set_vec2_array(data);
 }
 
 void gst::Mesh::set_indices(std::vector<unsigned int> const & data)
 {
-    if (!index_buffer) {
-        index_buffer = make_buffer(BufferTarget::ELEMENT_ARRAY);
-        vertex_array->set_index_buffer(index_buffer);
+    if (!index) {
+        index = std::make_shared<IndexBuffer>();
+        vertex_array->set_index_buffer(index);
     }
-    index_buffer->set_unsigned_int_array(data);
-}
-
-std::shared_ptr<gst::Buffer> gst::Mesh::make_buffer(BufferTarget target)
-{
-    auto data = std::make_shared<ShadowedDataImpl>();
-    auto buffer = std::make_shared<BufferImpl>(data);
-    buffer->set_target(target);
-    return buffer;
+    index->set_unsigned_int_array(data);
 }

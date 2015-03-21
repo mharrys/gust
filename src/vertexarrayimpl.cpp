@@ -1,23 +1,36 @@
 #include "vertexarrayimpl.hpp"
 
-void gst::VertexArrayImpl::set_index_buffer(std::shared_ptr<Buffer> buffer)
+#include "indexbuffer.hpp"
+#include "vertexbuffer.hpp"
+
+void gst::VertexArrayImpl::set_index_buffer(std::shared_ptr<IndexBuffer> buffer)
 {
     index_buffer = buffer;
     needs_update();
 }
 
-void gst::VertexArrayImpl::add_vertex_buffer(std::shared_ptr<Buffer> buffer, VertexAttributes attributes)
+void gst::VertexArrayImpl::add_vertex_buffer(std::shared_ptr<VertexBuffer> buffer)
 {
-    vertex_buffers.push_back({ buffer, attributes });
+    vertex_buffers.push_back(buffer);
     needs_update();
 }
 
-std::vector<gst::VertexBuffer> gst::VertexArrayImpl::get_vertex_buffers() const
+void gst::VertexArrayImpl::set_vertex_buffer(std::vector<std::shared_ptr<VertexBuffer>> buffers)
 {
-    return vertex_buffers;
+    vertex_buffers = buffers;
+    needs_update();
 }
 
-std::shared_ptr<gst::Buffer> gst::VertexArrayImpl::get_index_buffer() const
+std::vector<gst::VertexBuffer *> gst::VertexArrayImpl::get_vertex_buffers()
 {
-    return index_buffer;
+    std::vector<VertexBuffer *> result;
+    for (auto buffer : vertex_buffers) {
+        result.push_back(buffer.get());
+    }
+    return result;
+}
+
+gst::IndexBuffer & gst::VertexArrayImpl::get_index_buffer()
+{
+    return *index_buffer;
 }

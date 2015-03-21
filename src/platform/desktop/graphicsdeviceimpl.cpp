@@ -290,14 +290,14 @@ void gst::GraphicsDeviceImpl::draw_elements(DrawMode mode, int count)
 
 void gst::GraphicsDeviceImpl::enable_vertex_attribute(VertexAttribute const & attribute)
 {
-    glEnableVertexAttribArray(attribute.get_index());
+    glEnableVertexAttribArray(attribute.index);
     glVertexAttribPointer(
-        attribute.get_index(),
-        attribute.get_components(),
-        translator.translate(attribute.get_type()),
-        attribute.get_normalized() ? GL_TRUE : GL_FALSE,
-        attribute.get_stride_bytes(),
-        (GLvoid const *)(attribute.get_offset_bytes())
+        attribute.index,
+        attribute.components,
+        translator.translate(attribute.type),
+        GL_FALSE,
+        attribute.stride_bytes,
+        (GLvoid const *)(attribute.offset_bytes)
     );
 }
 

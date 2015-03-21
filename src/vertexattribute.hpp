@@ -5,7 +5,7 @@
 
 namespace gst
 {
-    // default vertex attributes
+    // Specifies default vertex attributes.
     enum AttributeIndex {
         POSITION = 0,
         NORMAL,
@@ -14,6 +14,7 @@ namespace gst
         INDICES
     };
 
+    // Specifies vertex data type.
     enum class VertexDataType {
         INT,
         UNSIGNED_INT,
@@ -23,30 +24,13 @@ namespace gst
         VEC4
     };
 
+    // The responsibility of this class is to specify how a vertex stream is
+    // stored.
     class VertexAttribute {
     public:
-        VertexAttribute(
-            int index,
-            int components,
-            VertexDataType type);
-        VertexAttribute(
-            int index,
-            int components,
-            VertexDataType type,
-            bool normalized,
-            size_t stride_bytes,
-            size_t offset_bytes);
-        int get_index() const;
-        int get_components() const;
-        VertexDataType get_type() const;
-        bool get_normalized() const;
-        size_t get_stride_bytes() const;
-        size_t get_offset_bytes() const;
-    private:
         int index;
         int components;
         VertexDataType type;
-        bool normalized;
         size_t stride_bytes;
         size_t offset_bytes;
     };
