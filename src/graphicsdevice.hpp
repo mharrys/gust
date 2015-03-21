@@ -37,7 +37,7 @@ namespace gst
     public:
         virtual ~GraphicsDevice() = default;
 
-        // Clear buffers to present values.
+        // Clear buffers.
         virtual void clear(bool color, bool depth) = 0;
 
         // Set clear values for color buffers.
