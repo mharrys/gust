@@ -11,17 +11,6 @@ namespace gst
     class IndexBuffer;
     class VertexBuffer;
 
-    // Primitives to render.
-    enum class DrawMode {
-        POINTS,
-        LINE_STRIP,
-        LINE_LOOP,
-        LINES,
-        TRIANGLE_STRIP,
-        TRIANGLE_FAN,
-        TRIANGLES
-    };
-
     // The responsibility of this class is to mirror a vertex array object on
     // the graphics card.
     class VertexArray : public GraphicsResource {

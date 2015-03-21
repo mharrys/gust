@@ -2,6 +2,7 @@
 
 #include "indexbuffer.hpp"
 #include "vertexbuffer.hpp"
+#include "vertexarray.hpp"
 
 gst::Mesh::Mesh(std::shared_ptr<VertexArray> vertex_array)
     : vertex_array(vertex_array),

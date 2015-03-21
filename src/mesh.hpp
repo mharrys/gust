@@ -1,14 +1,20 @@
 #ifndef MESH_HPP_INCLUDED
 #define MESH_HPP_INCLUDED
 
-#include "vertexarray.hpp"
+#include "drawmode.hpp"
 
 #include "glm.hpp"
+
+#include <memory>
+#include <vector>
 
 namespace gst
 {
     class Buffer;
+    class IndexBuffer;
     class NodeRenderer;
+    class VertexArray;
+    class VertexBuffer;
 
     class Mesh {
         friend NodeRenderer;

@@ -2,12 +2,12 @@
 
 #include "buffer.hpp"
 #include "cullface.hpp"
+#include "drawmode.hpp"
 #include "framebufferattachment.hpp"
 #include "renderbufferformat.hpp"
 #include "shader.hpp"
 #include "texture.hpp"
 #include "texturecube.hpp"
-#include "vertexarray.hpp"
 #include "vertexattribute.hpp"
 
 GLenum gst::Translator::translate(AttachmentType attachment_type) const
