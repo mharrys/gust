@@ -7,6 +7,7 @@
 #include "modelnode.hpp"
 #include "program.hpp"
 #include "renderstate.hpp"
+#include "shadoweddata.hpp"
 #include "vertexbuffer.hpp"
 
 gst::NodeRenderer::NodeRenderer(
@@ -49,9 +50,11 @@ void gst::NodeRenderer::visit(ModelNode & node)
     render_state->set_vertex_array(mesh.vertex_array);
 
     if (mesh.index) {
-        device->draw_elements(mesh.mode, mesh.index->get_count());
+        auto count = mesh.index->get_shadowed_data().get_count();
+        device->draw_elements(mesh.mode, count);
     } else {
-        device->draw_arrays(mesh.mode, 0, mesh.positions->get_count());
+        auto count = mesh.positions->get_shadowed_data().get_count();
+        device->draw_arrays(mesh.mode, 0, count);
     }
 }
 

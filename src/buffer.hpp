@@ -49,10 +49,6 @@ namespace gst
         virtual DataUsage get_usage() const = 0;
         // Return buffer data.
         virtual ShadowedData & get_shadowed_data() = 0;
-        // Return the number of elements in the buffer data.
-        virtual unsigned int get_count() const = 0;
-        // Return buffer data size in bytes.
-        virtual unsigned int get_size_bytes() const = 0;
     };
 }
 

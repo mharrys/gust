@@ -66,13 +66,3 @@ gst::ShadowedData & gst::BufferImpl::get_shadowed_data()
 {
     return *shadowed_data;
 }
-
-unsigned int gst::BufferImpl::get_count() const
-{
-    return shadowed_data->get_count();
-}
-
-unsigned int gst::BufferImpl::get_size_bytes() const
-{
-    return shadowed_data->get_size_bytes();
-}

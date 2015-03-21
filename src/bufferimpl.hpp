@@ -20,8 +20,6 @@ namespace gst
         BufferTarget get_target() const;
         DataUsage get_usage() const;
         ShadowedData & get_shadowed_data();
-        unsigned int get_count() const;
-        unsigned int get_size_bytes() const;
     private:
         BufferTarget target;
         std::shared_ptr<ShadowedData> shadowed_data;
