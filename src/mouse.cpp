@@ -10,7 +10,7 @@ gst::Mouse::Mouse()
 
 void gst::Mouse::tick()
 {
-    for (unsigned int i = 0; i < buttons.size(); i++) {
+    for (auto i = 0u; i < buttons.size(); i++) {
         ButtonState state = buttons[i];
         if (state == ButtonState::CLICKED || state == ButtonState::DBLCLICKED) {
             buttons[i] = ButtonState::DOWN;

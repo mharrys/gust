@@ -49,11 +49,11 @@ std::vector<gst::Mesh> gst::MeshFactory::create_from_file(std::string const & pa
     std::function<void(aiNode *, aiScene const *)> traverse;
     traverse = [this, &traverse, &meshes](aiNode * node, aiScene const * scene)
     {
-        for (unsigned int i = 0; i < node->mNumMeshes; i++) {
+        for (auto i = 0u; i < node->mNumMeshes; i++) {
             aiMesh const * ai_mesh = scene->mMeshes[node->mMeshes[i]];
 
             std::vector<glm::vec3> positions(ai_mesh->mNumVertices);
-            for (unsigned int i = 0; i < ai_mesh->mNumVertices; i++) {
+            for (auto i = 0u; i < ai_mesh->mNumVertices; i++) {
                 aiVector3D ai_position = ai_mesh->mVertices[i];
                 positions[i].x = ai_position.x;
                 positions[i].y = ai_position.y;
@@ -61,7 +61,7 @@ std::vector<gst::Mesh> gst::MeshFactory::create_from_file(std::string const & pa
             }
 
             std::vector<glm::vec3> normals(ai_mesh->mNumVertices);
-            for (unsigned int i = 0; i < ai_mesh->mNumVertices; i++) {
+            for (auto i = 0u; i < ai_mesh->mNumVertices; i++) {
                 aiVector3D ai_normal = ai_mesh->mNormals[i];
                 normals[i].x = ai_normal.x;
                 normals[i].y = ai_normal.y;
@@ -70,9 +70,9 @@ std::vector<gst::Mesh> gst::MeshFactory::create_from_file(std::string const & pa
 
             std::vector<glm::uint> indices;
             indices.reserve(ai_mesh->mNumFaces * 3); // minimum possible triangles (if any)
-            for(unsigned int i = 0; i < ai_mesh->mNumFaces; i++) {
+            for(auto i = 0u; i < ai_mesh->mNumFaces; i++) {
                 aiFace ai_face = ai_mesh->mFaces[i];
-                for(unsigned int j = 0; j < ai_face.mNumIndices; j++) {
+                for(auto j = 0u; j < ai_face.mNumIndices; j++) {
                     indices.push_back(ai_face.mIndices[j]);
                 }
             }
@@ -93,7 +93,7 @@ std::vector<gst::Mesh> gst::MeshFactory::create_from_file(std::string const & pa
             meshes.push_back(mesh);
         }
 
-        for (unsigned int i = 0; i < node->mNumChildren; i++) {
+        for (auto i = 0u; i < node->mNumChildren; i++) {
             traverse(node->mChildren[i], scene);
         }
     };

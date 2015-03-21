@@ -89,7 +89,7 @@ void gst::Renderer::set_auto_clear(bool auto_clear_color, bool auto_clear_depth)
 
 void gst::Renderer::prepare_lights(glm::mat4 view, std::vector<LightNode> & lights) const
 {
-    for (unsigned int i = 0; i < lights.size(); i++) {
+    for (auto i = 0u; i < lights.size(); i++) {
         auto & light = lights[i].get_light();
 
         // special uniforms
