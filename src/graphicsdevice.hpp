@@ -32,7 +32,7 @@ namespace gst
     enum class TextureTarget;
     enum class WrapMode;
 
-    // The responsibility of this class is to interact with a graphics card.
+    // The responsibility of this class is to interact with the graphics card.
     class GraphicsDevice {
     public:
         virtual ~GraphicsDevice() = default;
