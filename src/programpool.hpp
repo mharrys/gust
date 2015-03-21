@@ -13,6 +13,7 @@ namespace gst
     // program is ever read in twice but instead is reused.
     class ProgramPool {
     public:
+        ProgramPool(std::shared_ptr<Logger> logger);
         ProgramPool(ProgramFactory factory);
         // Return created/cached program with shaders read from file.
         std::shared_ptr<Program> create(

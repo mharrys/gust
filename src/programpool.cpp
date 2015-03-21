@@ -2,6 +2,11 @@
 
 #include "program.hpp"
 
+gst::ProgramPool::ProgramPool(std::shared_ptr<Logger> logger)
+    : ProgramPool(ProgramFactory(logger))
+{
+}
+
 gst::ProgramPool::ProgramPool(ProgramFactory factory)
     : factory(factory)
 {
