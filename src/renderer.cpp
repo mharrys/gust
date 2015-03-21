@@ -2,7 +2,8 @@
 
 #include "annotationarray.hpp"
 #include "cameranode.hpp"
-#include "graphicsdevice.hpp"
+#include "graphicsdeviceimpl.hpp"
+#include "graphicssynchronizer.hpp"
 #include "framebuffer.hpp"
 #include "light.hpp"
 #include "lightnode.hpp"
@@ -14,17 +15,20 @@
 #include "shadoweddata.hpp"
 #include "uniformmap.hpp"
 
-gst::Renderer::Renderer(
+gst::Renderer gst::Renderer::create_default(std::shared_ptr<Logger> logger)
+{
+    auto device = std::make_shared<gst::GraphicsDeviceImpl>();
+    auto synchronizer = std::make_shared<gst::GraphicsSynchronizer>(device, logger);
+    auto render_state = std::make_shared<gst::RenderState>(device, synchronizer);
+    return Renderer(device, render_state, logger);
+}
+
+gst::Renderer gst::Renderer::create_from(
     std::shared_ptr<GraphicsDevice> device,
     std::shared_ptr<RenderState> render_state,
     std::shared_ptr<Logger> logger)
-    : device(device),
-      render_state(render_state),
-      logger(logger),
-      auto_clear_color(true),
-      auto_clear_depth(true),
-      use_effect_override(false)
 {
+    return Renderer(device, render_state, logger);
 }
 
 void gst::Renderer::clear(bool color, bool depth)
@@ -85,6 +89,19 @@ void gst::Renderer::set_auto_clear(bool auto_clear_color, bool auto_clear_depth)
 {
     this->auto_clear_color = auto_clear_color;
     this->auto_clear_depth = auto_clear_depth;
+}
+
+gst::Renderer::Renderer(
+    std::shared_ptr<GraphicsDevice> device,
+    std::shared_ptr<RenderState> render_state,
+    std::shared_ptr<Logger> logger)
+    : device(device),
+      render_state(render_state),
+      logger(logger),
+      auto_clear_color(true),
+      auto_clear_depth(true),
+      use_effect_override(false)
+{
 }
 
 void gst::Renderer::prepare_lights(glm::mat4 view, std::vector<LightNode> & lights) const

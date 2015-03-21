@@ -20,8 +20,8 @@ namespace gst
     // The responsibility of this class is to prepare a scene for rendering.
     class Renderer {
     public:
-        Renderer() = default;
-        Renderer(
+        static Renderer create_default(std::shared_ptr<Logger> logger);
+        static Renderer create_from(
             std::shared_ptr<GraphicsDevice> device,
             std::shared_ptr<RenderState> render_state,
             std::shared_ptr<Logger> logger);
@@ -39,6 +39,10 @@ namespace gst
         // Set auto clear flag on specified buffers.
         void set_auto_clear(bool auto_clear_color, bool auto_clear_depth);
     private:
+        Renderer(
+            std::shared_ptr<GraphicsDevice> device,
+            std::shared_ptr<RenderState> render_state,
+            std::shared_ptr<Logger> logger);
         void prepare_lights(glm::mat4 view, std::vector<LightNode> & lights) const;
 
         std::shared_ptr<GraphicsDevice> device;
