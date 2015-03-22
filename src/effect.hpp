@@ -31,6 +31,11 @@ namespace gst
         // Return uniform associated with specified annotation.
         ShadowedData & operator[](std::string const & annotation);
 
+        // Bind sampler with a unit and annotation.
+        void bind_sampler(
+            std::string const & annotation,
+            std::shared_ptr<Texture> sampler,
+            int unit);
         // Return pass.
         Pass & get_pass();
         // Return uniforms.
