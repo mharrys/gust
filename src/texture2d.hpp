@@ -9,6 +9,7 @@ namespace gst
     // The responsibility of this class is to mirror a 2-dimensional texture.
     class Texture2D : public Texture {
     public:
+        Texture2D(Resolution size);
         Texture2D(
             Resolution size,
             TextureData const & data);

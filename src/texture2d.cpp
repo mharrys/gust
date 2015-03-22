@@ -1,5 +1,10 @@
 #include "texture2d.hpp"
 
+gst::Texture2D::Texture2D(Resolution size)
+    : Texture2D(size, {})
+{
+}
+
 gst::Texture2D::Texture2D(
     Resolution size,
     TextureData const & data)
