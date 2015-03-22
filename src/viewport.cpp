@@ -45,12 +45,12 @@ int gst::Viewport::get_y() const
     return y;
 }
 
-int gst::Viewport::get_width() const
+unsigned int gst::Viewport::get_width() const
 {
     return width;
 }
 
-int gst::Viewport::get_height() const
+unsigned int gst::Viewport::get_height() const
 {
     return height;
 }

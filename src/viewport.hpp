@@ -25,9 +25,9 @@ namespace gst
         // Return y-component.
         int get_y() const;
         // Return width-component.
-        int get_width() const;
+        unsigned int get_width() const;
         // Return height-component.
-        int get_height() const;
+        unsigned int get_height() const;
     private:
         int x;
         int y;
