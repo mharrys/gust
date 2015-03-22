@@ -29,7 +29,7 @@ namespace gst
     // model state in a specialized way.
     class Pass {
     public:
-        Pass() = default;
+        Pass();
         Pass(std::shared_ptr<Program> program);
         // Setup the program object from the model state.
         virtual void apply(ModelState const & state) = 0;
