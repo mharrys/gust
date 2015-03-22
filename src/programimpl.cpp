@@ -4,15 +4,15 @@
 #include "shader.hpp"
 #include "shadoweddata.hpp"
 
-void gst::ProgramImpl::set_vertex_shader(std::shared_ptr<Shader> vertex_shader)
+void gst::ProgramImpl::set_vertex_shader(std::unique_ptr<Shader> vertex_shader)
 {
-    this->vertex_shader = vertex_shader;
+    this->vertex_shader = std::move(vertex_shader);
     needs_update();
 }
 
-void gst::ProgramImpl::set_fragment_shader(std::shared_ptr<Shader> fragment_shader)
+void gst::ProgramImpl::set_fragment_shader(std::unique_ptr<Shader> fragment_shader)
 {
-    this->fragment_shader = fragment_shader;
+    this->fragment_shader = std::move(fragment_shader);
     needs_update();
 }
 

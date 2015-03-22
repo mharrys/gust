@@ -19,9 +19,9 @@ namespace gst
     public:
         virtual ~Program() = default;
         // Attach vertex shader.
-        virtual void set_vertex_shader(std::shared_ptr<Shader> vertex_shader) = 0;
+        virtual void set_vertex_shader(std::unique_ptr<Shader> vertex_shader) = 0;
         // Attach fragment shader.
-        virtual void set_fragment_shader(std::shared_ptr<Shader> fragment_shader) = 0;
+        virtual void set_fragment_shader(std::unique_ptr<Shader> fragment_shader) = 0;
         // Set attribute locations. It will bind vertex attribute indices with
         // attribute names.
         virtual void set_attributes(std::vector<AttributeLocation> attribute_locations) = 0;

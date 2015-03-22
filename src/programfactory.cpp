@@ -42,11 +42,11 @@ std::unique_ptr<gst::Program> gst::ProgramFactory::create_from_source(
 {
     auto program = std::unique_ptr<Program>(new ProgramImpl());
 
-    auto vs = std::make_shared<ShaderImpl>(ShaderType::VERTEX, vs_source);
-    auto fs = std::make_shared<ShaderImpl>(ShaderType::FRAGMENT, fs_source);
+    auto vs = std::unique_ptr<Shader>(new ShaderImpl(ShaderType::VERTEX, vs_source));
+    auto fs = std::unique_ptr<Shader>(new ShaderImpl(ShaderType::FRAGMENT, fs_source));
 
-    program->set_vertex_shader(vs);
-    program->set_fragment_shader(fs);
+    program->set_vertex_shader(std::move(vs));
+    program->set_fragment_shader(std::move(fs));
 
     // default attributes
     program->set_attributes({
