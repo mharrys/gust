@@ -23,7 +23,7 @@ namespace gst
         // Traverse scene and perform a specified operation on all nodes.
         void traverse(NodeVisitor & visitor);
         // Return scene eye/viewpoint.
-        CameraNode & get_eye() const;
+        CameraNode & get_eye();
     private:
         std::shared_ptr<CameraNode> eye;
         std::shared_ptr<GroupNode> root;

@@ -32,7 +32,7 @@ void gst::Scene::traverse(NodeVisitor & visitor)
     root->accept(visitor);
 }
 
-gst::CameraNode & gst::Scene::get_eye() const
+gst::CameraNode & gst::Scene::get_eye()
 {
     return *eye;
 }
