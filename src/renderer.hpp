@@ -20,15 +20,13 @@ namespace gst
     // The responsibility of this class is to prepare a scene for rendering.
     class Renderer {
     public:
-        static Renderer create_default(std::shared_ptr<Logger> logger);
-        static Renderer create_from(
-            std::shared_ptr<GraphicsDevice> device,
-            std::shared_ptr<RenderState> render_state,
-            std::shared_ptr<Logger> logger);
+        static Renderer create(std::shared_ptr<Logger> logger);
         // Clear specified buffers.
         void clear(bool color, bool depth);
         // Render scene.
         void render(Scene & scene);
+        // Render scene but override all effects with specified effect.
+        void render(Scene & scene, Effect & effect);
         // Render scene into framebuffer.
         void render(Scene & scene, std::shared_ptr<Framebuffer> target);
         // Render scene into framebuffer but override all effects with

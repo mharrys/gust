@@ -15,19 +15,11 @@
 #include "shadoweddata.hpp"
 #include "uniformmap.hpp"
 
-gst::Renderer gst::Renderer::create_default(std::shared_ptr<Logger> logger)
+gst::Renderer gst::Renderer::create(std::shared_ptr<Logger> logger)
 {
     auto device = std::make_shared<gst::GraphicsDeviceImpl>();
     auto synchronizer = std::make_shared<gst::GraphicsSynchronizer>(device, logger);
     auto render_state = std::make_shared<gst::RenderState>(device, synchronizer);
-    return Renderer(device, render_state, logger);
-}
-
-gst::Renderer gst::Renderer::create_from(
-    std::shared_ptr<GraphicsDevice> device,
-    std::shared_ptr<RenderState> render_state,
-    std::shared_ptr<Logger> logger)
-{
     return Renderer(device, render_state, logger);
 }
 
@@ -58,6 +50,14 @@ void gst::Renderer::render(Scene & scene)
         renderer.set_effect_override(effect_override);
     }
     scene.traverse(renderer);
+}
+
+void gst::Renderer::render(Scene & scene, Effect & effect)
+{
+    effect_override = effect;
+    use_effect_override = true;
+    render(scene);
+    use_effect_override = false;
 }
 
 void gst::Renderer::render(Scene & scene, std::shared_ptr<Framebuffer> target)
