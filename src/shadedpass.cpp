@@ -27,7 +27,7 @@ void gst::ShadedPass::apply(ModelState const & state)
 
     for (auto & light_node : state.light_nodes) {
         auto & light = light_node.get_light();
-        program->set_uniforms(*light.get_uniforms());
+        program->set_uniforms(light.get_uniforms());
     }
 }
 

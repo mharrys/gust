@@ -6,6 +6,7 @@
 
 namespace gst
 {
+    class ShadowedData;
     class UniformMap;
 
     // The responsibility of this class is to define a light source from a
@@ -13,12 +14,16 @@ namespace gst
     class Light {
     public:
         Light(std::shared_ptr<UniformMap> uniforms);
+
+        // Return uniform associated with specified annotation.
+        ShadowedData & operator[](std::string const & annotation);
+
         // Set light enabled/disabled.
         void set_enabled(bool enabled);
-        // Return uniforms for this light.
-        std::shared_ptr<UniformMap> get_uniforms() const;
         // Return true if enabled, false otherwise.
         bool get_enabled() const;
+        // Return all uniforms that defines this light source.
+        UniformMap & get_uniforms();
     private:
         std::shared_ptr<UniformMap> uniforms;
         bool enabled;
