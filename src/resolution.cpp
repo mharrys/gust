@@ -1,7 +1,15 @@
 #include "resolution.hpp"
 
+#include "viewport.hpp"
+
 gst::Resolution::Resolution()
     : Resolution(0, 0)
+{
+}
+
+gst::Resolution::Resolution(Viewport const & viewport)
+    : width(viewport.get_width()),
+      height(viewport.get_height())
 {
 }
 

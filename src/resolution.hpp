@@ -3,11 +3,15 @@
 
 namespace gst
 {
+    class Viewport;
+
     // The responsibility of this class is to describe a resolution.
     class Resolution {
     public:
         // Construct resolution with 0 width and height.
         Resolution();
+        // Construct resolution with specified with and height of a viewport.
+        Resolution(Viewport const & viewport);
         // Construct resolution with equal width and height.
         Resolution(unsigned int size);
         // Construct resolution with specified with and height.
