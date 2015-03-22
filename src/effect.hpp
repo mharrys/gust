@@ -3,6 +3,7 @@
 
 #include <array>
 #include <memory>
+#include <string>
 #include <vector>
 
 namespace gst
@@ -18,6 +19,10 @@ namespace gst
     // pass.
     class Effect {
     public:
+        static Effect create_basic(std::shared_ptr<Pass> pass);
+        static Effect create_struct(std::shared_ptr<Pass> pass, std::string const & name);
+        static Effect create_array(std::shared_ptr<Pass> pass, std::string const & name);
+
         Effect() = default;
         Effect(
             std::shared_ptr<Pass> pass,
