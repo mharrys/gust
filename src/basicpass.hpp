@@ -11,8 +11,8 @@ namespace gst
     // basic shader pass.
     class BasicPass : public Pass {
     public:
-        BasicPass();
-        BasicPass(std::shared_ptr<UniformMap> uniforms);
+        BasicPass(Viewport viewport, std::shared_ptr<Program> program);
+
         void apply(ModelState const & state) final;
         // Set model view matrix annotation.
         void set_model_view_annotation(std::string const & model_view);

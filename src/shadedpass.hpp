@@ -10,8 +10,8 @@ namespace gst
     // shaded shader pass.
     class ShadedPass : public Pass {
     public:
-        ShadedPass();
-        ShadedPass(std::shared_ptr<UniformMap> uniforms);
+        ShadedPass(Viewport viewport, std::shared_ptr<Program> program);
+
         void apply(ModelState const & state) final;
         // Set model view matrix annotation.
         void set_model_view_annotation(std::string const & model_view);

@@ -5,13 +5,9 @@
 #include "shadoweddata.hpp"
 #include "uniformmapimpl.hpp"
 
-gst::ShadedPass::ShadedPass()
-    : ShadedPass(std::make_shared<UniformMapImpl>(std::make_shared<AnnotationBasic>()))
-{
-}
-
-gst::ShadedPass::ShadedPass(std::shared_ptr<UniformMap> uniforms)
-    : uniforms(uniforms),
+gst::ShadedPass::ShadedPass(Viewport viewport, std::shared_ptr<Program> program)
+    : Pass(viewport, program),
+      uniforms(std::make_shared<UniformMapImpl>(std::make_shared<AnnotationBasic>())),
       model_view("model_view"),
       projection("projection"),
       normal("nm")

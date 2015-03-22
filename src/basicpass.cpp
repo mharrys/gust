@@ -5,13 +5,9 @@
 #include "shadoweddata.hpp"
 #include "uniformmapimpl.hpp"
 
-gst::BasicPass::BasicPass()
-    : BasicPass(std::make_shared<UniformMapImpl>(std::make_shared<AnnotationBasic>()))
-{
-}
-
-gst::BasicPass::BasicPass(std::shared_ptr<UniformMap> uniforms)
-    : uniforms(uniforms),
+gst::BasicPass::BasicPass(Viewport viewport, std::shared_ptr<Program> program)
+    : Pass(viewport, program),
+      uniforms(std::make_shared<UniformMapImpl>(std::make_shared<AnnotationBasic>())),
       model_view("model_view"),
       projection("projection")
 {
