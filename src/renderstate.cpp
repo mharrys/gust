@@ -21,13 +21,13 @@ gst::RenderState::RenderState(
       depth_mask(true),
       depth_test(false)
 {
-    set_clear_color(clear_color);
-    set_blend_mode(blend_mode);
-    set_cull_face(cull_face);
-    set_depth_mask(depth_mask);
-    set_depth_test(depth_test);
-    set_framebuffer(nullptr);
-    set_viewport(viewport);
+    device->set_clear_color(clear_color);
+    device->set_blend_mode(blend_mode);
+    device->set_cull_face(cull_face);
+    device->set_depth_mask(depth_mask);
+    device->set_depth_test(depth_test);
+    device->bind_framebuffer(0);
+    device->set_viewport(viewport);
 }
 
 void gst::RenderState::set_clear_color(Color const & clear_color)
@@ -82,7 +82,7 @@ void gst::RenderState::set_framebuffer(std::shared_ptr<Framebuffer> framebuffer)
     }
 
     if (framebuffer) {
-        // keep attachment up-to-date
+        // keep attachments up-to-date
         set_framebuffer_attachment(framebuffer->get_color());
         set_framebuffer_attachment(framebuffer->get_depth());
         synchronizer->update(*framebuffer);
