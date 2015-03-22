@@ -13,6 +13,11 @@ namespace gst
     // collection of uniforms.
     class Light {
     public:
+        static Light create_basic();
+        static Light create_struct(std::string const & name);
+        static Light create_array(std::string const & name);
+
+        Light() = default;
         Light(std::shared_ptr<UniformMap> uniforms);
 
         // Return uniform associated with specified annotation.
