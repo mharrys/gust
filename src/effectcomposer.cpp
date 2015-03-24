@@ -51,7 +51,7 @@ void gst::EffectComposer::render_to_screen(Resolution size)
 
 void gst::EffectComposer::render_to_texture(std::shared_ptr<Texture2D> texture)
 {
-    const auto temp = targets[write]->get_color();
+    const auto temp = targets[write]->get_color_attachment();
     targets[write]->set_color({ texture });
 
     set_resolution(copy, texture->get_size());
@@ -79,12 +79,12 @@ gst::EffectComposer::EffectComposer(
 
 void gst::EffectComposer::resize(Resolution size)
 {
-    const auto color = targets[write]->get_color();
-    auto texture = std::static_pointer_cast<Texture2D>(color.get_attachment());
+    const auto color_attachment = targets[write]->get_color_attachment();
+    auto texture = std::static_pointer_cast<Texture2D>(color_attachment.get_resource());
     texture->set_size(size);
 
-    const auto depth = targets[write]->get_depth();
-    auto renderbuffer = std::static_pointer_cast<Renderbuffer>(depth.get_attachment());
+    const auto depth_attachment = targets[write]->get_depth_attachment();
+    auto renderbuffer = std::static_pointer_cast<Renderbuffer>(depth_attachment.get_resource());
     renderbuffer->set_size(size);
 }
 
@@ -103,6 +103,6 @@ void gst::EffectComposer::set_resolution(Effect & effect, Resolution size)
 void gst::EffectComposer::set_read(Effect & effect)
 {
     const auto unit = 0;
-    const auto color = targets[read]->get_color();
-    effect.bind_sampler("read", std::static_pointer_cast<Texture>(color.get_attachment()), unit);
+    const auto attachment = targets[read]->get_color_attachment();
+    effect.bind_sampler("read", std::static_pointer_cast<Texture>(attachment.get_resource()), unit);
 }

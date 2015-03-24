@@ -83,8 +83,8 @@ void gst::RenderState::set_framebuffer(std::shared_ptr<Framebuffer> framebuffer)
 
     if (framebuffer) {
         // keep attachments up-to-date
-        set_framebuffer_attachment(framebuffer->get_color());
-        set_framebuffer_attachment(framebuffer->get_depth());
+        set_framebuffer_attachment(framebuffer->get_color_attachment());
+        set_framebuffer_attachment(framebuffer->get_depth_attachment());
         synchronizer->update(*framebuffer);
     }
 }
@@ -137,7 +137,7 @@ void gst::RenderState::set_viewport(Viewport const & viewport)
 
 void gst::RenderState::set_framebuffer_attachment(FramebufferAttachment const & attachment)
 {
-    auto resource = attachment.get_attachment();
+    auto resource = attachment.get_resource();
 
     if (!resource) {
         return;

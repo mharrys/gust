@@ -136,8 +136,8 @@ void gst::GraphicsSynchronizer::update(Framebuffer & framebuffer)
         return;
     }
 
-    attach(framebuffer.get_color(), AttachmentPoint::COLOR);
-    attach(framebuffer.get_depth(), AttachmentPoint::DEPTH);
+    attach(framebuffer.get_color_attachment(), AttachmentPoint::COLOR);
+    attach(framebuffer.get_depth_attachment(), AttachmentPoint::DEPTH);
     framebuffer.dirty = false;
 }
 
@@ -259,15 +259,15 @@ void gst::GraphicsSynchronizer::attach(
     FramebufferAttachment const & attachment,
     AttachmentPoint attachment_point)
 {
-    auto resource = attachment.get_attachment();
+    auto resource = attachment.get_resource();
 
     if (!resource) {
         return;
     }
 
-    auto attachment_name = resource->name;
+    auto name = resource->name;
     auto attachment_type = attachment.get_type();
-    device->attach_to_framebuffer(attachment_name, attachment_type, attachment_point);
+    device->attach_to_framebuffer(name, attachment_type, attachment_point);
 }
 
 void gst::GraphicsSynchronizer::update_storage(Texture2D const & texture)

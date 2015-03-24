@@ -12,8 +12,8 @@ namespace gst
         FramebufferImpl(FramebufferAttachment color, FramebufferAttachment depth);
         void set_color(FramebufferAttachment color) final;
         void set_depth(FramebufferAttachment depth) final;
-        FramebufferAttachment get_color() const final;
-        FramebufferAttachment get_depth() const final;
+        FramebufferAttachment get_color_attachment() const final;
+        FramebufferAttachment get_depth_attachment() const final;
     private:
         FramebufferAttachment color;
         FramebufferAttachment depth;

@@ -19,12 +19,12 @@ void gst::FramebufferImpl::set_depth(FramebufferAttachment depth)
     needs_update();
 }
 
-gst::FramebufferAttachment gst::FramebufferImpl::get_color() const
+gst::FramebufferAttachment gst::FramebufferImpl::get_color_attachment() const
 {
     return color;
 }
 
-gst::FramebufferAttachment gst::FramebufferImpl::get_depth() const
+gst::FramebufferAttachment gst::FramebufferImpl::get_depth_attachment() const
 {
     return depth;
 }

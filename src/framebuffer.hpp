@@ -17,9 +17,9 @@ namespace gst
         // Set depth attachment.
         virtual void set_depth(FramebufferAttachment depth) = 0;
         // Return color attachment.
-        virtual FramebufferAttachment get_color() const = 0;
+        virtual FramebufferAttachment get_color_attachment() const = 0;
         // Return depth attachment.
-        virtual FramebufferAttachment get_depth() const = 0;
+        virtual FramebufferAttachment get_depth_attachment() const = 0;
     };
 }
 

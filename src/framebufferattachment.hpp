@@ -36,19 +36,19 @@ namespace gst
     public:
         FramebufferAttachment() = default;
         FramebufferAttachment(
-            std::shared_ptr<Renderbuffer> attachment);
+            std::shared_ptr<Renderbuffer> renderbuffer);
         FramebufferAttachment(
-            std::shared_ptr<Texture2D> attachment);
+            std::shared_ptr<Texture2D> texture);
         FramebufferAttachment(
-            std::shared_ptr<TextureCube> attachment,
+            std::shared_ptr<TextureCube> texture,
             CubeFace face);
         // Return type of attachment.
         AttachmentType get_type() const;
-        // Return attachment.
-        std::shared_ptr<GraphicsResource> get_attachment() const;
+        // Return resource.
+        std::shared_ptr<GraphicsResource> get_resource() const;
     private:
         AttachmentType type;
-        std::shared_ptr<GraphicsResource> attachment;
+        std::shared_ptr<GraphicsResource> resource;
     };
 }
 

@@ -5,23 +5,23 @@
 #include "texturecube.hpp"
 
 gst::FramebufferAttachment::FramebufferAttachment(
-    std::shared_ptr<Renderbuffer> attachment)
+    std::shared_ptr<Renderbuffer> renderbuffer)
     : type(AttachmentType::RENDERBUFFER),
-      attachment(attachment)
+      resource(renderbuffer)
 {
 }
 
 gst::FramebufferAttachment::FramebufferAttachment(
-    std::shared_ptr<Texture2D> attachment)
+    std::shared_ptr<Texture2D> texture)
     : type(AttachmentType::TEXTURE_2D),
-      attachment(attachment)
+      resource(texture)
 {
 }
 
 gst::FramebufferAttachment::FramebufferAttachment(
-    std::shared_ptr<TextureCube> attachment,
+    std::shared_ptr<TextureCube> texture,
     CubeFace face)
-    : attachment(attachment)
+    : resource(texture)
 {
     switch (face) {
     case CubeFace::POSITIVE_X:
@@ -50,7 +50,7 @@ gst::AttachmentType gst::FramebufferAttachment::get_type() const
     return type;
 }
 
-std::shared_ptr<gst::GraphicsResource> gst::FramebufferAttachment::get_attachment() const
+std::shared_ptr<gst::GraphicsResource> gst::FramebufferAttachment::get_resource() const
 {
-    return attachment;
+    return resource;
 }
