@@ -55,7 +55,7 @@ namespace gst
         DataType type;
         unsigned int count;
         unsigned int size_bytes;
-        std::shared_ptr<void> data;
+        std::unique_ptr<void> data;
     };
 }
 
@@ -68,7 +68,7 @@ void gst::ShadowedDataImpl::set_data(std::vector<T> const & new_data, DataType n
         type = new_type;
         count = new_count;
         size_bytes = new_size_bytes;
-        data = std::shared_ptr<T>(new T[count]);
+        data = std::unique_ptr<T>(new T[count]);
     }
     std::memcpy(data.get(), &new_data[0], size_bytes);
 }
@@ -82,7 +82,7 @@ void gst::ShadowedDataImpl::set_glm_data(std::vector<T> const & new_data, DataTy
         type = new_type;
         count = new_count;
         size_bytes = new_size_bytes;
-        data = std::shared_ptr<float>(new float[count * components]);
+        data = std::unique_ptr<float>(new float[count * components]);
     }
     std::memcpy(data.get(), &new_data[0], size_bytes);
 }
