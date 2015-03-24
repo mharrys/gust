@@ -178,9 +178,10 @@ int gst::GraphicsDeviceImpl::get_uniform_location(ResourceName program_name, std
 
 void gst::GraphicsDeviceImpl::uniform(int location, ShadowedData const & data)
 {
-    auto const * rint = data.get_as_int().get();
-    auto const * ruint = data.get_as_unsigned_int().get();
-    auto const * rfloat = data.get_as_float().get();
+    auto raw_data = data.get_data();
+    auto raw_int  = static_cast<int const *>(raw_data);
+    auto raw_uint = static_cast<unsigned int const *>(raw_data);
+    auto raw_float = static_cast<float const *>(raw_data);
 
     switch (data.get_type()) {
     case DataType::NONE:
@@ -188,48 +189,48 @@ void gst::GraphicsDeviceImpl::uniform(int location, ShadowedData const & data)
         break;
     case DataType::BOOL:
     case DataType::INT:
-        glUniform1i(location, rint[0]);
+        glUniform1i(location, raw_int[0]);
         break;
     case DataType::UNSIGNED_INT:
-        glUniform1ui(location, ruint[0]);
+        glUniform1ui(location, raw_uint[0]);
         break;
     case DataType::FLOAT:
-        glUniform1f(location, rfloat[0]);
+        glUniform1f(location, raw_float[0]);
         break;
     case DataType::VEC2:
-        glUniform2f(location, rfloat[0], rfloat[1]);
+        glUniform2f(location, raw_float[0], raw_float[1]);
         break;
     case DataType::VEC3:
-        glUniform3f(location, rfloat[0], rfloat[1], rfloat[2]);
+        glUniform3f(location, raw_float[0], raw_float[1], raw_float[2]);
         break;
     case DataType::VEC4:
-        glUniform4f(location, rfloat[0], rfloat[1], rfloat[2], rfloat[3]);
+        glUniform4f(location, raw_float[0], raw_float[1], raw_float[2], raw_float[3]);
         break;
     case DataType::MAT3:
     case DataType::MAT3_ARRAY:
-        glUniformMatrix3fv(location, data.get_count(), GL_FALSE, rfloat);
+        glUniformMatrix3fv(location, data.get_count(), GL_FALSE, raw_float);
         break;
     case DataType::MAT4:
     case DataType::MAT4_ARRAY:
-        glUniformMatrix4fv(location, data.get_count(), GL_FALSE, rfloat);
+        glUniformMatrix4fv(location, data.get_count(), GL_FALSE, raw_float);
         break;
     case DataType::INT_ARRAY:
-        glUniform1iv(location, data.get_count(), rint);
+        glUniform1iv(location, data.get_count(), raw_int);
         break;
     case DataType::UNSIGNED_INT_ARRAY:
-        glUniform1uiv(location, data.get_count(), ruint);
+        glUniform1uiv(location, data.get_count(), raw_uint);
         break;
     case DataType::FLOAT_ARRAY:
-        glUniform1fv(location, data.get_count(), rfloat);
+        glUniform1fv(location, data.get_count(), raw_float);
         break;
     case DataType::VEC2_ARRAY:
-        glUniform2fv(location, data.get_count(), rfloat);
+        glUniform2fv(location, data.get_count(), raw_float);
         break;
     case DataType::VEC3_ARRAY:
-        glUniform3fv(location, data.get_count(), rfloat);
+        glUniform3fv(location, data.get_count(), raw_float);
         break;
     case DataType::VEC4_ARRAY:
-        glUniform4fv(location, data.get_count(), rfloat);
+        glUniform4fv(location, data.get_count(), raw_float);
         break;
     }
 }
@@ -258,7 +259,7 @@ void gst::GraphicsDeviceImpl::bind_buffer(ResourceName name, BufferTarget target
 
 void gst::GraphicsDeviceImpl::buffer_data(BufferTarget target, ShadowedData const & data, DataUsage usage)
 {
-    glBufferData(translator.translate(target), data.get_size_bytes(), data.get_data().get(), translator.translate(usage));
+    glBufferData(translator.translate(target), data.get_size_bytes(), data.get_data(), translator.translate(usage));
 }
 
 gst::ResourceName gst::GraphicsDeviceImpl::create_vertex_array()

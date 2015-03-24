@@ -47,7 +47,7 @@ TEST(ShadowedDataImplTest, SetAndGetBool)
     for (auto expected : { false, true, true, false }) {
         shadowed_data.set_bool(expected);
         EXPECT_EQ(1, shadowed_data.get_count());
-        auto actual = shadowed_data.get_as_int();
+        auto actual = static_cast<int const *>(shadowed_data.get_data());
         EXPECT_EQ(expected, *actual);
     }
 }
@@ -59,7 +59,7 @@ TEST(ShadowedDataImplTest, SetAndGetInt)
     for (auto expected : create_random_int_vector(1000, -10, 10)) {
         shadowed_data.set_int(expected);
         EXPECT_EQ(1, shadowed_data.get_count());
-        auto actual = shadowed_data.get_as_int();
+        auto actual = static_cast<int const *>(shadowed_data.get_data());
         EXPECT_EQ(expected, *actual);
     }
 }
@@ -71,7 +71,7 @@ TEST(ShadowedDataImplTest, SetAndGetUnsignedInt)
     for (auto expected : create_random_unsigned_int_vector(1000, 10)) {
         shadowed_data.set_unsigned_int(expected);
         EXPECT_EQ(1, shadowed_data.get_count());
-        auto actual = shadowed_data.get_as_unsigned_int();
+        auto actual = static_cast<unsigned int const *>(shadowed_data.get_data());
         EXPECT_EQ(expected, *actual);
     }
 }
@@ -83,7 +83,7 @@ TEST(ShadowedDataImplTest, SetAndGetFloat)
     for (auto expected : create_random_float_vector(1000, -10.0f, 10.0f)) {
         shadowed_data.set_float(expected);
         EXPECT_EQ(1, shadowed_data.get_count());
-        auto actual = shadowed_data.get_as_float();
+        auto actual = static_cast<float const *>(shadowed_data.get_data());
         EXPECT_FLOAT_EQ(expected, *actual);
     }
 }
@@ -102,7 +102,7 @@ TEST(ShadowedDataImplTest, SetAndGetVec2)
     for (auto expected : test_data) {
         shadowed_data.set_vec2(expected);
         EXPECT_EQ(1, shadowed_data.get_count());
-        auto actual = glm::make_vec2(shadowed_data.get_as_float().get());
+        auto actual = glm::make_vec2(static_cast<float const *>(shadowed_data.get_data()));
         EXPECT_EQ(expected, actual);
     }
 }
@@ -121,7 +121,7 @@ TEST(ShadowedDataImplTest, SetAndGetVec3)
     for (auto expected : test_data) {
         shadowed_data.set_vec3(expected);
         EXPECT_EQ(1, shadowed_data.get_count());
-        auto actual = glm::make_vec3(shadowed_data.get_as_float().get());
+        auto actual = glm::make_vec3(static_cast<float const *>(shadowed_data.get_data()));
         EXPECT_EQ(expected, actual);
     }
 }
@@ -140,7 +140,7 @@ TEST(ShadowedDataImplTest, SetAndGetVec4)
     for (auto expected : test_data) {
         shadowed_data.set_vec4(expected);
         EXPECT_EQ(1, shadowed_data.get_count());
-        auto actual = glm::make_vec4(shadowed_data.get_as_float().get());
+        auto actual = glm::make_vec4(static_cast<float const *>(shadowed_data.get_data()));
         EXPECT_EQ(expected, actual);
     }
 }
@@ -159,7 +159,7 @@ TEST(ShadowedDataImplTest, SetAndGetMat3)
     for (auto expected : test_data) {
         shadowed_data.set_mat3(expected);
         EXPECT_EQ(1, shadowed_data.get_count());
-        auto actual = glm::make_mat3(shadowed_data.get_as_float().get());
+        auto actual = glm::make_mat3(static_cast<float const *>(shadowed_data.get_data()));
         EXPECT_EQ(expected, actual);
     }
 }
@@ -178,7 +178,7 @@ TEST(ShadowedDataImplTest, SetAndGetMat4)
     for (auto expected : test_data) {
         shadowed_data.set_mat4(expected);
         EXPECT_EQ(1, shadowed_data.get_count());
-        auto actual = glm::make_mat4(shadowed_data.get_as_float().get());
+        auto actual = glm::make_mat4(static_cast<float const *>(shadowed_data.get_data()));
         EXPECT_EQ(expected, actual);
     }
 }
@@ -197,7 +197,7 @@ TEST(ShadowedDataImplTest, SetAndGetIntArray)
 
     for (auto expected : test_data) {
         shadowed_data.set_int_array(expected);
-        auto * actual = shadowed_data.get_as_int().get();
+        auto actual = static_cast<int const *>(shadowed_data.get_data());
         for (unsigned int i = 0; i < expected.size(); i++) {
             EXPECT_EQ(expected[i], actual[i]);
         }
@@ -218,7 +218,7 @@ TEST(ShadowedDataImplTest, SetAndGetUnsignedIntArray)
 
     for (auto expected : test_data) {
         shadowed_data.set_unsigned_int_array(expected);
-        auto * actual = shadowed_data.get_as_unsigned_int().get();
+        auto actual = static_cast<unsigned int const *>(shadowed_data.get_data());
         for (unsigned int i = 0; i < expected.size(); i++) {
             EXPECT_EQ(expected[i], actual[i]);
         }
@@ -239,7 +239,7 @@ TEST(ShadowedDataImplTest, SetAndGetFloatArray)
 
     for (auto expected : test_data) {
         shadowed_data.set_float_array(expected);
-        auto * actual = shadowed_data.get_as_float().get();
+        auto actual = static_cast<float const *>(shadowed_data.get_data());
         for (unsigned int i = 0; i < expected.size(); i++) {
             EXPECT_FLOAT_EQ(expected[i], actual[i]);
         }
@@ -266,7 +266,7 @@ static std::vector<T> create_random_glm_vector(
 }
 
 template<typename T>
-static void compare_glm_array(std::vector<T> expected, unsigned int components, float * actual)
+static void compare_glm_array(std::vector<T> expected, unsigned int components, float const * actual)
 {
     for (unsigned int i = 0; i < expected.size(); i++) {
         for (unsigned int j = 0; j < components; j++) {
@@ -290,7 +290,7 @@ TEST(ShadowedDataImplTest, SetAndGetVec2Array)
 
     for (auto expected : test_data) {
         shadowed_data.set_vec2_array(expected);
-        auto * actual = shadowed_data.get_as_float().get();
+        auto actual = static_cast<float const *>(shadowed_data.get_data());
         compare_glm_array(expected, 2, actual);
     }
 }
@@ -309,7 +309,7 @@ TEST(ShadowedDataImplTest, SetAndGetVec3Array)
 
     for (auto expected : test_data) {
         shadowed_data.set_vec3_array(expected);
-        auto * actual = shadowed_data.get_as_float().get();
+        auto actual = static_cast<float const *>(shadowed_data.get_data());
         compare_glm_array(expected, 3, actual);
     }
 }
@@ -328,7 +328,7 @@ TEST(ShadowedDataImplTest, SetAndGetVec4Array)
 
     for (auto expected : test_data) {
         shadowed_data.set_vec4_array(expected);
-        auto * actual = shadowed_data.get_as_float().get();
+        auto actual = static_cast<float const *>(shadowed_data.get_data());
         compare_glm_array(expected, 4, actual);
     }
 }
@@ -367,7 +367,7 @@ TEST(ShadowedDataImplTest, SetAndGetMat3Array)
 
     for (auto expected : test_data) {
         shadowed_data.set_mat3_array(expected);
-        auto * actual = shadowed_data.get_as_float().get();
+        auto actual = static_cast<float const *>(shadowed_data.get_data());
         compare_glm_array(expected, 9, actual);
     }
 }
@@ -386,7 +386,7 @@ TEST(ShadowedDataImplTest, SetAndGetMat4Array)
 
     for (auto expected : test_data) {
         shadowed_data.set_mat4_array(expected);
-        auto * actual = shadowed_data.get_as_float().get();
+        auto actual = static_cast<float const *>(shadowed_data.get_data());
         compare_glm_array(expected, 16, actual);
     }
 }

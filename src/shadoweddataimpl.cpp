@@ -156,24 +156,9 @@ unsigned int gst::ShadowedDataImpl::get_size_bytes() const
     return size_bytes;
 }
 
-std::shared_ptr<void> gst::ShadowedDataImpl::get_data() const
+void const * gst::ShadowedDataImpl::get_data() const
 {
-    return data;
-}
-
-std::shared_ptr<int> gst::ShadowedDataImpl::get_as_int() const
-{
-    return std::static_pointer_cast<int>(data);
-}
-
-std::shared_ptr<unsigned int> gst::ShadowedDataImpl::get_as_unsigned_int() const
-{
-    return std::static_pointer_cast<unsigned int>(data);
-}
-
-std::shared_ptr<float> gst::ShadowedDataImpl::get_as_float() const
-{
-    return std::static_pointer_cast<float>(data);
+    return data.get();
 }
 
 bool gst::ShadowedDataImpl::need_new_storage(DataType type, unsigned int count, unsigned int size_bytes)

@@ -92,13 +92,7 @@ namespace gst
         // Return size of shadowed data in bytes.
         virtual unsigned int get_size_bytes() const = 0;
         // Return shadowed data.
-        virtual std::shared_ptr<void> get_data() const = 0;
-        // Return shadowed data interpreted as integer.
-        virtual std::shared_ptr<int> get_as_int() const = 0;
-        // Return shadowed data interpreted as unsigned integer.
-        virtual std::shared_ptr<unsigned int> get_as_unsigned_int() const = 0;
-        // Return shadowed data interpreted as float.
-        virtual std::shared_ptr<float> get_as_float() const = 0;
+        virtual void const * get_data() const = 0;
     };
 }
 
