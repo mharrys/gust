@@ -40,7 +40,7 @@ namespace gst
             Renderer renderer,
             RenderTargets targets,
             Effect copy,
-            Scene quad);
+            Scene screen);
         void swap();
         void set_resolution(Effect & effect, Resolution size);
         void set_read(Effect & effect);
@@ -52,7 +52,7 @@ namespace gst
         unsigned read:1, write:1;
 
         Effect copy;
-        Scene quad;
+        Scene screen;
     };
 }
 

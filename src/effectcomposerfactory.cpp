@@ -35,11 +35,11 @@ gst::EffectComposer gst::EffectComposerFactory::create()
     auto camera = std::make_shared<gst::OrthoCamera>();
     auto eye = std::make_shared<gst::CameraNode>(camera);
 
-    auto scene = gst::Scene(eye);
-    scene.add(model_node);
-    scene.update();
+    auto screen = gst::Scene(eye);
+    screen.add(model_node);
+    screen.update();
 
-    return EffectComposer(renderer, render_targets, copy_effect, scene);
+    return EffectComposer(renderer, render_targets, copy_effect, screen);
 }
 
 gst::Effect gst::EffectComposerFactory::create_copy_effect()

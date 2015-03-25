@@ -30,7 +30,7 @@ void gst::EffectComposer::render_pass(Effect & effect)
     set_resolution(effect, size);
     set_read(effect);
 
-    renderer.render(quad, effect, targets[write]);
+    renderer.render(screen, effect, targets[write]);
     renderer.check_errors();
     swap();
 
@@ -45,7 +45,7 @@ void gst::EffectComposer::render_to_texture(std::shared_ptr<Texture2D> texture)
     set_resolution(copy, texture->get_size());
     set_read(copy);
 
-    renderer.render(quad, copy, targets[write]);
+    renderer.render(screen, copy, targets[write]);
     renderer.check_errors();
 
     targets[write]->set_color(temp);
@@ -56,7 +56,7 @@ void gst::EffectComposer::render_to_screen()
     set_resolution(copy, size);
     set_read(copy);
 
-    renderer.render(quad, copy);
+    renderer.render(screen, copy);
     renderer.check_errors();
 }
 
@@ -85,13 +85,13 @@ gst::EffectComposer::EffectComposer(
     Renderer renderer,
     RenderTargets targets,
     Effect copy,
-    Scene quad)
+    Scene screen)
     : renderer(renderer),
       targets(targets),
       read(0),
       write(1),
       copy(copy),
-      quad(quad)
+      screen(screen)
 {
 }
 
