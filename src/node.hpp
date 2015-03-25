@@ -18,6 +18,7 @@ namespace gst
         Node();
         Node(std::string name);
         virtual ~Node() = default;
+	// Handle visitor.
         virtual void accept(NodeVisitor & visitor) = 0;
         // Set owner for this node.
         void set_parent(std::shared_ptr<Node> parent);
