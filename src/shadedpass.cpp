@@ -7,7 +7,7 @@
 
 gst::ShadedPass::ShadedPass(Viewport viewport, std::shared_ptr<Program> program)
     : Pass(viewport, program),
-      uniforms(std::make_shared<UniformMapImpl>(std::make_shared<AnnotationBasic>())),
+      uniforms(std::make_shared<UniformMapImpl>(std::unique_ptr<AnnotationFormatter>(new AnnotationBasic()))),
       model_view("model_view"),
       projection("projection"),
       normal("nm")

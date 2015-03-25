@@ -9,22 +9,22 @@
 
 gst::Effect gst::Effect::create_basic(std::shared_ptr<Pass> pass)
 {
-    auto formatter = std::make_shared<AnnotationBasic>();
-    auto uniforms = std::make_shared<UniformMapImpl>(formatter);
+    auto formatter = std::unique_ptr<AnnotationFormatter>(new AnnotationBasic());
+    auto uniforms = std::make_shared<UniformMapImpl>(std::move(formatter));
     return Effect(pass, uniforms);
 }
 
 gst::Effect gst::Effect::create_struct(std::shared_ptr<Pass> pass, std::string const & name)
 {
-    auto formatter = std::make_shared<AnnotationStruct>(name);
-    auto uniforms = std::make_shared<UniformMapImpl>(formatter);
+    auto formatter = std::unique_ptr<AnnotationFormatter>(new AnnotationStruct(name));
+    auto uniforms = std::make_shared<UniformMapImpl>(std::move(formatter));
     return Effect(pass, uniforms);
 }
 
 gst::Effect gst::Effect::create_array(std::shared_ptr<Pass> pass, std::string const & name)
 {
-    auto formatter = std::make_shared<AnnotationArray>(name);
-    auto uniforms = std::make_shared<UniformMapImpl>(formatter);
+    auto formatter = std::unique_ptr<AnnotationFormatter>(new AnnotationArray(name));
+    auto uniforms = std::make_shared<UniformMapImpl>(std::move(formatter));
     return Effect(pass, uniforms);
 }
 

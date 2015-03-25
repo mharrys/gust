@@ -9,13 +9,13 @@ namespace gst
 {
     class UniformMapImpl : public UniformMap {
     public:
-        UniformMapImpl(std::shared_ptr<AnnotationFormatter> formatter);
+        UniformMapImpl(std::unique_ptr<AnnotationFormatter> formatter);
         ShadowedData & get_uniform(std::string const & annotation) final;
         std::vector<UniformAnnotation> get_uniforms() const final;
         AnnotationFormatter & get_formatter() const final;
     private:
         std::unordered_map<std::string, std::shared_ptr<ShadowedData>> uniforms;
-        std::shared_ptr<AnnotationFormatter> formatter;
+        std::unique_ptr<AnnotationFormatter> formatter;
     };
 }
 

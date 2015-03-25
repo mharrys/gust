@@ -8,22 +8,22 @@
 
 gst::Light gst::Light::create_basic()
 {
-    auto formatter = std::make_shared<AnnotationBasic>();
-    auto uniforms = std::make_shared<UniformMapImpl>(formatter);
+    auto formatter = std::unique_ptr<AnnotationFormatter>(new AnnotationBasic());
+    auto uniforms = std::make_shared<UniformMapImpl>(std::move(formatter));
     return Light(uniforms);
 }
 
 gst::Light gst::Light::create_struct(std::string const & name)
 {
-    auto formatter = std::make_shared<AnnotationStruct>(name);
-    auto uniforms = std::make_shared<UniformMapImpl>(formatter);
+    auto formatter = std::unique_ptr<AnnotationFormatter>(new AnnotationStruct(name));
+    auto uniforms = std::make_shared<UniformMapImpl>(std::move(formatter));
     return Light(uniforms);
 }
 
 gst::Light gst::Light::create_array(std::string const & name)
 {
-    auto formatter = std::make_shared<AnnotationArray>(name);
-    auto uniforms = std::make_shared<UniformMapImpl>(formatter);
+    auto formatter = std::unique_ptr<AnnotationFormatter>(new AnnotationArray(name));
+    auto uniforms = std::make_shared<UniformMapImpl>(std::move(formatter));
     return Light(uniforms);
 }
 

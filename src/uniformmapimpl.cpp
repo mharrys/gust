@@ -3,8 +3,8 @@
 #include "annotationformatter.hpp"
 #include "shadoweddataimpl.hpp"
 
-gst::UniformMapImpl::UniformMapImpl(std::shared_ptr<AnnotationFormatter> formatter)
-    : formatter(formatter)
+gst::UniformMapImpl::UniformMapImpl(std::unique_ptr<AnnotationFormatter> formatter)
+    : formatter(std::move(formatter))
 {
 }
 
