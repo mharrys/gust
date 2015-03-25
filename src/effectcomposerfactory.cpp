@@ -44,12 +44,8 @@ gst::EffectComposer gst::EffectComposerFactory::create()
 
 gst::Effect gst::EffectComposerFactory::create_copy_effect()
 {
-    auto copy_pass = std::make_shared<BasicPass>(
-        Resolution(1, 1),
-        create_copy_program()
-    );
+    auto copy_pass = std::make_shared<BasicPass>(create_copy_program());
     copy_pass->cull_face = CullFace::BACK;
-
     return Effect::create_free(copy_pass);
 }
 

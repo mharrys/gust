@@ -91,6 +91,11 @@ void gst::Renderer::set_auto_clear(bool auto_clear_color, bool auto_clear_depth)
     this->auto_clear_depth = auto_clear_depth;
 }
 
+void gst::Renderer::set_viewport(Viewport viewport)
+{
+    render_state->set_viewport(viewport);
+}
+
 gst::Renderer::Renderer(
     std::shared_ptr<GraphicsDevice> device,
     std::shared_ptr<RenderState> render_state,

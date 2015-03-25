@@ -5,7 +5,6 @@
 #include "cullface.hpp"
 #include "light.hpp"
 #include "lightnode.hpp"
-#include "viewport.hpp"
 
 #include "glm.hpp"
 
@@ -29,7 +28,7 @@ namespace gst
     // model state in a specialized way.
     class Pass {
     public:
-        Pass(Viewport viewport, std::shared_ptr<Program> program);
+        Pass(std::shared_ptr<Program> program);
 
         // Setup the program object from the model state.
         virtual void apply(ModelState const & state) = 0;
@@ -38,7 +37,6 @@ namespace gst
         CullFace cull_face;
         bool depth_mask;
         bool depth_test;
-        Viewport viewport;
         std::shared_ptr<Program> program;
     };
 }

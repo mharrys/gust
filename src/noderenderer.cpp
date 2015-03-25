@@ -47,7 +47,6 @@ void gst::NodeRenderer::visit(ModelNode & node)
     render_state->set_cull_face(pass.cull_face);
     render_state->set_depth_mask(pass.depth_mask);
     render_state->set_depth_test(pass.depth_test);
-    render_state->set_viewport(pass.viewport);
     render_state->set_program(pass.program);
     render_state->set_vertex_array(mesh.vertex_array);
 

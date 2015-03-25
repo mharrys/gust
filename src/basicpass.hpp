@@ -5,14 +5,11 @@
 
 namespace gst
 {
-    class AnnotationFormatter;
-
     // The responsibility of this class is to setup a program object for a
     // basic shader pass.
     class BasicPass : public Pass {
     public:
-        BasicPass(Viewport viewport, std::shared_ptr<Program> program);
-
+        BasicPass(std::shared_ptr<Program> program);
         void apply(ModelState const & state) final;
         // Set model view matrix annotation.
         void set_model_view_annotation(std::string const & model_view);

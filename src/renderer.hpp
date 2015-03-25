@@ -16,6 +16,7 @@ namespace gst
     class Logger;
     class RenderState;
     class Scene;
+    class Viewport;
 
     // The responsibility of this class is to prepare a scene for rendering.
     class Renderer {
@@ -36,6 +37,8 @@ namespace gst
         void check_errors();
         // Set auto clear flag on specified buffers.
         void set_auto_clear(bool auto_clear_color, bool auto_clear_depth);
+        // Set viewport.
+        void set_viewport(Viewport viewport);
     private:
         Renderer(
             std::shared_ptr<GraphicsDevice> device,
