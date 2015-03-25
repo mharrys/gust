@@ -30,13 +30,13 @@ void gst::NodeRenderer::visit(ModelNode & node)
     auto & mesh = node.get_mesh();
     auto & effect = use_effect_override ? effect_override : node.get_effect();
     auto & pass = effect.get_pass();
-    auto & samplers = effect.get_samplers();
+    auto & textures = effect.get_textures();
 
-    // set samplers at the texture unit in the order they are stored in, the
+    // set textures at the texture unit in the order they are stored in, the
     // uniforms in effect will associate texture unit with a annotation
-    for (auto i = 0u; i < samplers.size(); i++) {
-        if (samplers[i]) {
-            render_state->set_texture(samplers[i], i);
+    for (auto i = 0u; i < textures.size(); i++) {
+        if (textures[i]) {
+            render_state->set_texture(textures[i], i);
         }
     }
 

@@ -33,11 +33,6 @@ gst::Light::Light(std::shared_ptr<UniformMap> uniforms)
 {
 }
 
-gst::ShadowedData & gst::Light::operator[](std::string const & annotation)
-{
-    return uniforms->get_uniform(annotation);
-}
-
 void gst::Light::set_enabled(bool enabled)
 {
     this->enabled = enabled;
@@ -46,6 +41,11 @@ void gst::Light::set_enabled(bool enabled)
 bool gst::Light::get_enabled() const
 {
     return enabled;
+}
+
+gst::ShadowedData & gst::Light::get_uniform(std::string const & annotation)
+{
+    return uniforms->get_uniform(annotation);
 }
 
 gst::UniformMap & gst::Light::get_uniforms()

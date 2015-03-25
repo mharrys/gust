@@ -25,7 +25,7 @@ void gst::EffectComposer::render(Scene & scene)
 
 void gst::EffectComposer::render_pass(Effect & effect)
 {
-    const auto temp = effect.get_samplers()[0];
+    const auto temp = effect.get_textures()[0];
 
     set_resolution(effect, size);
     set_read(effect);
@@ -34,7 +34,7 @@ void gst::EffectComposer::render_pass(Effect & effect)
     renderer.check_errors();
     swap();
 
-    effect.get_samplers()[0] = temp;
+    effect.get_textures()[0] = temp;
 }
 
 void gst::EffectComposer::render_to_texture(std::shared_ptr<Texture2D> texture)
@@ -103,12 +103,13 @@ void gst::EffectComposer::swap()
 
 void gst::EffectComposer::set_resolution(Effect & effect, Resolution size)
 {
-    effect["resolution"] = glm::vec2(size.get_width(), size.get_height());
+    effect.get_uniform("resolution") = glm::vec2(size.get_width(), size.get_height());
 }
 
 void gst::EffectComposer::set_read(Effect & effect)
 {
     const auto unit = 0;
     const auto attachment = targets[read]->get_color_attachment();
-    effect.bind_sampler("read", std::static_pointer_cast<Texture>(attachment.get_resource()), unit);
+    effect.get_textures()[unit] = std::static_pointer_cast<Texture>(attachment.get_resource());
+    effect.get_uniform("read") = unit;
 }

@@ -115,8 +115,8 @@ void gst::Renderer::prepare_lights(glm::mat4 view, std::vector<LightNode> & ligh
         auto & light = lights[i].get_light();
 
         // special uniforms
-        light["enabled"] = light.get_enabled();
-        light["position"] = view * glm::vec4(lights[i].position, 1.0f);
+        light.get_uniform("enabled") = light.get_enabled();
+        light.get_uniform("position") = view * glm::vec4(lights[i].position, 1.0f);
 
         // special case if annotation array
         auto & uniforms = light.get_uniforms();

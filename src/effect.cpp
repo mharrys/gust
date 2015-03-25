@@ -36,23 +36,14 @@ gst::Effect::Effect(
 {
 }
 
-gst::ShadowedData & gst::Effect::operator[](std::string const & annotation)
-{
-    return uniforms->get_uniform(annotation);
-}
-
-void gst::Effect::bind_sampler(
-    std::string const & annotation,
-    std::shared_ptr<Texture> sampler,
-    int unit)
-{
-    uniforms->get_uniform(annotation) = unit;
-    samplers[unit] = sampler;
-}
-
 gst::Pass & gst::Effect::get_pass()
 {
     return *pass;
+}
+
+gst::ShadowedData & gst::Effect::get_uniform(std::string const & annotation)
+{
+    return uniforms->get_uniform(annotation);
 }
 
 gst::UniformMap & gst::Effect::get_uniforms()
@@ -60,7 +51,7 @@ gst::UniformMap & gst::Effect::get_uniforms()
     return *uniforms;
 }
 
-gst::Samplers & gst::Effect::get_samplers()
+gst::Textures & gst::Effect::get_textures()
 {
-    return samplers;
+    return textures;
 }

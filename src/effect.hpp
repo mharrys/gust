@@ -13,7 +13,7 @@ namespace gst
     class ShadowedData;
     class Texture;
 
-    typedef std::array<std::shared_ptr<Texture>, 5> Samplers;
+    typedef std::array<std::shared_ptr<Texture>, 10> Textures;
 
     // The responsibility of this class is to describe a effect in a shader
     // pass.
@@ -28,24 +28,18 @@ namespace gst
             std::shared_ptr<Pass> pass,
             std::shared_ptr<UniformMap> uniforms);
 
-        // Return uniform associated with specified annotation.
-        ShadowedData & operator[](std::string const & annotation);
-
-        // Bind sampler with a unit and annotation.
-        void bind_sampler(
-            std::string const & annotation,
-            std::shared_ptr<Texture> sampler,
-            int unit);
         // Return pass.
         Pass & get_pass();
-        // Return uniforms.
+        // Return uniform.
+        ShadowedData & get_uniform(std::string const & annotation);
+        // Return uniforms that describe this effect.
         UniformMap & get_uniforms();
-        // Return samplers.
-        Samplers & get_samplers();
+        // Return textures.
+        Textures & get_textures();
     private:
         std::shared_ptr<Pass> pass;
         std::shared_ptr<UniformMap> uniforms;
-        Samplers samplers;
+        Textures textures;
     };
 }
 
