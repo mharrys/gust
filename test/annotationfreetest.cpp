@@ -1,10 +1,10 @@
-#include "annotationbasic.hpp"
+#include "annotationfree.hpp"
 
 #include "gmock/gmock.h"
 
-TEST(AnnotationBasicTest, FormatsWithoutModification)
+TEST(AnnotationFreeTest, FormatsWithoutModification)
 {
-    gst::AnnotationBasic formatter;
+    gst::AnnotationFree formatter;
 
     for (auto annotation : { "", "foo" }) {
         ASSERT_EQ(annotation, formatter.format(annotation));

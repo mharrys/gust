@@ -19,7 +19,7 @@ source = []
 source += Glob('test/*.cpp')
 # for now, only add specific files until platform specific code is mocked
 source += ['src/annotationarray.cpp']
-source += ['src/annotationbasic.cpp']
+source += ['src/annotationfree.cpp']
 source += ['src/annotationstruct.cpp']
 source += ['src/shadoweddataimpl.cpp']
 source += ['src/worldrunner.cpp']

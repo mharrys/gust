@@ -1,15 +1,15 @@
 #include "effect.hpp"
 
 #include "annotationarray.hpp"
-#include "annotationbasic.hpp"
+#include "annotationfree.hpp"
 #include "annotationstruct.hpp"
 #include "pass.hpp"
 #include "shadoweddata.hpp"
 #include "uniformmapimpl.hpp"
 
-gst::Effect gst::Effect::create_basic(std::shared_ptr<Pass> pass)
+gst::Effect gst::Effect::create_free(std::shared_ptr<Pass> pass)
 {
-    auto formatter = std::unique_ptr<AnnotationFormatter>(new AnnotationBasic());
+    auto formatter = std::unique_ptr<AnnotationFormatter>(new AnnotationFree());
     auto uniforms = std::make_shared<UniformMapImpl>(std::move(formatter));
     return Effect(pass, uniforms);
 }

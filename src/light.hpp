@@ -13,7 +13,7 @@ namespace gst
     // collection of uniforms.
     class Light {
     public:
-        static Light create_basic();
+        static Light create_free();
         static Light create_struct(std::string const & name);
         static Light create_array(std::string const & name);
 

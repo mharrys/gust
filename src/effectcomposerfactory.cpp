@@ -1,6 +1,5 @@
 #include "effectcomposerfactory.hpp"
 
-#include "annotationbasic.hpp"
 #include "basicpass.hpp"
 #include "cameranode.hpp"
 #include "framebufferimpl.hpp"
@@ -51,7 +50,7 @@ gst::Effect gst::EffectComposerFactory::create_copy_effect()
     );
     copy_pass->cull_face = CullFace::BACK;
 
-    return Effect::create_basic(copy_pass);
+    return Effect::create_free(copy_pass);
 }
 
 std::shared_ptr<gst::Program> gst::EffectComposerFactory::create_copy_program()

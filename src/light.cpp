@@ -1,14 +1,14 @@
 #include "light.hpp"
 
 #include "annotationarray.hpp"
-#include "annotationbasic.hpp"
+#include "annotationfree.hpp"
 #include "annotationstruct.hpp"
 #include "shadoweddata.hpp"
 #include "uniformmapimpl.hpp"
 
-gst::Light gst::Light::create_basic()
+gst::Light gst::Light::create_free()
 {
-    auto formatter = std::unique_ptr<AnnotationFormatter>(new AnnotationBasic());
+    auto formatter = std::unique_ptr<AnnotationFormatter>(new AnnotationFree());
     auto uniforms = std::make_shared<UniformMapImpl>(std::move(formatter));
     return Light(uniforms);
 }

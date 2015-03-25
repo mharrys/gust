@@ -1,13 +1,13 @@
 #include "basicpass.hpp"
 
-#include "annotationbasic.hpp"
+#include "annotationfree.hpp"
 #include "program.hpp"
 #include "shadoweddata.hpp"
 #include "uniformmapimpl.hpp"
 
 gst::BasicPass::BasicPass(Viewport viewport, std::shared_ptr<Program> program)
     : Pass(viewport, program),
-      uniforms(std::make_shared<UniformMapImpl>(std::unique_ptr<AnnotationFormatter>(new AnnotationBasic()))),
+      uniforms(std::make_shared<UniformMapImpl>(std::unique_ptr<AnnotationFormatter>(new AnnotationFree()))),
       model_view("model_view"),
       projection("projection")
 {

@@ -19,7 +19,7 @@ namespace gst
     // pass.
     class Effect {
     public:
-        static Effect create_basic(std::shared_ptr<Pass> pass);
+        static Effect create_free(std::shared_ptr<Pass> pass);
         static Effect create_struct(std::shared_ptr<Pass> pass, std::string const & name);
         static Effect create_array(std::shared_ptr<Pass> pass, std::string const & name);
 
