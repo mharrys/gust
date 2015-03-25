@@ -27,7 +27,6 @@ gst::RenderState::RenderState(
     device->set_depth_mask(depth_mask);
     device->set_depth_test(depth_test);
     device->bind_framebuffer(0);
-    device->set_viewport(viewport);
 }
 
 void gst::RenderState::set_clear_color(Color const & clear_color)
