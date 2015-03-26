@@ -43,7 +43,6 @@ void gst::Renderer::render(Scene & scene)
     model_state.view = eye.get_view();
     model_state.projection = eye.get_projection();
     model_state.light_nodes = collector.get_light_nodes();
-    prepare_lights(model_state.view, model_state.light_nodes);
 
     NodeRenderer renderer(device, render_state, std::move(model_state));
     if (use_effect_override) {
@@ -107,21 +106,4 @@ gst::Renderer::Renderer(
       auto_clear_depth(true),
       use_effect_override(false)
 {
-}
-
-void gst::Renderer::prepare_lights(glm::mat4 view, std::vector<LightNode> & lights) const
-{
-    for (auto i = 0u; i < lights.size(); i++) {
-        auto & light = lights[i].get_light();
-
-        // special uniforms
-        light.get_uniform("enabled") = light.get_enabled();
-        light.get_uniform("position") = view * glm::vec4(lights[i].position, 1.0f);
-
-        // special case if annotation array
-        auto & uniforms = light.get_uniforms();
-        if (auto * formatter = dynamic_cast<AnnotationArray *>(&uniforms.get_formatter())) {
-            formatter->set_current_index(i);
-        }
-    }
 }

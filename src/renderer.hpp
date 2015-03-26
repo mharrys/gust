@@ -44,7 +44,6 @@ namespace gst
             std::shared_ptr<GraphicsDevice> device,
             std::shared_ptr<RenderState> render_state,
             std::shared_ptr<Logger> logger);
-        void prepare_lights(glm::mat4 view, std::vector<LightNode> & lights) const;
 
         std::shared_ptr<GraphicsDevice> device;
         std::shared_ptr<RenderState> render_state;

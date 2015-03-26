@@ -18,11 +18,17 @@ namespace gst
         void set_projection_annotation(std::string const & projection);
         // Set normal matrix annotation.
         void set_normal_annotation(std::string const & normal);
+        // Set light enabled annotation.
+        void set_enabled_annotation(std::string const & enabled);
+        // Set light position annotation.
+        void set_position_annotation(std::string const & position);
     private:
         std::shared_ptr<UniformMap> uniforms;
         std::string model_view;
         std::string projection;
         std::string normal;
+        std::string enabled;
+        std::string position;
     };
 }
 
