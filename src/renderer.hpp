@@ -21,7 +21,15 @@ namespace gst
     // The responsibility of this class is to prepare a scene for rendering.
     class Renderer {
     public:
+        // Construct renderer with default implementation of graphics device
+        // and render state and specified logger.
         static Renderer create(std::shared_ptr<Logger> logger);
+        // Construct renderer with specified implementations of graphics
+        // device, render state and logger.
+        Renderer(
+            std::shared_ptr<GraphicsDevice> device,
+            std::shared_ptr<RenderState> render_state,
+            std::shared_ptr<Logger> logger);
         // Clear specified buffers.
         void clear(bool color, bool depth);
         // Render scene.
@@ -40,10 +48,6 @@ namespace gst
         // Set viewport.
         void set_viewport(Viewport viewport);
     private:
-        Renderer(
-            std::shared_ptr<GraphicsDevice> device,
-            std::shared_ptr<RenderState> render_state,
-            std::shared_ptr<Logger> logger);
 
         std::shared_ptr<GraphicsDevice> device;
         std::shared_ptr<RenderState> render_state;
