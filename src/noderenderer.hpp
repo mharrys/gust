@@ -1,17 +1,14 @@
 #ifndef NODERENDERER_HPP_INCLUDED
 #define NODERENDERER_HPP_INCLUDED
 
-#include "effect.hpp"
 #include "nodevisitor.hpp"
 #include "pass.hpp"
 
 #include "glm.hpp"
 
-#include <memory>
-#include <vector>
-
 namespace gst
 {
+    class Effect;
     class GraphicsDevice;
     class RenderState;
 
@@ -19,20 +16,20 @@ namespace gst
     // structure.
     class NodeRenderer : public NodeVisitor {
     public:
+        // Construct node renderer. It is expected that model state has the
+        // view, projection and light nodes set from a scene. The effect
+        // override is optional, will be used if not null.
         NodeRenderer(
             std::shared_ptr<GraphicsDevice> device,
             std::shared_ptr<RenderState> render_state,
-            ModelState && state);
+            ModelState const & model_state,
+            Effect * const effect_override);
         void visit(ModelNode & node) final;
-        // Set effect to be used for all nodes during render.
-        void set_effect_override(Effect & effect);
     private:
         std::shared_ptr<GraphicsDevice> device;
         std::shared_ptr<RenderState> render_state;
-        ModelState state;
-
-        Effect effect_override;
-        bool use_effect_override;
+        ModelState model_state;
+        Effect * const effect_override;
     };
 }
 

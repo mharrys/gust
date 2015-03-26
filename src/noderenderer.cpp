@@ -1,5 +1,6 @@
 #include "noderenderer.hpp"
 
+#include "effect.hpp"
 #include "graphicsdevice.hpp"
 #include "indexbuffer.hpp"
 #include "mesh.hpp"
@@ -13,22 +14,23 @@
 gst::NodeRenderer::NodeRenderer(
     std::shared_ptr<GraphicsDevice> device,
     std::shared_ptr<RenderState> render_state,
-    ModelState && state)
+    ModelState const & model_state,
+    Effect * const effect_override)
     : device(device),
       render_state(render_state),
-      state(std::move(state)),
-      use_effect_override(false)
+      model_state(model_state),
+      effect_override(effect_override)
 {
 }
 
 void gst::NodeRenderer::visit(ModelNode & node)
 {
-    state.model = node.world_transform;
-    state.model_view = state.view * state.model;
-    state.normal = glm::inverseTranspose(glm::mat3(state.model_view));
+    model_state.model = node.world_transform;
+    model_state.model_view = model_state.view * model_state.model;
+    model_state.normal = glm::inverseTranspose(glm::mat3(model_state.model_view));
 
     auto & mesh = node.get_mesh();
-    auto & effect = use_effect_override ? effect_override : node.get_effect();
+    auto & effect = effect_override ? *effect_override : node.get_effect();
     auto & pass = effect.get_pass();
     auto & textures = effect.get_textures();
 
@@ -41,7 +43,7 @@ void gst::NodeRenderer::visit(ModelNode & node)
     }
 
     pass.program->set_uniforms(effect.get_uniforms());
-    pass.apply(state);
+    pass.apply(model_state);
 
     render_state->set_blend_mode(pass.blend_mode);
     render_state->set_cull_face(pass.cull_face);
@@ -57,10 +59,4 @@ void gst::NodeRenderer::visit(ModelNode & node)
         auto count = mesh.positions->get_shadowed_data().get_count();
         device->draw_arrays(mesh.mode, 0, count);
     }
-}
-
-void gst::NodeRenderer::set_effect_override(Effect & effect)
-{
-    effect_override = effect;
-    use_effect_override = true;
 }

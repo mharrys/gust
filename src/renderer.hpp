@@ -1,15 +1,13 @@
 #ifndef RENDERER_HPP_INCLUDED
 #define RENDERER_HPP_INCLUDED
 
-#include "effect.hpp"
-
 #include "glm.hpp"
 
 #include <memory>
-#include <vector>
 
 namespace gst
 {
+    class Effect;
     class Framebuffer;
     class GraphicsDevice;
     class LightNode;
@@ -41,13 +39,14 @@ namespace gst
         // Render scene into framebuffer but override all effects with
         // specified effect.
         void render(Scene & scene, Effect & effect, std::shared_ptr<Framebuffer> target);
-        // Check graphical errors, it will print errors using the logger.
-        void check_errors();
         // Set auto clear flag on specified buffers.
         void set_auto_clear(bool auto_clear_color, bool auto_clear_depth);
+        // Set auto check errors.
+        void set_auto_check_errors(bool auto_check_render, bool auto_check_framebuffer);
         // Set viewport.
         void set_viewport(Viewport viewport);
     private:
+        void render(Scene & scene, Effect * const effect, std::shared_ptr<Framebuffer> target);
 
         std::shared_ptr<GraphicsDevice> device;
         std::shared_ptr<RenderState> render_state;
@@ -55,9 +54,8 @@ namespace gst
 
         bool auto_clear_color;
         bool auto_clear_depth;
-
-        Effect effect_override;
-        bool use_effect_override;
+        bool auto_check_render;
+        bool auto_check_framebuffer;
     };
 }
 

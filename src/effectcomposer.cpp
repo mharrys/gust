@@ -19,7 +19,6 @@ gst::EffectComposer gst::EffectComposer::create(std::shared_ptr<Logger> logger)
 void gst::EffectComposer::render(Scene & scene)
 {
     renderer.render(scene, targets[write]);
-    renderer.check_errors();
     swap();
 }
 
@@ -31,7 +30,6 @@ void gst::EffectComposer::render_pass(Effect & effect)
     set_read(effect);
 
     renderer.render(screen, effect, targets[write]);
-    renderer.check_errors();
     swap();
 
     effect.get_textures()[0] = temp;
@@ -46,7 +44,6 @@ void gst::EffectComposer::render_to_texture(std::shared_ptr<Texture2D> texture)
     set_read(copy);
 
     renderer.render(screen, copy, targets[write]);
-    renderer.check_errors();
 
     targets[write]->set_color(temp);
 }
@@ -57,7 +54,6 @@ void gst::EffectComposer::render_to_screen()
     set_read(copy);
 
     renderer.render(screen, copy);
-    renderer.check_errors();
 }
 
 void gst::EffectComposer::set_size(Resolution size)
