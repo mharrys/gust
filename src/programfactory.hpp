@@ -22,6 +22,10 @@ namespace gst
         std::unique_ptr<Program> create_from_source(
             std::string const & vs_source,
             std::string const & fs_source);
+        // Return created program with shaders read from source.
+        std::unique_ptr<Program> create_from_shader(
+            std::unique_ptr<Shader> vs,
+            std::unique_ptr<Shader> fs);
     private:
         std::shared_ptr<Logger> logger;
     };

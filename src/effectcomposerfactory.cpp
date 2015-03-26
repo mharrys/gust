@@ -11,6 +11,7 @@
 #include "programfactory.hpp"
 #include "program.hpp"
 #include "renderbufferimpl.hpp"
+#include "shaderimpl.hpp"
 #include "texture2d.hpp"
 #include "uniformmapimpl.hpp"
 
@@ -51,22 +52,12 @@ gst::Effect gst::EffectComposerFactory::create_copy_effect()
 
 std::shared_ptr<gst::Program> gst::EffectComposerFactory::create_copy_program()
 {
-    std::string vs_src = ""
-    "#version 130\n"
-    "uniform mat4 model_view;\n"
-    "uniform mat4 projection;\n"
-    "in vec4 vertex_position;\n"
-    "void main() { gl_Position = projection * model_view * vertex_position; }\n";
-
-    std::string fs_src = ""
-    "#version 130\n"
-    "uniform vec2 resolution;\n"
-    "uniform sampler2D read;\n"
-    "out vec4 frag_color;\n"
-    "void main() { vec2 uv = gl_FragCoord.xy / resolution.xy; frag_color = texture(read, uv); }\n";
-
     ProgramFactory factory(logger);
-    return factory.create_from_source(vs_src, fs_src);
+
+    auto vs = std::unique_ptr<Shader>(new ShaderImpl(ShaderImpl::create_copy_vs()));
+    auto fs = std::unique_ptr<Shader>(new ShaderImpl(ShaderImpl::create_copy_fs()));
+
+    return factory.create_from_shader(std::move(vs), std::move(fs));
 }
 
 gst::RenderTargets gst::EffectComposerFactory::create_render_targets()

@@ -40,10 +40,17 @@ std::unique_ptr<gst::Program> gst::ProgramFactory::create_from_source(
     std::string const & vs_source,
     std::string const & fs_source)
 {
-    auto program = std::unique_ptr<Program>(new ProgramImpl());
-
     auto vs = std::unique_ptr<Shader>(new ShaderImpl(ShaderType::VERTEX, vs_source));
     auto fs = std::unique_ptr<Shader>(new ShaderImpl(ShaderType::FRAGMENT, fs_source));
+
+    return create_from_shader(std::move(vs), std::move(fs));
+}
+
+std::unique_ptr<gst::Program> gst::ProgramFactory::create_from_shader(
+    std::unique_ptr<Shader> vs,
+    std::unique_ptr<Shader> fs)
+{
+    auto program = std::unique_ptr<Program>(new ProgramImpl());
 
     program->set_vertex_shader(std::move(vs));
     program->set_fragment_shader(std::move(fs));
