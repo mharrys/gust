@@ -20,9 +20,16 @@ namespace gst
     // The responsibility of this class is to setup and run a post-processing
     // pipeline.
     class EffectComposer {
-        friend EffectComposerFactory;
     public:
+        // Construct effect composer with default implementation of renderer,
+        // targets, copy filter and fullscreen quad scene.
         static EffectComposer create(std::shared_ptr<Logger> logger);
+        // Construct effect composer with specified implementations.
+        EffectComposer(
+            Renderer renderer,
+            RenderTargets targets,
+            Effect copy,
+            Scene screen);
         // Render scene into read-texture.
         void render(Scene & scene);
         // Setup and run post-process filter on read-texture. This will
@@ -36,11 +43,6 @@ namespace gst
         // Set size of render.
         void set_size(Resolution size);
     private:
-        EffectComposer(
-            Renderer renderer,
-            RenderTargets targets,
-            Effect copy,
-            Scene screen);
         void swap();
         void set_resolution(Effect & effect, Resolution size);
         void set_read(Effect & effect);

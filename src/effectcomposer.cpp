@@ -16,6 +16,20 @@ gst::EffectComposer gst::EffectComposer::create(std::shared_ptr<Logger> logger)
     return factory.create();
 }
 
+gst::EffectComposer::EffectComposer(
+    Renderer renderer,
+    RenderTargets targets,
+    Effect copy,
+    Scene screen)
+    : renderer(renderer),
+      targets(targets),
+      read(0),
+      write(1),
+      copy(copy),
+      screen(screen)
+{
+}
+
 void gst::EffectComposer::render(Scene & scene)
 {
     renderer.render(scene, targets[write]);
@@ -75,20 +89,6 @@ void gst::EffectComposer::set_size(Resolution size)
     }
 
     renderer.set_viewport(size);
-}
-
-gst::EffectComposer::EffectComposer(
-    Renderer renderer,
-    RenderTargets targets,
-    Effect copy,
-    Scene screen)
-    : renderer(renderer),
-      targets(targets),
-      read(0),
-      write(1),
-      copy(copy),
-      screen(screen)
-{
 }
 
 void gst::EffectComposer::swap()
