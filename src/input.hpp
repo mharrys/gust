@@ -6,8 +6,8 @@
 
 namespace gst
 {
-    // The responsibility of this class is to query the current state of a
-    // keyboard and a mouse.
+    // The responsibility of this class is to query the current state of input
+    // devices.
     class Input {
     public:
         Input(Keyboard keyboard, Mouse mouse);
