@@ -1,5 +1,5 @@
-#ifndef EFFECT_HPP_INCLUDED
-#define EFFECT_HPP_INCLUDED
+#ifndef MATERIAL_HPP_INCLUDED
+#define MATERIAL_HPP_INCLUDED
 
 #include <array>
 #include <memory>
@@ -15,24 +15,24 @@ namespace gst
 
     typedef std::array<std::shared_ptr<Texture>, 10> Textures;
 
-    // The responsibility of this class is to describe a effect in a shader
+    // The responsibility of this class is to describe a material in a shader
     // pass.
-    class Effect {
+    class Material {
     public:
-        static Effect create_free(std::shared_ptr<Pass> pass);
-        static Effect create_struct(std::shared_ptr<Pass> pass, std::string const & name);
-        static Effect create_array(std::shared_ptr<Pass> pass, std::string const & name);
+        static Material create_free(std::shared_ptr<Pass> pass);
+        static Material create_struct(std::shared_ptr<Pass> pass, std::string const & name);
+        static Material create_array(std::shared_ptr<Pass> pass, std::string const & name);
 
-        Effect() = default;
-        Effect(
+        Material() = default;
+        Material(
             std::shared_ptr<Pass> pass,
             std::shared_ptr<UniformMap> uniforms);
 
-        // Return pass.
+        // Return pass that renders this material.
         Pass & get_pass();
         // Return uniform.
         ShadowedData & get_uniform(std::string const & annotation);
-        // Return uniforms that describe this effect.
+        // Return uniforms that describe this material.
         UniformMap & get_uniforms();
         // Return textures.
         Textures & get_textures();

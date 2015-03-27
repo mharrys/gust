@@ -18,7 +18,7 @@ gst::Mesh & gst::ModelNode::get_mesh() const
     return model->get_mesh();
 }
 
-gst::Effect & gst::ModelNode::get_effect() const
+gst::Material & gst::ModelNode::get_material() const
 {
-    return model->get_effect();
+    return model->get_material();
 }

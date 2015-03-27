@@ -7,11 +7,11 @@
 
 namespace gst
 {
-    class Effect;
     class Framebuffer;
     class GraphicsDevice;
     class LightNode;
     class Logger;
+    class Material;
     class RenderState;
     class Scene;
     class Viewport;
@@ -32,13 +32,12 @@ namespace gst
         void clear(bool color, bool depth);
         // Render scene.
         void render(Scene & scene);
-        // Render scene but override all effects with specified effect.
-        void render(Scene & scene, Effect & effect);
+        // Render scene using specified material.
+        void render(Scene & scene, Material & material);
         // Render scene into framebuffer.
         void render(Scene & scene, std::shared_ptr<Framebuffer> target);
-        // Render scene into framebuffer but override all effects with
-        // specified effect.
-        void render(Scene & scene, Effect & effect, std::shared_ptr<Framebuffer> target);
+        // Render scene into framebuffer using specified material.
+        void render(Scene & scene, Material & material, std::shared_ptr<Framebuffer> target);
         // Set auto clear flag on specified buffers.
         void set_auto_clear(bool auto_clear_color, bool auto_clear_depth);
         // Set auto check errors.
@@ -46,7 +45,7 @@ namespace gst
         // Set viewport.
         void set_viewport(Viewport viewport);
     private:
-        void render(Scene & scene, Effect * const effect, std::shared_ptr<Framebuffer> target);
+        void render(Scene & scene, Material * const material, std::shared_ptr<Framebuffer> target);
 
         std::shared_ptr<GraphicsDevice> device;
         std::shared_ptr<RenderState> render_state;

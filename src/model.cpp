@@ -1,8 +1,8 @@
 #include "model.hpp"
 
-gst::Model::Model(Mesh mesh, Effect effect)
+gst::Model::Model(Mesh mesh, Material material)
     : mesh(mesh),
-      effect(effect)
+      material(material)
 {
 }
 
@@ -11,7 +11,7 @@ gst::Mesh & gst::Model::get_mesh()
     return mesh;
 }
 
-gst::Effect & gst::Model::get_effect()
+gst::Material & gst::Model::get_material()
 {
-    return effect;
+    return material;
 }

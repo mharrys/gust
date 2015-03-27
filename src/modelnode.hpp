@@ -5,7 +5,7 @@
 
 namespace gst
 {
-    class Effect;
+    class Material;
     class Mesh;
     class Model;
 
@@ -16,8 +16,8 @@ namespace gst
         void accept(NodeVisitor & visitor) final;
         // Return model mesh.
         Mesh & get_mesh() const;
-        // Return model effect.
-        Effect & get_effect() const;
+        // Return model material.
+        Material & get_material() const;
     private:
         std::shared_ptr<Model> model;
     };

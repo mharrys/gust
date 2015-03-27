@@ -42,9 +42,9 @@ void gst::Renderer::render(Scene & scene)
     render(scene, nullptr, nullptr);
 }
 
-void gst::Renderer::render(Scene & scene, Effect & effect)
+void gst::Renderer::render(Scene & scene, Material & material)
 {
-    render(scene, &effect, nullptr);
+    render(scene, &material, nullptr);
 }
 
 void gst::Renderer::render(Scene & scene, std::shared_ptr<Framebuffer> target)
@@ -52,9 +52,9 @@ void gst::Renderer::render(Scene & scene, std::shared_ptr<Framebuffer> target)
     render(scene, nullptr, target);
 }
 
-void gst::Renderer::render(Scene & scene, Effect & effect, std::shared_ptr<Framebuffer> target)
+void gst::Renderer::render(Scene & scene, Material & material, std::shared_ptr<Framebuffer> target)
 {
-    render(scene, &effect, target);
+    render(scene, &material, target);
 }
 
 void gst::Renderer::set_auto_clear(bool auto_clear_color, bool auto_clear_depth)
@@ -74,7 +74,7 @@ void gst::Renderer::set_viewport(Viewport viewport)
     render_state->set_viewport(viewport);
 }
 
-void gst::Renderer::render(Scene & scene, Effect * const effect, std::shared_ptr<Framebuffer> target)
+void gst::Renderer::render(Scene & scene, Material * const material, std::shared_ptr<Framebuffer> target)
 {
     if (target) {
         render_state->set_framebuffer(target);
@@ -99,7 +99,7 @@ void gst::Renderer::render(Scene & scene, Effect * const effect, std::shared_ptr
     model_state.projection = eye.get_projection();
     model_state.light_nodes = collector.get_light_nodes();
 
-    auto renderer = NodeRenderer(device, render_state, model_state, effect);
+    auto renderer = NodeRenderer(device, render_state, model_state, material);
     scene.traverse(renderer);
 
     if (auto_check_render) {

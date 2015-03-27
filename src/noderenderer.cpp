@@ -1,8 +1,8 @@
 #include "noderenderer.hpp"
 
-#include "effect.hpp"
 #include "graphicsdevice.hpp"
 #include "indexbuffer.hpp"
+#include "material.hpp"
 #include "mesh.hpp"
 #include "model.hpp"
 #include "modelnode.hpp"
@@ -15,11 +15,11 @@ gst::NodeRenderer::NodeRenderer(
     std::shared_ptr<GraphicsDevice> device,
     std::shared_ptr<RenderState> render_state,
     ModelState const & model_state,
-    Effect * const effect_override)
+    Material * const material_override)
     : device(device),
       render_state(render_state),
       model_state(model_state),
-      effect_override(effect_override)
+      material_override(material_override)
 {
 }
 
@@ -30,19 +30,19 @@ void gst::NodeRenderer::visit(ModelNode & node)
     model_state.normal = glm::inverseTranspose(glm::mat3(model_state.model_view));
 
     auto & mesh = node.get_mesh();
-    auto & effect = effect_override ? *effect_override : node.get_effect();
-    auto & pass = effect.get_pass();
-    auto & textures = effect.get_textures();
+    auto & material = material_override ? *material_override : node.get_material();
+    auto & pass = material.get_pass();
+    auto & textures = material.get_textures();
 
     // set textures at the texture unit in the order they are stored in, the
-    // uniforms in effect will associate texture unit with a annotation
+    // uniforms in material will associate texture unit with a annotation
     for (auto i = 0u; i < textures.size(); i++) {
         if (textures[i]) {
             render_state->set_texture(textures[i], i);
         }
     }
 
-    pass.program->set_uniforms(effect.get_uniforms());
+    pass.program->set_uniforms(material.get_uniforms());
     pass.apply(model_state);
 
     render_state->set_blend_mode(pass.blend_mode);

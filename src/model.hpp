@@ -1,7 +1,7 @@
 #ifndef MODEL_HPP_INCLUDED
 #define MODEL_HPP_INCLUDED
 
-#include "effect.hpp"
+#include "material.hpp"
 #include "mesh.hpp"
 
 namespace gst
@@ -10,14 +10,14 @@ namespace gst
     // scene should be rendered.
     class Model {
     public:
-        Model(Mesh mesh, Effect effect);
+        Model(Mesh mesh, Material material);
         // Return mesh.
         Mesh & get_mesh();
-        // Return effect.
-        Effect & get_effect();
+        // Return material.
+        Material & get_material();
     private:
         Mesh mesh;
-        Effect effect;
+        Material material;
     };
 }
 

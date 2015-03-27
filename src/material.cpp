@@ -1,4 +1,4 @@
-#include "effect.hpp"
+#include "material.hpp"
 
 #include "annotationarray.hpp"
 #include "annotationfree.hpp"
@@ -7,28 +7,28 @@
 #include "shadoweddata.hpp"
 #include "uniformmapimpl.hpp"
 
-gst::Effect gst::Effect::create_free(std::shared_ptr<Pass> pass)
+gst::Material gst::Material::create_free(std::shared_ptr<Pass> pass)
 {
     auto formatter = std::unique_ptr<AnnotationFormatter>(new AnnotationFree());
     auto uniforms = std::make_shared<UniformMapImpl>(std::move(formatter));
-    return Effect(pass, uniforms);
+    return Material(pass, uniforms);
 }
 
-gst::Effect gst::Effect::create_struct(std::shared_ptr<Pass> pass, std::string const & name)
+gst::Material gst::Material::create_struct(std::shared_ptr<Pass> pass, std::string const & name)
 {
     auto formatter = std::unique_ptr<AnnotationFormatter>(new AnnotationStruct(name));
     auto uniforms = std::make_shared<UniformMapImpl>(std::move(formatter));
-    return Effect(pass, uniforms);
+    return Material(pass, uniforms);
 }
 
-gst::Effect gst::Effect::create_array(std::shared_ptr<Pass> pass, std::string const & name)
+gst::Material gst::Material::create_array(std::shared_ptr<Pass> pass, std::string const & name)
 {
     auto formatter = std::unique_ptr<AnnotationFormatter>(new AnnotationArray(name));
     auto uniforms = std::make_shared<UniformMapImpl>(std::move(formatter));
-    return Effect(pass, uniforms);
+    return Material(pass, uniforms);
 }
 
-gst::Effect::Effect(
+gst::Material::Material(
     std::shared_ptr<Pass> pass,
     std::shared_ptr<UniformMap> uniforms)
     : pass(pass),
@@ -36,22 +36,22 @@ gst::Effect::Effect(
 {
 }
 
-gst::Pass & gst::Effect::get_pass()
+gst::Pass & gst::Material::get_pass()
 {
     return *pass;
 }
 
-gst::ShadowedData & gst::Effect::get_uniform(std::string const & annotation)
+gst::ShadowedData & gst::Material::get_uniform(std::string const & annotation)
 {
     return uniforms->get_uniform(annotation);
 }
 
-gst::UniformMap & gst::Effect::get_uniforms()
+gst::UniformMap & gst::Material::get_uniforms()
 {
     return *uniforms;
 }
 
-gst::Textures & gst::Effect::get_textures()
+gst::Textures & gst::Material::get_textures()
 {
     return textures;
 }
