@@ -10,14 +10,16 @@ namespace gst
     // The responsibility of this class is to position a camera.
     class CameraNode : public Node {
     public:
-        CameraNode(std::shared_ptr<Camera> camera);
+        CameraNode(std::unique_ptr<Camera> camera);
         void accept(NodeVisitor & visitor) final;
         // Return camera space.
         glm::mat4 get_view() const;
         // Return camera projection.
         glm::mat4 get_projection() const;
+        // Return camera.
+        Camera & get_camera();
     private:
-        std::shared_ptr<Camera> camera;
+        std::unique_ptr<Camera> camera;
     };
 }
 

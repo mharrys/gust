@@ -3,8 +3,8 @@
 #include "camera.hpp"
 #include "nodevisitor.hpp"
 
-gst::CameraNode::CameraNode(std::shared_ptr<Camera> camera)
-    : camera(camera)
+gst::CameraNode::CameraNode(std::unique_ptr<Camera> camera)
+    : camera(std::move(camera))
 {
 }
 
@@ -21,4 +21,9 @@ glm::mat4 gst::CameraNode::get_view() const
 glm::mat4 gst::CameraNode::get_projection() const
 {
     return camera->get_projection();
+}
+
+gst::Camera & gst::CameraNode::get_camera()
+{
+    return *camera;
 }
