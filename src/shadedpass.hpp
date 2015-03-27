@@ -13,7 +13,7 @@ namespace gst
     class ShadedPass : public Pass {
     public:
         ShadedPass(std::shared_ptr<Program> program);
-        void apply(ModelState const & state) final;
+        void apply(ModelState & state) final;
         // Set model view matrix annotation.
         void set_model_view_annotation(std::string const & model_view);
         // Set projection matrix annotation.

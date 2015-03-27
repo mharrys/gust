@@ -1,21 +1,20 @@
 #ifndef LIGHTNODE_HPP_INCLUDED
 #define LIGHTNODE_HPP_INCLUDED
 
+#include "light.hpp"
 #include "node.hpp"
 
 namespace gst
 {
-    class Light;
-
     // The responsibility of this class is to position a light.
     class LightNode : public Node {
     public:
-        LightNode(std::shared_ptr<Light> light);
+        LightNode(Light light);
         void accept(NodeVisitor & visitor) final;
         // Return light.
-        Light & get_light() const;
+        Light & get_light();
     private:
-        std::shared_ptr<Light> light;
+        Light light;
     };
 }
 

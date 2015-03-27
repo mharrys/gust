@@ -1,5 +1,6 @@
 #include "renderer.hpp"
 
+#include "annotationarray.hpp"
 #include "cameranode.hpp"
 #include "graphicsdeviceimpl.hpp"
 #include "graphicssynchronizer.hpp"
@@ -9,6 +10,8 @@
 #include "noderenderer.hpp"
 #include "renderstate.hpp"
 #include "scene.hpp"
+#include "shadoweddata.hpp"
+#include "uniformmap.hpp"
 
 gst::Renderer gst::Renderer::create(std::shared_ptr<Logger> logger)
 {
@@ -98,6 +101,16 @@ void gst::Renderer::render(Scene & scene, Material * const material, std::shared
     model_state.view = eye.get_view();
     model_state.projection = eye.get_projection();
     model_state.light_nodes = collector.get_light_nodes();
+
+    // special case if one or more lights are stored in a array
+    for (auto i = 0u; i < model_state.light_nodes.size(); i++) {
+        auto & light_node = model_state.light_nodes[i];
+        auto & light = light_node.get_light();
+        auto & uniforms = light.get_uniforms();
+        if (auto * formatter = dynamic_cast<AnnotationArray *>(&uniforms.get_formatter())) {
+            formatter->set_current_index(i);
+        }
+    }
 
     auto renderer = NodeRenderer(device, render_state, model_state, material);
     scene.traverse(renderer);

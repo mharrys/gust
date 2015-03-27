@@ -2,7 +2,7 @@
 
 #include "nodevisitor.hpp"
 
-gst::LightNode::LightNode(std::shared_ptr<Light> light)
+gst::LightNode::LightNode(Light light)
     : light(light)
 {
 }
@@ -12,7 +12,7 @@ void gst::LightNode::accept(NodeVisitor & visitor)
     visitor.visit(*this);
 }
 
-gst::Light & gst::LightNode::get_light() const
+gst::Light & gst::LightNode::get_light()
 {
-    return *light;
+    return light;
 }

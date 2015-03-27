@@ -31,7 +31,7 @@ namespace gst
     public:
         Pass(std::shared_ptr<Program> program);
         // Setup the program object from the model state.
-        virtual void apply(ModelState const & state) = 0;
+        virtual void apply(ModelState & state) = 0;
         // Set blend mode.
         void set_blend_mode(BlendMode blend_mode);
         // Set cull face.

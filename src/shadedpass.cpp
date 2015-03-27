@@ -18,28 +18,18 @@ gst::ShadedPass::ShadedPass(std::shared_ptr<Program> program)
 {
 }
 
-void gst::ShadedPass::apply(ModelState const & state)
+void gst::ShadedPass::apply(ModelState & model_state)
 {
-    uniforms->get_uniform(model_view) = state.model_view;
-    uniforms->get_uniform(projection) = state.projection;
-    uniforms->get_uniform(normal) = state.normal;
+    uniforms->get_uniform(model_view) = model_state.model_view;
+    uniforms->get_uniform(projection) = model_state.projection;
+    uniforms->get_uniform(normal) = model_state.normal;
     program->set_uniforms(*uniforms);
 
-    for (auto i = 0u; i < state.light_nodes.size(); i++) {
-        auto & light_node = state.light_nodes[i];
+    for (auto light_node : model_state.light_nodes) {
         auto & light = light_node.get_light();
-
-        // special uniforms
         light.get_uniform(enabled) = light.get_enabled();
-        light.get_uniform(position) = state.view * glm::vec4(light_node.position, 1.0f);
-
-        // special case if annotation array
-        auto & uniforms = light.get_uniforms();
-        if (auto * formatter = dynamic_cast<AnnotationArray *>(&uniforms.get_formatter())) {
-            formatter->set_current_index(i);
-        }
-
-        program->set_uniforms(uniforms);
+        light.get_uniform(position) = model_state.view * glm::vec4(light_node.position, 1.0f);
+        program->set_uniforms(light.get_uniforms());
     }
 }
 

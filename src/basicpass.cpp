@@ -13,7 +13,7 @@ gst::BasicPass::BasicPass(std::shared_ptr<Program> program)
 {
 }
 
-void gst::BasicPass::apply(ModelState const & state)
+void gst::BasicPass::apply(ModelState & state)
 {
     uniforms->get_uniform(model_view) = state.model_view;
     uniforms->get_uniform(projection) = state.projection;
