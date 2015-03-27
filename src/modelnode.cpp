@@ -1,9 +1,8 @@
 #include "modelnode.hpp"
 
-#include "model.hpp"
 #include "nodevisitor.hpp"
 
-gst::ModelNode::ModelNode(std::shared_ptr<Model> model)
+gst::ModelNode::ModelNode(Model model)
     : model(model)
 {
 }
@@ -13,12 +12,17 @@ void gst::ModelNode::accept(NodeVisitor & visitor)
     visitor.visit(*this);
 }
 
-gst::Mesh & gst::ModelNode::get_mesh() const
+gst::Mesh & gst::ModelNode::get_mesh()
 {
-    return model->get_mesh();
+    return model.get_mesh();
 }
 
-gst::Material & gst::ModelNode::get_material() const
+gst::Material & gst::ModelNode::get_material()
 {
-    return model->get_material();
+    return model.get_material();
+}
+
+gst::Model & gst::ModelNode::get_model()
+{
+    return model;
 }

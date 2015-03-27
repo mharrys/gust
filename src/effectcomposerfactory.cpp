@@ -30,7 +30,7 @@ gst::EffectComposer gst::EffectComposerFactory::create()
     MeshFactory mesh_factory(logger);
 
     auto quad = mesh_factory.create_quad(1.0f, 1.0f);
-    auto model = std::make_shared<Model>(quad, copy_filter);
+    auto model = Model(quad, copy_filter);
     auto model_node = std::make_shared<ModelNode>(model);
 
     auto camera = std::unique_ptr<Camera>(new OrthoCamera());

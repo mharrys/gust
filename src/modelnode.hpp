@@ -1,6 +1,7 @@
 #ifndef MODELNODE_HPP_INCLUDED
 #define MODELNODE_HPP_INCLUDED
 
+#include "model.hpp"
 #include "node.hpp"
 
 namespace gst
@@ -12,14 +13,16 @@ namespace gst
     // The responsibility of this class is to position a model.
     class ModelNode : public Node {
     public:
-        ModelNode(std::shared_ptr<Model> model);
+        ModelNode(Model model);
         void accept(NodeVisitor & visitor) final;
         // Return model mesh.
-        Mesh & get_mesh() const;
-        // Return model material.
-        Material & get_material() const;
+        Mesh & get_mesh();
+        // Return material.
+        Material & get_material();
+        // Return model.
+        Model & get_model();
     private:
-        std::shared_ptr<Model> model;
+        Model model;
     };
 }
 
