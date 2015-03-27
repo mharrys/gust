@@ -2,6 +2,7 @@
 
 #include "annotationfree.hpp"
 #include "annotationarray.hpp"
+#include "light.hpp"
 #include "program.hpp"
 #include "shadoweddata.hpp"
 #include "uniformmapimpl.hpp"

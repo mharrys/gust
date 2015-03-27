@@ -46,7 +46,7 @@ gst::EffectComposer gst::EffectComposerFactory::create()
 gst::Material gst::EffectComposerFactory::create_copy_filter()
 {
     auto copy_pass = std::make_shared<BasicPass>(create_copy_program());
-    copy_pass->cull_face = CullFace::BACK;
+    copy_pass->set_cull_face(CullFace::BACK);
     return Material::create_free(copy_pass);
 }
 

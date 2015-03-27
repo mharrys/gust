@@ -6,6 +6,8 @@
 
 namespace gst
 {
+    class UniformMap;
+
     // The responsibility of this class is to setup a program object for a
     // shaded shader pass.
     class ShadedPass : public Pass {
