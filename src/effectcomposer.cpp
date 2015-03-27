@@ -22,7 +22,7 @@ void gst::EffectComposer::render(Scene & scene)
     swap();
 }
 
-void gst::EffectComposer::render_pass(Effect & effect)
+void gst::EffectComposer::render_filter(Effect & effect)
 {
     const auto temp = effect.get_textures()[0];
 

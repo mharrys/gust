@@ -25,9 +25,9 @@ namespace gst
         static EffectComposer create(std::shared_ptr<Logger> logger);
         // Render scene into read-texture.
         void render(Scene & scene);
-        // Setup and run post-process effect on read-texture. This will
+        // Setup and run post-process filter on read-texture. This will
         // override texture unit 0 during render.
-        void render_pass(Effect & effect);
+        void render_filter(Effect & effect);
         // Copy read-texture to specified texture, it is expected that the
         // specified texture is of the same size as the effect composer.
         void render_to_texture(std::shared_ptr<Texture2D> texture);
