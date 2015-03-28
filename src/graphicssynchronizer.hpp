@@ -30,6 +30,9 @@ namespace gst
     // mirrored graphics resources with the graphics card.
     class GraphicsSynchronizer {
     public:
+        // Construct empty graphics synchronizer.
+        GraphicsSynchronizer() = default;
+        // Construct graphics synchronizer from implementations.
         GraphicsSynchronizer(
             std::shared_ptr<GraphicsDevice> device,
             std::shared_ptr<Logger> logger);
