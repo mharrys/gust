@@ -19,11 +19,12 @@ namespace gst
     // The responsibility of this class is to prepare a scene for rendering.
     class Renderer {
     public:
-        // Construct renderer with default implementation of graphics device
-        // and render state and specified logger.
+        // Construct renderer with default implementations and specified
+        // logger.
         static Renderer create(std::shared_ptr<Logger> logger);
-        // Construct renderer with specified implementations of graphics
-        // device, render state and logger.
+        // Construct empty renderer.
+        Renderer() = default;
+        // Construct renderer from specified implementations.
         Renderer(
             std::shared_ptr<GraphicsDevice> device,
             std::shared_ptr<RenderState> render_state,

@@ -24,6 +24,8 @@ namespace gst
         // Construct effect composer with default implementations with a copy
         // filter and a fullscreen quad scene with orthographic projection.
         static EffectComposer create(std::shared_ptr<Logger> logger);
+        // Construct empty effect composer.
+        EffectComposer() = default;
         // Construct effect composer from specified implementations.
         EffectComposer(
             Renderer renderer,
