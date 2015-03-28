@@ -17,7 +17,7 @@ void gst::BasicPass::apply(ModelState & state)
 {
     uniforms->get_uniform(model_view) = state.model_view;
     uniforms->get_uniform(projection) = state.projection;
-    program->set_uniforms(*uniforms);
+    program->merge_uniforms(*uniforms);
 }
 
 void gst::BasicPass::set_model_view_annotation(std::string const & model_view)

@@ -1,12 +1,15 @@
 #ifndef PROGRAMPOOL_HPP_INCLUDED
 #define PROGRAMPOOL_HPP_INCLUDED
 
-#include "programfactory.hpp"
-
+#include <memory>
+#include <string>
 #include <unordered_map>
 
 namespace gst
 {
+    class Logger;
+    class Program;
+
     typedef std::unordered_map<std::string, std::shared_ptr<Program>> ProgramCache;
 
     // The responsibility of this class is to cache every program so that no
@@ -14,13 +17,12 @@ namespace gst
     class ProgramPool {
     public:
         ProgramPool(std::shared_ptr<Logger> logger);
-        ProgramPool(ProgramFactory factory);
         // Return created/cached program with shaders read from file.
         std::shared_ptr<Program> create(
             std::string const & vs_path,
             std::string const & fs_path);
     private:
-        ProgramFactory factory;
+        std::shared_ptr<Logger> logger;
         ProgramCache cache;
     };
 }

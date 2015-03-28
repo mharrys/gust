@@ -1,5 +1,26 @@
 #include "shaderimpl.hpp"
 
+#include "logger.hpp"
+
+#include <fstream>
+#include <sstream>
+
+gst::ShaderImpl gst::ShaderImpl::create_from_file(
+    Logger & logger,
+    ShaderType type,
+    std::string const & path)
+{
+    std::ifstream file(path.c_str(), std::ifstream::in | std::ifstream::binary);
+    if (file.is_open()) {
+        std::stringstream buffer;
+        buffer << file.rdbuf();
+        return ShaderImpl(type, buffer.str());
+    } else {
+        logger.log(TRACE("could not read from file \"" + path + "\""));
+        return ShaderImpl(type, "");
+    }
+}
+
 gst::ShaderImpl gst::ShaderImpl::create_copy_vs()
 {
     std::string src =

@@ -43,7 +43,7 @@ void gst::NodeRenderer::visit(ModelNode & node)
         }
     }
 
-    pass.program->set_uniforms(material.get_uniforms());
+    pass.program->merge_uniforms(material.get_uniforms());
     pass.apply(model_state);
 
     render_state->set_blend_mode(pass.blend_mode);

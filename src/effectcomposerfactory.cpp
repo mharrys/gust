@@ -8,8 +8,7 @@
 #include "modelnode.hpp"
 #include "meshfactory.hpp"
 #include "orthocamera.hpp"
-#include "programfactory.hpp"
-#include "program.hpp"
+#include "programimpl.hpp"
 #include "renderbufferimpl.hpp"
 #include "shaderimpl.hpp"
 #include "texture2d.hpp"
@@ -43,18 +42,14 @@ gst::EffectComposer gst::EffectComposerFactory::create()
     copy_pass->set_cull_face(CullFace::BACK);
     auto copy = gst::Filter(copy_material, copy_pass);
 
-
     return EffectComposer(renderer, render_targets, copy, screen);
 }
 
 std::shared_ptr<gst::Program> gst::EffectComposerFactory::create_copy_program()
 {
-    ProgramFactory factory(logger);
-
     auto vs = std::unique_ptr<Shader>(new ShaderImpl(ShaderImpl::create_copy_vs()));
     auto fs = std::unique_ptr<Shader>(new ShaderImpl(ShaderImpl::create_copy_fs()));
-
-    return factory.create_from_shader(std::move(vs), std::move(fs));
+    return std::make_shared<ProgramImpl>(ProgramImpl::create_from_shader(std::move(vs), std::move(fs)));
 }
 
 gst::RenderTargets gst::EffectComposerFactory::create_render_targets()

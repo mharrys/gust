@@ -23,13 +23,13 @@ void gst::ShadedPass::apply(ModelState & model_state)
     uniforms->get_uniform(model_view) = model_state.model_view;
     uniforms->get_uniform(projection) = model_state.projection;
     uniforms->get_uniform(normal) = model_state.normal;
-    program->set_uniforms(*uniforms);
+    program->merge_uniforms(*uniforms);
 
     for (auto light_node : model_state.light_nodes) {
         auto & light = light_node.get_light();
         light.get_uniform(enabled) = light.get_enabled();
         light.get_uniform(position) = model_state.view * glm::vec4(light_node.position, 1.0f);
-        program->set_uniforms(light.get_uniforms());
+        program->merge_uniforms(light.get_uniforms());
     }
 }
 

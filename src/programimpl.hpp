@@ -7,13 +7,27 @@
 
 namespace gst
 {
+    class Logger;
+
     class ProgramImpl : public Program {
     public:
+        // Construct program from shader files.
+        static ProgramImpl create_from_file(
+            Logger & logger,
+            std::string const & vs_path,
+            std::string const & fs_path);
+        // Construct program from shaders.
+        static ProgramImpl create_from_shader(
+            std::unique_ptr<Shader> vs,
+            std::unique_ptr<Shader> fs);
+        // Construct empty program.
         ProgramImpl() = default;
-        void set_vertex_shader(std::unique_ptr<Shader> vertex_shader) final;
-        void set_fragment_shader(std::unique_ptr<Shader> fragment_shader) final;
-        void set_attributes(std::vector<AttributeLocation> attribute_locations) final;
-        void set_uniforms(UniformMap const & uniforms) final;
+        // Construct program from shaders and vertex attribute locations.
+        ProgramImpl(
+            std::unique_ptr<Shader> vs,
+            std::unique_ptr<Shader> fs,
+            std::vector<AttributeLocation> attribute_locations);
+        void merge_uniforms(UniformMap const & uniforms) final;
         std::vector<Shader *> get_shaders() final;
         std::vector<AttributeLocation> get_attribute_locations() const final;
         std::vector<UniformAnnotation> get_uniforms() const final;
