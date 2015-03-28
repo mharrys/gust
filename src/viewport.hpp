@@ -5,12 +5,17 @@ namespace gst
 {
     class Resolution;
 
-    // The responsibility of this class is to describe a viewport shape.
+    // The responsibility of this class is to describe a viewport.
     class Viewport {
     public:
+        // Construct viewport with 0 x, y, width and height.
         Viewport();
+        // Construct viewport with specified widh and height of a resolution
+        // and with 0 x and y.
         Viewport(Resolution resolution);
+        // Construct viewport with specified width and height and with 0 x and y.
         Viewport(unsigned int width, unsigned int height);
+        // Construct viewport with specified x, y, width and height.
         Viewport(int x, int y, unsigned int width, unsigned int height);
 
         // Return true if specified viewport is equal to this viewport, false
