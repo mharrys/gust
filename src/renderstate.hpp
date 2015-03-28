@@ -25,11 +25,13 @@ namespace gst
     typedef std::unordered_map<int, std::shared_ptr<Texture>> TextureLookup;
 
     // The responsibility of this class is to cache all operations that
-    // changes the state on the graphics card. It will reset to a sensible
-    // default state when created so that all future operations will reflect
-    // the current state on the graphics card.
+    // changes the state on the graphics card.
     class RenderState {
     public:
+        // Construct empty render state.
+        RenderState() = default;
+        // Construct render state from implementations. This will change the
+        // current state on the graphics card to reflect the current state.
         RenderState(
             std::shared_ptr<GraphicsDevice> device,
             std::shared_ptr<GraphicsSynchronizer> synchronizer);
