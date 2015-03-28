@@ -26,7 +26,9 @@ gst::EffectComposer::EffectComposer(
       read(0),
       write(1),
       copy(copy),
-      screen(screen)
+      screen(screen),
+      resolution_annotation("resolution"),
+      read_annotation("read")
 {
 }
 
@@ -91,6 +93,16 @@ void gst::EffectComposer::set_size(Resolution size)
     renderer.set_viewport(size);
 }
 
+void gst::EffectComposer::set_resolution_annotation(std::string const & resolution_annotation)
+{
+    this->resolution_annotation = resolution_annotation;
+}
+
+void gst::EffectComposer::set_read_annotation(std::string const & read_annotation)
+{
+    this->read_annotation = read_annotation;
+}
+
 void gst::EffectComposer::swap()
 {
     read++;
@@ -99,7 +111,7 @@ void gst::EffectComposer::swap()
 
 void gst::EffectComposer::set_resolution(Filter & filter, Resolution size)
 {
-    filter.get_uniform("resolution") = glm::vec2(size.get_width(), size.get_height());
+    filter.get_uniform(resolution_annotation) = glm::vec2(size.get_width(), size.get_height());
 }
 
 void gst::EffectComposer::set_read(Filter & filter)
@@ -107,5 +119,5 @@ void gst::EffectComposer::set_read(Filter & filter)
     const auto unit = 0;
     const auto attachment = targets[read]->get_color_attachment();
     filter.get_textures()[unit] = std::static_pointer_cast<Texture>(attachment.get_resource());
-    filter.get_uniform("read") = unit;
+    filter.get_uniform(read_annotation) = unit;
 }

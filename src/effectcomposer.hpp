@@ -46,6 +46,10 @@ namespace gst
         // framebuffers which will in effect invalidate any previous
         // processing.
         void set_size(Resolution size);
+        // Set resolution annotation.
+        void set_resolution_annotation(std::string const & resolution_annotation);
+        // Set read annotation.
+        void set_read_annotation(std::string const & read_annotation);
     private:
         void swap();
         void set_resolution(Filter & filter, Resolution size);
@@ -59,6 +63,9 @@ namespace gst
 
         Filter copy;
         Scene screen;
+
+        std::string resolution_annotation;
+        std::string read_annotation;
     };
 }
 
