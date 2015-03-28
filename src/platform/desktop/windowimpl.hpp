@@ -30,16 +30,16 @@ namespace gst
 
         // Return true if window was opened successfully, false otherwise.
         bool open();
-        bool should_close() const;
+        bool should_close() const final;
 
-        void poll();
-        void swap();
+        void poll() final;
+        void swap() final;
 
-        void set_pointer_lock(bool pointer_lock);
-        bool get_pointer_lock() const;
+        void set_pointer_lock(bool pointer_lock) final;
+        bool get_pointer_lock() const final;
 
-        Input get_input() const;
-        Resolution get_size() const;
+        Input get_input() const final;
+        Resolution get_size() const final;
     private:
         void advance_input();
 

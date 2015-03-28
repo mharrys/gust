@@ -11,10 +11,10 @@ namespace gst
         RenderbufferImpl(
             Resolution size,
             RenderbufferFormat format);
-        void set_size(Resolution size);
-        void set_format(RenderbufferFormat format);
-        Resolution get_size() const;
-        RenderbufferFormat get_format() const;
+        void set_size(Resolution size) final;
+        void set_format(RenderbufferFormat format) final;
+        Resolution get_size() const final;
+        RenderbufferFormat get_format() const final;
     private:
         Resolution size;
         RenderbufferFormat format;
