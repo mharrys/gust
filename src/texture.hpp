@@ -17,6 +17,7 @@ namespace gst
     enum class TextureFormat {
         RGB,
         RGBA,
+        RGBA16F,
         DEPTH_COMPONENT16,
         DEPTH_COMPONENT24,
         DEPTH_COMPONENT32,

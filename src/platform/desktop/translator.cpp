@@ -213,6 +213,8 @@ GLenum gst::Translator::translate(TextureFormat format) const
         return GL_RGB;
     case TextureFormat::RGBA:
         return GL_RGBA;
+    case TextureFormat::RGBA16F:
+        return GL_RGBA16F;
     case TextureFormat::DEPTH_COMPONENT16:
         return GL_DEPTH_COMPONENT16;
     case TextureFormat::DEPTH_COMPONENT24:
