@@ -18,6 +18,8 @@ namespace gst
 
     class WindowImpl : public Window {
     public:
+        // Construct window with specified settings. It will remain closed
+        // until a successful call to open.
         WindowImpl(
             std::shared_ptr<Logger> logger,
             bool exit_on_close,
