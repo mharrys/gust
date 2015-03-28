@@ -63,6 +63,7 @@ namespace gst
     // graphics card.
     class Texture : public GraphicsResource {
     public:
+        // Construct texture with sensible default values.
         Texture();
         virtual ~Texture() = default;
         // Set internal format.
