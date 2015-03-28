@@ -12,7 +12,9 @@ namespace gst
     // and a camera as a scene.
     class Scene {
     public:
+        // Construct empty scene.
         Scene() = default;
+        // Construct scene with specified eye.
         Scene(std::shared_ptr<CameraNode> eye);
         // Add scene node to root.
         void add(std::shared_ptr<Node> node);
