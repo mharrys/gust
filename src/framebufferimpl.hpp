@@ -6,9 +6,16 @@
 
 namespace gst
 {
+    class Resolution;
+
     class FramebufferImpl : public Framebuffer {
     public:
+        // Construct framebuffer with a texture as color attachment and
+        // renderbuffer as depth attachment with specified size.
+        static FramebufferImpl create(Resolution size);
+        // Construct empty framebuffer.
         FramebufferImpl() = default;
+        // Construct framebuffer from color and depth attachment.
         FramebufferImpl(FramebufferAttachment color, FramebufferAttachment depth);
         void set_color(FramebufferAttachment color) final;
         void set_depth(FramebufferAttachment depth) final;

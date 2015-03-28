@@ -59,23 +59,8 @@ std::shared_ptr<gst::Program> gst::EffectComposerFactory::create_copy_program()
 
 gst::RenderTargets gst::EffectComposerFactory::create_render_targets()
 {
-    auto create_framebuffer = []()
-    {
-        const auto size = Resolution(1, 1);
-
-        auto color = std::make_shared<Texture2D>(size);
-        color->set_wrap_s(WrapMode::CLAMP_TO_EDGE);
-        color->set_wrap_t(WrapMode::CLAMP_TO_EDGE);
-
-        auto format = RenderbufferFormat::DEPTH_COMPONENT24;
-        auto depth = std::make_shared<RenderbufferImpl>(size, format);
-
-        auto target = std::make_shared<FramebufferImpl>();
-        target->set_color({ color });
-        target->set_depth({ depth });
-
-        return target;
-    };
-
-    return { create_framebuffer(), create_framebuffer() };
+    auto size = Resolution(1, 1);
+    auto fb1 = std::make_shared<FramebufferImpl>(FramebufferImpl::create(size));
+    auto fb2 = std::make_shared<FramebufferImpl>(FramebufferImpl::create(size));
+    return { fb1, fb2 };
 }
