@@ -19,6 +19,8 @@ namespace gst
         Mesh & get_mesh();
         // Return material.
         Material & get_material();
+        // Retrun pass.
+        Pass & get_pass();
         // Return model.
         Model & get_model();
     private:

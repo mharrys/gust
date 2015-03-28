@@ -22,6 +22,11 @@ gst::Material & gst::ModelNode::get_material()
     return model.get_material();
 }
 
+gst::Pass & gst::ModelNode::get_pass()
+{
+    return model.get_pass();
+}
+
 gst::Model & gst::ModelNode::get_model()
 {
     return model;

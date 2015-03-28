@@ -1,7 +1,7 @@
 #ifndef EFFECTCOMPOSER_HPP_INCLUDED
 #define EFFECTCOMPOSER_HPP_INCLUDED
 
-#include "material.hpp"
+#include "filter.hpp"
 #include "renderer.hpp"
 #include "resolution.hpp"
 #include "scene.hpp"
@@ -21,31 +21,33 @@ namespace gst
     // pipeline to achieve a effect.
     class EffectComposer {
     public:
-        // Construct effect composer with default implementation of renderer,
-        // targets, copy filter and fullscreen quad scene.
+        // Construct effect composer with default implementations with a copy
+        // filter and a fullscreen quad scene with orthographic projection.
         static EffectComposer create(std::shared_ptr<Logger> logger);
-        // Construct effect composer with specified implementations.
+        // Construct effect composer from specified implementations.
         EffectComposer(
             Renderer renderer,
             RenderTargets targets,
-            Material copy_filter,
+            Filter copy,
             Scene screen);
-        // Render scene into read-texture.
+        // Render scene into framebuffer.
         void render(Scene & scene);
-        // Setup and run post-process filter on read-texture. This will
-        // override texture unit 0 during render.
-        void render_filter(Material & filter);
-        // Copy read-texture to specified texture, it is expected that the
-        // specified texture is of the same size as the effect composer.
+        // Setup and run post-process filter. This will override texture unit
+        // 0 during render.
+        void render_filter(Filter & filter);
+        // Copy current processing state to specified texture. It is expected
+        // that the specified texture is of the same size as the renderer.
         void render_to_texture(std::shared_ptr<Texture2D> texture);
-        // Copy read-texture to screen.
+        // Copy read to screen.
         void render_to_screen();
-        // Set size of render.
+        // Set size of render. This will resize both the read and write
+        // framebuffers which will in effect invalidate any previous
+        // processing.
         void set_size(Resolution size);
     private:
         void swap();
-        void set_resolution(Material & filter, Resolution size);
-        void set_read(Material & filter);
+        void set_resolution(Filter & filter, Resolution size);
+        void set_read(Filter & filter);
 
         Renderer renderer;
         Resolution size;
@@ -53,7 +55,7 @@ namespace gst
         RenderTargets targets;
         unsigned read:1, write:1;
 
-        Material copy_filter;
+        Filter copy;
         Scene screen;
     };
 }

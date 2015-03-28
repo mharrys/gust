@@ -8,6 +8,7 @@
 
 namespace gst
 {
+    class Filter;
     class GraphicsDevice;
     class Material;
     class RenderState;
@@ -17,19 +18,20 @@ namespace gst
     class NodeRenderer : public NodeVisitor {
     public:
         // Construct node renderer. It is expected that model state has the
-        // view, projection and light nodes set from a scene. The material
-        // override is optional, will be used if not null.
+        // view, projection and light nodes set from a scene. The filter is
+        // optional and will override all model materials and passes if not
+        // null.
         NodeRenderer(
             std::shared_ptr<GraphicsDevice> device,
             std::shared_ptr<RenderState> render_state,
             ModelState const & model_state,
-            Material * const material_override);
+            Filter * const filter);
         void visit(ModelNode & node) final;
     private:
         std::shared_ptr<GraphicsDevice> device;
         std::shared_ptr<RenderState> render_state;
         ModelState model_state;
-        Material * const material_override;
+        Filter * const filter;
     };
 }
 

@@ -23,14 +23,12 @@ gst::EffectComposerFactory::EffectComposerFactory(std::shared_ptr<Logger> logger
 gst::EffectComposer gst::EffectComposerFactory::create()
 {
     auto renderer = Renderer::create(logger);
-
-    auto copy_filter = create_copy_filter();
     auto render_targets = create_render_targets();
 
     MeshFactory mesh_factory(logger);
-
     auto quad = mesh_factory.create_quad(1.0f, 1.0f);
-    auto model = Model(quad, copy_filter);
+
+    auto model = Model(quad, {}, nullptr);
     auto model_node = std::make_shared<ModelNode>(model);
 
     auto camera = std::unique_ptr<Camera>(new OrthoCamera());
@@ -40,14 +38,13 @@ gst::EffectComposer gst::EffectComposerFactory::create()
     screen.add(model_node);
     screen.update();
 
-    return EffectComposer(renderer, render_targets, copy_filter, screen);
-}
-
-gst::Material gst::EffectComposerFactory::create_copy_filter()
-{
+    auto copy_material = gst::Material::create_free();
     auto copy_pass = std::make_shared<BasicPass>(create_copy_program());
     copy_pass->set_cull_face(CullFace::BACK);
-    return Material::create_free(copy_pass);
+    auto copy = gst::Filter(copy_material, copy_pass);
+
+
+    return EffectComposer(renderer, render_targets, copy, screen);
 }
 
 std::shared_ptr<gst::Program> gst::EffectComposerFactory::create_copy_program()

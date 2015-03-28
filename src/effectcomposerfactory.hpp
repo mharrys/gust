@@ -16,7 +16,6 @@ namespace gst
         // Return built effect composer.
         EffectComposer create();
     private:
-        Material create_copy_filter();
         std::shared_ptr<Program> create_copy_program();
         RenderTargets create_render_targets();
 

@@ -6,18 +6,22 @@
 
 namespace gst
 {
-    // The responsibility of this class is to describe a how a model in a
-    // scene should be rendered.
+    class Pass;
+
+    // The responsibility of this class is to describe a model.
     class Model {
     public:
-        Model(Mesh mesh, Material material);
+        Model(Mesh mesh, Material material, std::shared_ptr<Pass> pass);
         // Return mesh.
         Mesh & get_mesh();
         // Return material.
         Material & get_material();
+        // Return pass.
+        Pass & get_pass();
     private:
         Mesh mesh;
         Material material;
+        std::shared_ptr<Pass> pass;
     };
 }
 

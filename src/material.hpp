@@ -8,7 +8,6 @@
 
 namespace gst
 {
-    class Pass;
     class UniformMap;
     class ShadowedData;
     class Texture;
@@ -19,25 +18,23 @@ namespace gst
     // pass.
     class Material {
     public:
-        static Material create_free(std::shared_ptr<Pass> pass);
-        static Material create_struct(std::shared_ptr<Pass> pass, std::string const & name);
-        static Material create_array(std::shared_ptr<Pass> pass, std::string const & name);
-
+        // Construct material with a default uniform implementation using a
+        // annotation formatter for free uniforms.
+        static Material create_free();
+        // Construct material with a default uniform implementation using a
+        // annotation formatter for uniforms in a struct.
+        static Material create_struct(std::string const & name);
+        // Construct empty material.
         Material() = default;
-        Material(
-            std::shared_ptr<Pass> pass,
-            std::shared_ptr<UniformMap> uniforms);
-
-        // Return pass that renders this material.
-        Pass & get_pass();
+        // Construct material from uniforms.
+        Material(std::shared_ptr<UniformMap> uniforms);
         // Return uniform.
         ShadowedData & get_uniform(std::string const & annotation);
-        // Return uniforms that describe this material.
+        // Return uniforms.
         UniformMap & get_uniforms();
         // Return textures.
         Textures & get_textures();
     private:
-        std::shared_ptr<Pass> pass;
         std::shared_ptr<UniformMap> uniforms;
         Textures textures;
     };

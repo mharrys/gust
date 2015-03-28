@@ -3,42 +3,26 @@
 #include "annotationarray.hpp"
 #include "annotationfree.hpp"
 #include "annotationstruct.hpp"
-#include "pass.hpp"
 #include "shadoweddata.hpp"
 #include "uniformmapimpl.hpp"
 
-gst::Material gst::Material::create_free(std::shared_ptr<Pass> pass)
+gst::Material gst::Material::create_free()
 {
     auto formatter = std::unique_ptr<AnnotationFormatter>(new AnnotationFree());
     auto uniforms = std::make_shared<UniformMapImpl>(std::move(formatter));
-    return Material(pass, uniforms);
+    return Material(uniforms);
 }
 
-gst::Material gst::Material::create_struct(std::shared_ptr<Pass> pass, std::string const & name)
+gst::Material gst::Material::create_struct(std::string const & name)
 {
     auto formatter = std::unique_ptr<AnnotationFormatter>(new AnnotationStruct(name));
     auto uniforms = std::make_shared<UniformMapImpl>(std::move(formatter));
-    return Material(pass, uniforms);
+    return Material(uniforms);
 }
 
-gst::Material gst::Material::create_array(std::shared_ptr<Pass> pass, std::string const & name)
+gst::Material::Material(std::shared_ptr<UniformMap> uniforms)
+    : uniforms(uniforms)
 {
-    auto formatter = std::unique_ptr<AnnotationFormatter>(new AnnotationArray(name));
-    auto uniforms = std::make_shared<UniformMapImpl>(std::move(formatter));
-    return Material(pass, uniforms);
-}
-
-gst::Material::Material(
-    std::shared_ptr<Pass> pass,
-    std::shared_ptr<UniformMap> uniforms)
-    : pass(pass),
-      uniforms(uniforms)
-{
-}
-
-gst::Pass & gst::Material::get_pass()
-{
-    return *pass;
 }
 
 gst::ShadowedData & gst::Material::get_uniform(std::string const & annotation)

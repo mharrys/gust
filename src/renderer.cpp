@@ -45,9 +45,9 @@ void gst::Renderer::render(Scene & scene)
     render(scene, nullptr, nullptr);
 }
 
-void gst::Renderer::render(Scene & scene, Material & material)
+void gst::Renderer::render(Scene & scene, Filter & filter)
 {
-    render(scene, &material, nullptr);
+    render(scene, &filter, nullptr);
 }
 
 void gst::Renderer::render(Scene & scene, std::shared_ptr<Framebuffer> target)
@@ -55,9 +55,9 @@ void gst::Renderer::render(Scene & scene, std::shared_ptr<Framebuffer> target)
     render(scene, nullptr, target);
 }
 
-void gst::Renderer::render(Scene & scene, Material & material, std::shared_ptr<Framebuffer> target)
+void gst::Renderer::render(Scene & scene, Filter & filter, std::shared_ptr<Framebuffer> target)
 {
-    render(scene, &material, target);
+    render(scene, &filter, target);
 }
 
 void gst::Renderer::set_auto_clear(bool auto_clear_color, bool auto_clear_depth)
@@ -77,7 +77,7 @@ void gst::Renderer::set_viewport(Viewport viewport)
     render_state->set_viewport(viewport);
 }
 
-void gst::Renderer::render(Scene & scene, Material * const material, std::shared_ptr<Framebuffer> target)
+void gst::Renderer::render(Scene & scene, Filter * const filter, std::shared_ptr<Framebuffer> target)
 {
     if (target) {
         render_state->set_framebuffer(target);
@@ -112,7 +112,7 @@ void gst::Renderer::render(Scene & scene, Material * const material, std::shared
         }
     }
 
-    auto renderer = NodeRenderer(device, render_state, model_state, material);
+    auto renderer = NodeRenderer(device, render_state, model_state, filter);
     scene.traverse(renderer);
 
     if (auto_check_render) {

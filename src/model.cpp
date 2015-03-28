@@ -1,8 +1,11 @@
 #include "model.hpp"
 
-gst::Model::Model(Mesh mesh, Material material)
+#include "pass.hpp"
+
+gst::Model::Model(Mesh mesh, Material material, std::shared_ptr<Pass> pass)
     : mesh(mesh),
-      material(material)
+      material(material),
+      pass(pass)
 {
 }
 
@@ -14,4 +17,9 @@ gst::Mesh & gst::Model::get_mesh()
 gst::Material & gst::Model::get_material()
 {
     return material;
+}
+
+gst::Pass & gst::Model::get_pass()
+{
+    return *pass;
 }

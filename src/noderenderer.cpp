@@ -1,5 +1,6 @@
 #include "noderenderer.hpp"
 
+#include "filter.hpp"
 #include "graphicsdevice.hpp"
 #include "indexbuffer.hpp"
 #include "material.hpp"
@@ -15,11 +16,11 @@ gst::NodeRenderer::NodeRenderer(
     std::shared_ptr<GraphicsDevice> device,
     std::shared_ptr<RenderState> render_state,
     ModelState const & model_state,
-    Material * const material_override)
+    Filter * const filter)
     : device(device),
       render_state(render_state),
       model_state(model_state),
-      material_override(material_override)
+      filter(filter)
 {
 }
 
@@ -30,8 +31,8 @@ void gst::NodeRenderer::visit(ModelNode & node)
     model_state.normal = glm::inverseTranspose(glm::mat3(model_state.model_view));
 
     auto & mesh = node.get_mesh();
-    auto & material = material_override ? *material_override : node.get_material();
-    auto & pass = material.get_pass();
+    auto & material = filter ? filter->get_material() : node.get_material();
+    auto & pass = filter ? filter->get_pass() : node.get_pass();
     auto & textures = material.get_textures();
 
     // set textures at the texture unit in the order they are stored in, the
