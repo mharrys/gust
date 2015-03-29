@@ -18,17 +18,137 @@ gst::Mesh gst::MeshFactory::create_quad(float width, float height)
 
     mesh.set_positions({
         glm::vec3(-width, -height, 0.0f),
-        glm::vec3(width, -height, 0.0f),
-        glm::vec3(-width, height, 0.0f),
-        glm::vec3(width, height, 0.0f),
+        glm::vec3( width, -height, 0.0f),
+        glm::vec3(-width,  height, 0.0f),
+        glm::vec3( width,  height, 0.0f),
     });
+
     mesh.set_tex_coords({
         glm::vec2(0.0f, 1.0f),
         glm::vec2(1.0f, 1.0f),
         glm::vec2(0.0f, 0.0f),
         glm::vec2(1.0f, 0.0f),
     });
+
     mesh.set_indices({ 0, 1, 2, 2, 1, 3, });
+
+    return mesh;
+}
+
+gst::Mesh gst::MeshFactory::create_cube(float size)
+{
+    auto vertex_array = std::make_shared<VertexArrayImpl>();
+    auto mesh = Mesh(vertex_array);
+
+    const float side = size / 2.0f;
+
+    mesh.set_positions({
+        // front
+        glm::vec3(-side, -side,  side),
+        glm::vec3( side, -side,  side),
+        glm::vec3( side,  side,  side),
+        glm::vec3(-side,  side,  side),
+        // right
+        glm::vec3( side, -side,  side),
+        glm::vec3( side, -side, -side),
+        glm::vec3( side,  side, -side),
+        glm::vec3( side,  side,  side),
+        // back
+        glm::vec3(-side, -side, -side),
+        glm::vec3(-side,  side, -side),
+        glm::vec3( side,  side, -side),
+        glm::vec3( side, -side, -side),
+        // left
+        glm::vec3(-side, -side,  side),
+        glm::vec3(-side,  side,  side),
+        glm::vec3(-side,  side, -side),
+        glm::vec3(-side, -side, -side),
+        // bottom
+        glm::vec3(-side, -side,  side),
+        glm::vec3(-side, -side, -side),
+        glm::vec3( side, -side, -side),
+        glm::vec3( side, -side,  side),
+        // top
+        glm::vec3(-side,  side,  side),
+        glm::vec3( side,  side,  side),
+        glm::vec3( side,  side, -side),
+        glm::vec3(-side,  side, -side),
+    });
+
+    mesh.set_normals({
+        // front
+        glm::vec3( 0.0f,  0.0f,  1.0f),
+        glm::vec3( 0.0f,  0.0f,  1.0f),
+        glm::vec3( 0.0f,  0.0f,  1.0f),
+        glm::vec3( 0.0f,  0.0f,  1.0f),
+        // right
+        glm::vec3( 1.0f,  0.0f,  0.0f),
+        glm::vec3( 1.0f,  0.0f,  0.0f),
+        glm::vec3( 1.0f,  0.0f,  0.0f),
+        glm::vec3( 1.0f,  0.0f,  0.0f),
+        // back
+        glm::vec3( 0.0f,  0.0f, -1.0f),
+        glm::vec3( 0.0f,  0.0f, -1.0f),
+        glm::vec3( 0.0f,  0.0f, -1.0f),
+        glm::vec3( 0.0f,  0.0f, -1.0f),
+        // left
+        glm::vec3(-1.0f,  0.0f,  0.0f),
+        glm::vec3(-1.0f,  0.0f,  0.0f),
+        glm::vec3(-1.0f,  0.0f,  0.0f),
+        glm::vec3(-1.0f,  0.0f,  0.0f),
+        // bottom
+        glm::vec3( 0.0f, -1.0f,  0.0f),
+        glm::vec3( 0.0f, -1.0f,  0.0f),
+        glm::vec3( 0.0f, -1.0f,  0.0f),
+        glm::vec3( 0.0f, -1.0f,  0.0f),
+        // top
+        glm::vec3( 0.0f,  1.0f,  0.0f),
+        glm::vec3( 0.0f,  1.0f,  0.0f),
+        glm::vec3( 0.0f,  1.0f,  0.0f),
+        glm::vec3( 0.0f,  1.0f,  0.0f),
+    });
+
+    mesh.set_tex_coords({
+        // front
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(1.0f, 0.0f),
+        glm::vec2(1.0f, 1.0f),
+        glm::vec2(0.0f, 1.0f),
+        // right
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(1.0f, 0.0f),
+        glm::vec2(1.0f, 1.0f),
+        glm::vec2(0.0f, 1.0f),
+        // back
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(1.0f, 0.0f),
+        glm::vec2(1.0f, 1.0f),
+        glm::vec2(0.0f, 1.0f),
+        // left
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(1.0f, 0.0f),
+        glm::vec2(1.0f, 1.0f),
+        glm::vec2(0.0f, 1.0f),
+        // bottom
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(1.0f, 0.0f),
+        glm::vec2(1.0f, 1.0f),
+        glm::vec2(0.0f, 1.0f),
+        // top
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(1.0f, 0.0f),
+        glm::vec2(1.0f, 1.0f),
+        glm::vec2(0.0f, 1.0f),
+    });
+
+    mesh.set_indices({
+         0,  1,  2,  0,  2,  3,
+         4,  5,  6,  4,  6,  7,
+         8,  9, 10,  8, 10, 11,
+        12, 13, 14, 12, 14, 15,
+        16, 17, 18, 16, 18, 19,
+        20, 21, 22, 20, 22, 23,
+    });
 
     return mesh;
 }

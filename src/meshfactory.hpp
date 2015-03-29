@@ -14,6 +14,7 @@ namespace gst
     public:
         MeshFactory(std::shared_ptr<Logger> logger);
         Mesh create_quad(float width, float height);
+        Mesh create_cube(float size);
         std::vector<Mesh> create_from_file(std::string const & path);
     private:
         std::shared_ptr<Logger> logger;
