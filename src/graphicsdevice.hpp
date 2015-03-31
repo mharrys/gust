@@ -129,13 +129,13 @@ namespace gst
             TextureFormat internal_format,
             PixelFormat source_format,
             Resolution size,
-            std::vector<unsigned char> const & data) = 0;
+            ShadowedData const & data) = 0;
         // Update texture storage for texture cube face.
         virtual void update_texture_storage(
             TextureFormat internal_format,
             PixelFormat source_format,
             Resolution size,
-            std::vector<unsigned char> const & data,
+            ShadowedData const & data,
             CubeFace face) = 0;
         // Update texture min filter parameter.
         virtual void update_texture_min_filter(TextureTarget target, FilterMode filter_mode) = 0;

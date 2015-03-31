@@ -211,6 +211,8 @@ GLenum gst::Translator::translate(TextureFormat format) const
     switch (format) {
     case TextureFormat::RGB:
         return GL_RGB;
+    case TextureFormat::RGB16F:
+        return GL_RGB16F;
     case TextureFormat::RGBA:
         return GL_RGBA;
     case TextureFormat::RGBA16F:

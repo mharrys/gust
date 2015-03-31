@@ -101,6 +101,11 @@ void gst::ShadowedDataImpl::set_mat4(glm::mat4 const & data)
     set_glm_data<glm::mat4>({ data }, DataType::MAT4, 16);
 }
 
+void gst::ShadowedDataImpl::set_unsigned_char_array(std::vector<unsigned char> const & array_data)
+{
+    set_data<unsigned char>(array_data, DataType::UNSIGNED_CHAR_ARRAY);
+}
+
 void gst::ShadowedDataImpl::set_int_array(std::vector<int> const & array_data)
 {
     set_data<int>(array_data, DataType::INT_ARRAY);

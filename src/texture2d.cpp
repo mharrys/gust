@@ -1,15 +1,16 @@
 #include "texture2d.hpp"
 
-gst::Texture2D::Texture2D(Resolution size)
-    : Texture2D(size, {})
+#include "shadoweddataimpl.hpp"
+
+gst::Texture2D gst::Texture2D::create_empty(Resolution size)
 {
+    auto data = std::unique_ptr<ShadowedData>(new ShadowedDataImpl());
+    return Texture2D(size, std::move(data));
 }
 
-gst::Texture2D::Texture2D(
-    Resolution size,
-    TextureData const & data)
+gst::Texture2D::Texture2D(Resolution size, std::unique_ptr<ShadowedData> data)
     : size(size),
-      data(data)
+      data(std::move(data))
 {
     needs_update();
 }
@@ -20,10 +21,16 @@ void gst::Texture2D::set_size(Resolution size)
     needs_update();
 }
 
-void gst::Texture2D::set_data(TextureData const & data)
+void gst::Texture2D::set_data(std::unique_ptr<ShadowedData> data)
 {
-    this->data = data;
+    this->data = std::move(data);
     needs_update();
+}
+
+gst::ShadowedData & gst::Texture2D::update_data()
+{
+    needs_update();
+    return *data;
 }
 
 gst::TextureTarget gst::Texture2D::get_target() const
@@ -36,7 +43,7 @@ gst::Resolution gst::Texture2D::get_size() const
     return size;
 }
 
-gst::TextureData gst::Texture2D::get_data() const
+gst::ShadowedData const & gst::Texture2D::get_data() const
 {
-    return data;
+    return *data;
 }

@@ -217,6 +217,7 @@ void gst::GraphicsDeviceImpl::uniform(int location, ShadowedData const & data)
     case DataType::INT_ARRAY:
         glUniform1iv(location, data.get_count(), raw_int);
         break;
+    case DataType::UNSIGNED_CHAR_ARRAY:
     case DataType::UNSIGNED_INT_ARRAY:
         glUniform1uiv(location, data.get_count(), raw_uint);
         break;
@@ -346,7 +347,7 @@ void gst::GraphicsDeviceImpl::update_texture_storage(
     TextureFormat internal_format,
     PixelFormat source_format,
     Resolution size,
-    std::vector<unsigned char> const & data)
+    ShadowedData const & data)
 {
     update_texture_storage(
         GL_TEXTURE_2D,
@@ -362,7 +363,7 @@ void gst::GraphicsDeviceImpl::update_texture_storage(
     TextureFormat internal_format,
     PixelFormat source_format,
     Resolution size,
-    std::vector<unsigned char> const & data,
+    ShadowedData const & data,
     CubeFace face)
 {
     update_texture_storage(
@@ -541,8 +542,25 @@ void gst::GraphicsDeviceImpl::update_texture_storage(
     GLenum source_format,
     unsigned int width,
     unsigned int height,
-    std::vector<unsigned char> const & data)
+    ShadowedData const & data)
 {
+    GLenum type = 0;
+
+    auto data_type = data.get_type();
+    switch (data_type) {
+        case DataType::INT_ARRAY:
+            type = GL_INT;
+            break;
+        case DataType::FLOAT_ARRAY:
+            type = GL_FLOAT;
+            break;
+        case DataType::NONE:
+        case DataType::UNSIGNED_CHAR_ARRAY:
+        default:
+            type = GL_UNSIGNED_BYTE;
+            break;
+    }
+
     glTexImage2D(
         target,
         0,
@@ -551,7 +569,7 @@ void gst::GraphicsDeviceImpl::update_texture_storage(
         height,
         0,
         source_format,
-        GL_UNSIGNED_BYTE,
-        &data[0]
+        type,
+        data.get_data()
     );
 }

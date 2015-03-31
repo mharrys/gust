@@ -2,10 +2,11 @@
 
 #include "renderbufferimpl.hpp"
 #include "texture2d.hpp"
+#include "shadoweddata.hpp"
 
 gst::FramebufferImpl gst::FramebufferImpl::create(Resolution size)
 {
-    auto color = std::make_shared<Texture2D>(size);
+    auto color = std::make_shared<Texture2D>(Texture2D::create_empty(size));
     color->set_wrap_s(WrapMode::CLAMP_TO_EDGE);
     color->set_wrap_t(WrapMode::CLAMP_TO_EDGE);
 

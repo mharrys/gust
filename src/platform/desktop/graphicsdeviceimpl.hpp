@@ -59,12 +59,12 @@ namespace gst
             TextureFormat internal_format,
             PixelFormat source_format,
             Resolution size,
-            std::vector<unsigned char> const & data) final;
+            ShadowedData const & data) final;
         void update_texture_storage(
             TextureFormat internal_format,
             PixelFormat source_format,
             Resolution size,
-            std::vector<unsigned char> const & data,
+            ShadowedData const & data,
             CubeFace face) final;
         void update_texture_min_filter(TextureTarget target, FilterMode min_filter) final;
         void update_texture_mag_filter(TextureTarget target, FilterMode mag_filter) final;
@@ -87,7 +87,7 @@ namespace gst
             GLenum source_format,
             unsigned int width,
             unsigned int height,
-            std::vector<unsigned char> const & data);
+            ShadowedData const & data);
 
         Translator translator;
     };

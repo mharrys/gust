@@ -20,6 +20,7 @@ namespace gst
         VEC4,
         MAT3,
         MAT4,
+        UNSIGNED_CHAR_ARRAY,
         INT_ARRAY,
         UNSIGNED_INT_ARRAY,
         FLOAT_ARRAY,
@@ -69,6 +70,8 @@ namespace gst
         virtual void set_mat3(glm::mat3 const & data) = 0;
         // Set shadowed data to mat4 value.
         virtual void set_mat4(glm::mat4 const & data) = 0;
+        // Set shadowed data to vector of unsigned char values.
+        virtual void set_unsigned_char_array(std::vector<unsigned char> const & array_data) = 0;
         // Set shadowed data to vector of int values.
         virtual void set_int_array(std::vector<int> const & array_data) = 0;
         // Set shadowed data to vector of unsigned int values.

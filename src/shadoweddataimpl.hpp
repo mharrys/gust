@@ -32,6 +32,7 @@ namespace gst
         void set_mat3(glm::mat3 const & data) final;
         void set_mat4(glm::mat4 const & data) final;
 
+        void set_unsigned_char_array(std::vector<unsigned char> const & int_array_data) final;
         void set_int_array(std::vector<int> const & int_array_data) final;
         void set_unsigned_int_array(std::vector<unsigned int> const & int_array_data) final;
         void set_float_array(std::vector<float> const & float_array_data) final;

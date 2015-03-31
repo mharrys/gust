@@ -16,6 +16,7 @@ namespace gst
     // Supported texture formats.
     enum class TextureFormat {
         RGB,
+        RGB16F,
         RGBA,
         RGBA16F,
         DEPTH_COMPONENT16,
@@ -56,8 +57,6 @@ namespace gst
         NEVER,
         NONE
     };
-
-    typedef std::vector<unsigned char> TextureData;
 
     // The responsibility of this class is to mirror a texture object on the
     // graphics card.

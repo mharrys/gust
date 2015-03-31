@@ -34,6 +34,15 @@ static std::vector<unsigned int> create_random_unsigned_int_vector(
     return std::vector<unsigned int>(v.begin(), v.end());
 }
 
+static std::vector<unsigned char> create_random_unsigned_char_vector(
+    unsigned int num_elements,
+    int max)
+{
+    auto v = create_random_float_vector(num_elements, 0, max);
+    return std::vector<unsigned char>(v.begin(), v.end());
+}
+
+
 TEST(ShadowedDataImplTest, NoDataTypeWhenCreated)
 {
     gst::ShadowedDataImpl shadowed_data;
@@ -180,6 +189,27 @@ TEST(ShadowedDataImplTest, SetAndGetMat4)
         EXPECT_EQ(1, shadowed_data.get_count());
         auto actual = glm::make_mat4(static_cast<float const *>(shadowed_data.get_data()));
         EXPECT_EQ(expected, actual);
+    }
+}
+
+TEST(ShadowedDataImplTest, SetAndGetUnsignedCharArray)
+{
+    gst::ShadowedDataImpl shadowed_data;
+
+    auto test_data = {
+        std::vector<unsigned char>{},
+        std::vector<unsigned char>{ 'a' },
+        create_random_unsigned_char_vector(1000, 255),
+        // invoke copy values since same size as previous but with different values
+        create_random_unsigned_char_vector(1000, 255),
+    };
+
+    for (auto expected : test_data) {
+        shadowed_data.set_unsigned_char_array(expected);
+        auto actual = static_cast<unsigned char const *>(shadowed_data.get_data());
+        for (unsigned int i = 0; i < expected.size(); i++) {
+            EXPECT_EQ(expected[i], actual[i]);
+        }
     }
 }
 
