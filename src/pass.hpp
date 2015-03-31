@@ -21,6 +21,7 @@ namespace gst
         glm::mat4 model_view;
         glm::mat4 projection;
         glm::mat3 normal;
+        glm::vec4 eye_position;
         std::vector<LightNode> light_nodes;
     };
 

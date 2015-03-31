@@ -101,6 +101,7 @@ void gst::Renderer::render(Scene & scene, Filter * const filter, std::shared_ptr
     auto model_state = ModelState();
     model_state.view = eye.get_view();
     model_state.projection = eye.get_projection();
+    model_state.eye_position = eye.world_transform[3];
     model_state.light_nodes = collector.get_light_nodes();
 
     // special case if one or more lights are stored in a array
