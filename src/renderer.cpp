@@ -30,8 +30,8 @@ gst::Renderer::Renderer(
       logger(logger),
       auto_clear_color(true),
       auto_clear_depth(true),
-      auto_check_render(true),
-      auto_check_framebuffer(true)
+      check_render_error(true),
+      check_framebuffer_error(true)
 {
 }
 
@@ -66,10 +66,10 @@ void gst::Renderer::set_auto_clear(bool auto_clear_color, bool auto_clear_depth)
     this->auto_clear_depth = auto_clear_depth;
 }
 
-void gst::Renderer::set_auto_check_errors(bool auto_check_render, bool auto_check_framebuffer)
+void gst::Renderer::set_check_errors(bool check_render_error, bool check_framebuffer_error)
 {
-    this->auto_check_render= auto_check_render;
-    this->auto_check_framebuffer = auto_check_framebuffer;
+    this->check_render_error = check_render_error;
+    this->check_framebuffer_error = check_framebuffer_error;
 }
 
 void gst::Renderer::set_viewport(Viewport viewport)
@@ -81,9 +81,10 @@ void gst::Renderer::render(Scene & scene, Filter * const filter, std::shared_ptr
 {
     if (target) {
         render_state->set_framebuffer(target);
-        if (auto_check_framebuffer) {
+        if (check_framebuffer_error) {
             for (auto status : device->check_framebuffer_status()) {
                 logger->log(status);
+                check_framebuffer_error = false;
             }
         }
     }
@@ -115,9 +116,10 @@ void gst::Renderer::render(Scene & scene, Filter * const filter, std::shared_ptr
     auto renderer = NodeRenderer(device, render_state, model_state, filter);
     scene.traverse(renderer);
 
-    if (auto_check_render) {
+    if (check_render_error) {
         for (auto error : device->get_errors()) {
             logger->log(error);
+            check_render_error = false;
         }
     }
 

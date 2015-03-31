@@ -41,8 +41,9 @@ namespace gst
         void render(Scene & scene, Filter & filter, std::shared_ptr<Framebuffer> target);
         // Set auto clear flag on specified buffers.
         void set_auto_clear(bool auto_clear_color, bool auto_clear_depth);
-        // Set auto check errors.
-        void set_auto_check_errors(bool auto_check_render, bool auto_check_framebuffer);
+        // Set check errors. If error occurs, the error checks are set to
+        // false (to avoid flooding the logger with errors).
+        void set_check_errors(bool check_render_error, bool check_framebuffer_error);
         // Set viewport.
         void set_viewport(Viewport viewport);
     private:
@@ -54,8 +55,8 @@ namespace gst
 
         bool auto_clear_color;
         bool auto_clear_depth;
-        bool auto_check_render;
-        bool auto_check_framebuffer;
+        bool check_render_error;
+        bool check_framebuffer_error;
     };
 }
 
