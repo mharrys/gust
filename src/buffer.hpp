@@ -30,17 +30,17 @@ namespace gst
     public:
         virtual ~Buffer() = default;
         // Set client side data to int array.
-        virtual void set_int_array(std::vector<int> const & data) = 0;
+        virtual void set_int(std::vector<int> const & data) = 0;
         // Set client side data to unsigned int array.
-        virtual void set_unsigned_int_array(std::vector<unsigned int> const & data) = 0;
+        virtual void set_uint(std::vector<unsigned int> const & data) = 0;
         // Set client side data to float array.
-        virtual void set_float_array(std::vector<float> const & data) = 0;
+        virtual void set_float(std::vector<float> const & data) = 0;
         // Set client side data to vec2 array.
-        virtual void set_vec2_array(std::vector<glm::vec2> const & data) = 0;
+        virtual void set_vec2(std::vector<glm::vec2> const & data) = 0;
         // Set client side data to vec3 array.
-        virtual void set_vec3_array(std::vector<glm::vec3> const & data) = 0;
+        virtual void set_vec3(std::vector<glm::vec3> const & data) = 0;
         // Set client side data to vec4 array.
-        virtual void set_vec4_array(std::vector<glm::vec4> const & data) = 0;
+        virtual void set_vec4(std::vector<glm::vec4> const & data) = 0;
         // Set buffer data usage.
         virtual void set_usage(DataUsage usage) = 0;
         // Return buffer target.

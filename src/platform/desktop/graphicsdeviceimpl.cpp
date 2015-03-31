@@ -191,7 +191,7 @@ void gst::GraphicsDeviceImpl::uniform(int location, ShadowedData const & data)
     case DataType::INT:
         glUniform1i(location, raw_int[0]);
         break;
-    case DataType::UNSIGNED_INT:
+    case DataType::UINT:
         glUniform1ui(location, raw_uint[0]);
         break;
     case DataType::FLOAT:
@@ -217,8 +217,8 @@ void gst::GraphicsDeviceImpl::uniform(int location, ShadowedData const & data)
     case DataType::INT_ARRAY:
         glUniform1iv(location, data.get_count(), raw_int);
         break;
-    case DataType::UNSIGNED_CHAR_ARRAY:
-    case DataType::UNSIGNED_INT_ARRAY:
+    case DataType::UCHAR_ARRAY:
+    case DataType::UINT_ARRAY:
         glUniform1uiv(location, data.get_count(), raw_uint);
         break;
     case DataType::FLOAT_ARRAY:
@@ -555,7 +555,7 @@ void gst::GraphicsDeviceImpl::update_texture_storage(
             type = GL_FLOAT;
             break;
         case DataType::NONE:
-        case DataType::UNSIGNED_CHAR_ARRAY:
+        case DataType::UCHAR_ARRAY:
         default:
             type = GL_UNSIGNED_BYTE;
             break;

@@ -24,7 +24,7 @@ void gst::Mesh::set_positions(std::vector<glm::vec3> const & data)
         positions = std::make_shared<VertexBuffer>(attribute);
         vertex_array->add_vertex_buffer(positions);
     }
-    positions->set_vec3_array(data);
+    positions->set_vec3(data);
 }
 
 void gst::Mesh::set_normals(std::vector<glm::vec3> const & data)
@@ -36,7 +36,7 @@ void gst::Mesh::set_normals(std::vector<glm::vec3> const & data)
         normals = std::make_shared<VertexBuffer>(attribute);
         vertex_array->add_vertex_buffer(normals);
     }
-    normals->set_vec3_array(data);
+    normals->set_vec3(data);
 }
 
 void gst::Mesh::set_colors(std::vector<glm::vec3> const & data)
@@ -48,7 +48,7 @@ void gst::Mesh::set_colors(std::vector<glm::vec3> const & data)
         colors = std::make_shared<VertexBuffer>(attribute);
         vertex_array->add_vertex_buffer(colors);
     }
-    colors->set_vec3_array(data);
+    colors->set_vec3(data);
 }
 
 void gst::Mesh::set_tex_coords(std::vector<glm::vec2> const & data)
@@ -60,7 +60,7 @@ void gst::Mesh::set_tex_coords(std::vector<glm::vec2> const & data)
         tex_coords = std::make_shared<VertexBuffer>(attribute);
         vertex_array->add_vertex_buffer(tex_coords);
     }
-    tex_coords->set_vec2_array(data);
+    tex_coords->set_vec2(data);
 }
 
 void gst::Mesh::set_indices(std::vector<unsigned int> const & data)
@@ -69,5 +69,5 @@ void gst::Mesh::set_indices(std::vector<unsigned int> const & data)
         index = std::make_shared<IndexBuffer>();
         vertex_array->set_index_buffer(index);
     }
-    index->set_unsigned_int_array(data);
+    index->set_uint(data);
 }

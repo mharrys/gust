@@ -26,7 +26,7 @@ static std::vector<int> create_random_int_vector(
     return std::vector<int>(v.begin(), v.end());
 }
 
-static std::vector<unsigned int> create_random_unsigned_int_vector(
+static std::vector<unsigned int> create_random_uint_vector(
     unsigned int num_elements,
     int max)
 {
@@ -34,7 +34,7 @@ static std::vector<unsigned int> create_random_unsigned_int_vector(
     return std::vector<unsigned int>(v.begin(), v.end());
 }
 
-static std::vector<unsigned char> create_random_unsigned_char_vector(
+static std::vector<unsigned char> create_random_uchar_vector(
     unsigned int num_elements,
     int max)
 {
@@ -54,7 +54,7 @@ TEST(ShadowedDataImplTest, SetAndGetBool)
     gst::ShadowedDataImpl shadowed_data;
 
     for (auto expected : { false, true, true, false }) {
-        shadowed_data.set_bool(expected);
+        shadowed_data = expected;
         EXPECT_EQ(1, shadowed_data.get_count());
         auto actual = static_cast<int const *>(shadowed_data.get_data());
         EXPECT_EQ(expected, *actual);
@@ -66,19 +66,19 @@ TEST(ShadowedDataImplTest, SetAndGetInt)
     gst::ShadowedDataImpl shadowed_data;
 
     for (auto expected : create_random_int_vector(1000, -10, 10)) {
-        shadowed_data.set_int(expected);
+        shadowed_data = expected;
         EXPECT_EQ(1, shadowed_data.get_count());
         auto actual = static_cast<int const *>(shadowed_data.get_data());
         EXPECT_EQ(expected, *actual);
     }
 }
 
-TEST(ShadowedDataImplTest, SetAndGetUnsignedInt)
+TEST(ShadowedDataImplTest, SetAndGetUInt)
 {
     gst::ShadowedDataImpl shadowed_data;
 
-    for (auto expected : create_random_unsigned_int_vector(1000, 10)) {
-        shadowed_data.set_unsigned_int(expected);
+    for (auto expected : create_random_uint_vector(1000, 10)) {
+        shadowed_data = expected;
         EXPECT_EQ(1, shadowed_data.get_count());
         auto actual = static_cast<unsigned int const *>(shadowed_data.get_data());
         EXPECT_EQ(expected, *actual);
@@ -90,7 +90,7 @@ TEST(ShadowedDataImplTest, SetAndGetFloat)
     gst::ShadowedDataImpl shadowed_data;
 
     for (auto expected : create_random_float_vector(1000, -10.0f, 10.0f)) {
-        shadowed_data.set_float(expected);
+        shadowed_data = expected;
         EXPECT_EQ(1, shadowed_data.get_count());
         auto actual = static_cast<float const *>(shadowed_data.get_data());
         EXPECT_FLOAT_EQ(expected, *actual);
@@ -109,7 +109,7 @@ TEST(ShadowedDataImplTest, SetAndGetVec2)
     };
 
     for (auto expected : test_data) {
-        shadowed_data.set_vec2(expected);
+        shadowed_data = expected;
         EXPECT_EQ(1, shadowed_data.get_count());
         auto actual = glm::make_vec2(static_cast<float const *>(shadowed_data.get_data()));
         EXPECT_EQ(expected, actual);
@@ -128,7 +128,7 @@ TEST(ShadowedDataImplTest, SetAndGetVec3)
     };
 
     for (auto expected : test_data) {
-        shadowed_data.set_vec3(expected);
+        shadowed_data = expected;
         EXPECT_EQ(1, shadowed_data.get_count());
         auto actual = glm::make_vec3(static_cast<float const *>(shadowed_data.get_data()));
         EXPECT_EQ(expected, actual);
@@ -147,7 +147,7 @@ TEST(ShadowedDataImplTest, SetAndGetVec4)
     };
 
     for (auto expected : test_data) {
-        shadowed_data.set_vec4(expected);
+        shadowed_data = expected;
         EXPECT_EQ(1, shadowed_data.get_count());
         auto actual = glm::make_vec4(static_cast<float const *>(shadowed_data.get_data()));
         EXPECT_EQ(expected, actual);
@@ -166,7 +166,7 @@ TEST(ShadowedDataImplTest, SetAndGetMat3)
     };
 
     for (auto expected : test_data) {
-        shadowed_data.set_mat3(expected);
+        shadowed_data = expected;
         EXPECT_EQ(1, shadowed_data.get_count());
         auto actual = glm::make_mat3(static_cast<float const *>(shadowed_data.get_data()));
         EXPECT_EQ(expected, actual);
@@ -185,7 +185,7 @@ TEST(ShadowedDataImplTest, SetAndGetMat4)
     };
 
     for (auto expected : test_data) {
-        shadowed_data.set_mat4(expected);
+        shadowed_data = expected;
         EXPECT_EQ(1, shadowed_data.get_count());
         auto actual = glm::make_mat4(static_cast<float const *>(shadowed_data.get_data()));
         EXPECT_EQ(expected, actual);
@@ -199,13 +199,13 @@ TEST(ShadowedDataImplTest, SetAndGetUnsignedCharArray)
     auto test_data = {
         std::vector<unsigned char>{},
         std::vector<unsigned char>{ 'a' },
-        create_random_unsigned_char_vector(1000, 255),
+        create_random_uchar_vector(1000, 255),
         // invoke copy values since same size as previous but with different values
-        create_random_unsigned_char_vector(1000, 255),
+        create_random_uchar_vector(1000, 255),
     };
 
     for (auto expected : test_data) {
-        shadowed_data.set_unsigned_char_array(expected);
+        shadowed_data.set_uchar(expected);
         auto actual = static_cast<unsigned char const *>(shadowed_data.get_data());
         for (unsigned int i = 0; i < expected.size(); i++) {
             EXPECT_EQ(expected[i], actual[i]);
@@ -226,7 +226,7 @@ TEST(ShadowedDataImplTest, SetAndGetIntArray)
     };
 
     for (auto expected : test_data) {
-        shadowed_data.set_int_array(expected);
+        shadowed_data.set_int(expected);
         auto actual = static_cast<int const *>(shadowed_data.get_data());
         for (unsigned int i = 0; i < expected.size(); i++) {
             EXPECT_EQ(expected[i], actual[i]);
@@ -234,20 +234,20 @@ TEST(ShadowedDataImplTest, SetAndGetIntArray)
     }
 }
 
-TEST(ShadowedDataImplTest, SetAndGetUnsignedIntArray)
+TEST(ShadowedDataImplTest, SetAndGetUIntArray)
 {
     gst::ShadowedDataImpl shadowed_data;
 
     auto test_data = {
         std::vector<unsigned int>{},
         std::vector<unsigned int>{ 42 },
-        create_random_unsigned_int_vector(1000, 10),
+        create_random_uint_vector(1000, 10),
         // invoke copy values since same size as previous but with different values
-        create_random_unsigned_int_vector(1000, 10),
+        create_random_uint_vector(1000, 10),
     };
 
     for (auto expected : test_data) {
-        shadowed_data.set_unsigned_int_array(expected);
+        shadowed_data.set_uint(expected);
         auto actual = static_cast<unsigned int const *>(shadowed_data.get_data());
         for (unsigned int i = 0; i < expected.size(); i++) {
             EXPECT_EQ(expected[i], actual[i]);
@@ -268,7 +268,7 @@ TEST(ShadowedDataImplTest, SetAndGetFloatArray)
     };
 
     for (auto expected : test_data) {
-        shadowed_data.set_float_array(expected);
+        shadowed_data.set_float(expected);
         auto actual = static_cast<float const *>(shadowed_data.get_data());
         for (unsigned int i = 0; i < expected.size(); i++) {
             EXPECT_FLOAT_EQ(expected[i], actual[i]);
@@ -319,7 +319,7 @@ TEST(ShadowedDataImplTest, SetAndGetVec2Array)
     };
 
     for (auto expected : test_data) {
-        shadowed_data.set_vec2_array(expected);
+        shadowed_data.set_vec2(expected);
         auto actual = static_cast<float const *>(shadowed_data.get_data());
         compare_glm_array(expected, 2, actual);
     }
@@ -338,7 +338,7 @@ TEST(ShadowedDataImplTest, SetAndGetVec3Array)
     };
 
     for (auto expected : test_data) {
-        shadowed_data.set_vec3_array(expected);
+        shadowed_data.set_vec3(expected);
         auto actual = static_cast<float const *>(shadowed_data.get_data());
         compare_glm_array(expected, 3, actual);
     }
@@ -357,7 +357,7 @@ TEST(ShadowedDataImplTest, SetAndGetVec4Array)
     };
 
     for (auto expected : test_data) {
-        shadowed_data.set_vec4_array(expected);
+        shadowed_data.set_vec4(expected);
         auto actual = static_cast<float const *>(shadowed_data.get_data());
         compare_glm_array(expected, 4, actual);
     }
@@ -396,7 +396,7 @@ TEST(ShadowedDataImplTest, SetAndGetMat3Array)
     };
 
     for (auto expected : test_data) {
-        shadowed_data.set_mat3_array(expected);
+        shadowed_data.set_mat3(expected);
         auto actual = static_cast<float const *>(shadowed_data.get_data());
         compare_glm_array(expected, 9, actual);
     }
@@ -415,7 +415,7 @@ TEST(ShadowedDataImplTest, SetAndGetMat4Array)
     };
 
     for (auto expected : test_data) {
-        shadowed_data.set_mat4_array(expected);
+        shadowed_data.set_mat4(expected);
         auto actual = static_cast<float const *>(shadowed_data.get_data());
         compare_glm_array(expected, 16, actual);
     }
@@ -425,54 +425,54 @@ TEST(ShadowedDataImplTest, DataTypeReflectsDataStorage)
 {
     gst::ShadowedDataImpl shadowed_data;
 
-    shadowed_data.set_bool(false);
+    shadowed_data = false;
     EXPECT_EQ(gst::DataType::BOOL, shadowed_data.get_type());
 
-    shadowed_data.set_int(0);
+    shadowed_data = 0;
     EXPECT_EQ(gst::DataType::INT, shadowed_data.get_type());
 
-    shadowed_data.set_unsigned_int(0);
-    EXPECT_EQ(gst::DataType::UNSIGNED_INT, shadowed_data.get_type());
+    shadowed_data = 0u;
+    EXPECT_EQ(gst::DataType::UINT, shadowed_data.get_type());
 
-    shadowed_data.set_float(0.0f);
+    shadowed_data = 0.0f;
     EXPECT_EQ(gst::DataType::FLOAT, shadowed_data.get_type());
 
-    shadowed_data.set_vec2(glm::vec2());
+    shadowed_data = glm::vec2();
     EXPECT_EQ(gst::DataType::VEC2, shadowed_data.get_type());
 
-    shadowed_data.set_vec3(glm::vec3());
+    shadowed_data = glm::vec3();
     EXPECT_EQ(gst::DataType::VEC3, shadowed_data.get_type());
 
-    shadowed_data.set_vec4(glm::vec4());
+    shadowed_data = glm::vec4();
     EXPECT_EQ(gst::DataType::VEC4, shadowed_data.get_type());
 
-    shadowed_data.set_mat3(glm::mat3());
+    shadowed_data = glm::mat3();
     EXPECT_EQ(gst::DataType::MAT3, shadowed_data.get_type());
 
-    shadowed_data.set_mat4(glm::mat4());
+    shadowed_data = glm::mat4();
     EXPECT_EQ(gst::DataType::MAT4, shadowed_data.get_type());
 
-    shadowed_data.set_int_array({});
+    shadowed_data.set_int({});
     EXPECT_EQ(gst::DataType::INT_ARRAY, shadowed_data.get_type());
 
-    shadowed_data.set_unsigned_int_array({});
-    EXPECT_EQ(gst::DataType::UNSIGNED_INT_ARRAY, shadowed_data.get_type());
+    shadowed_data.set_uint({});
+    EXPECT_EQ(gst::DataType::UINT_ARRAY, shadowed_data.get_type());
 
-    shadowed_data.set_float_array({});
+    shadowed_data.set_float({});
     EXPECT_EQ(gst::DataType::FLOAT_ARRAY, shadowed_data.get_type());
 
-    shadowed_data.set_vec2_array({});
+    shadowed_data.set_vec2({});
     EXPECT_EQ(gst::DataType::VEC2_ARRAY, shadowed_data.get_type());
 
-    shadowed_data.set_vec3_array({});
+    shadowed_data.set_vec3({});
     EXPECT_EQ(gst::DataType::VEC3_ARRAY, shadowed_data.get_type());
 
-    shadowed_data.set_vec4_array({});
+    shadowed_data.set_vec4({});
     EXPECT_EQ(gst::DataType::VEC4_ARRAY, shadowed_data.get_type());
 
-    shadowed_data.set_mat3_array({});
+    shadowed_data.set_mat3({});
     EXPECT_EQ(gst::DataType::MAT3_ARRAY, shadowed_data.get_type());
 
-    shadowed_data.set_mat4_array({});
+    shadowed_data.set_mat4({});
     EXPECT_EQ(gst::DataType::MAT4_ARRAY, shadowed_data.get_type());
 }

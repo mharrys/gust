@@ -11,39 +11,39 @@ gst::BufferImpl::BufferImpl(
 {
 }
 
-void gst::BufferImpl::set_int_array(std::vector<int> const & data)
+void gst::BufferImpl::set_int(std::vector<int> const & data)
 {
-    shadowed_data->set_int_array(data);
+    shadowed_data->set_int(data);
     needs_update();
 }
 
-void gst::BufferImpl::set_unsigned_int_array(std::vector<unsigned int> const & data)
+void gst::BufferImpl::set_uint(std::vector<unsigned int> const & data)
 {
-    shadowed_data->set_unsigned_int_array(data);
+    shadowed_data->set_uint(data);
     needs_update();
 }
 
-void gst::BufferImpl::set_float_array(std::vector<float> const & data)
+void gst::BufferImpl::set_float(std::vector<float> const & data)
 {
-    shadowed_data->set_float_array(data);
+    shadowed_data->set_float(data);
     needs_update();
 }
 
-void gst::BufferImpl::set_vec2_array(std::vector<glm::vec2> const & data)
+void gst::BufferImpl::set_vec2(std::vector<glm::vec2> const & data)
 {
-    shadowed_data->set_vec2_array(data);
+    shadowed_data->set_vec2(data);
     needs_update();
 }
 
-void gst::BufferImpl::set_vec3_array(std::vector<glm::vec3> const & data)
+void gst::BufferImpl::set_vec3(std::vector<glm::vec3> const & data)
 {
-    shadowed_data->set_vec3_array(data);
+    shadowed_data->set_vec3(data);
     needs_update();
 }
 
-void gst::BufferImpl::set_vec4_array(std::vector<glm::vec4> const & data)
+void gst::BufferImpl::set_vec4(std::vector<glm::vec4> const & data)
 {
-    shadowed_data->set_vec4_array(data);
+    shadowed_data->set_vec4(data);
     needs_update();
 }
 

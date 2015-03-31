@@ -10,12 +10,12 @@ namespace gst
         BufferImpl(
             BufferTarget target,
             std::shared_ptr<ShadowedData> shadowed_data);
-        void set_int_array(std::vector<int> const & data) final;
-        void set_unsigned_int_array(std::vector<unsigned int> const & data) final;
-        void set_float_array(std::vector<float> const & data) final;
-        void set_vec2_array(std::vector<glm::vec2> const & data) final;
-        void set_vec3_array(std::vector<glm::vec3> const & data) final;
-        void set_vec4_array(std::vector<glm::vec4> const & data) final;
+        void set_int(std::vector<int> const & data) final;
+        void set_uint(std::vector<unsigned int> const & data) final;
+        void set_float(std::vector<float> const & data) final;
+        void set_vec2(std::vector<glm::vec2> const & data) final;
+        void set_vec3(std::vector<glm::vec3> const & data) final;
+        void set_vec4(std::vector<glm::vec4> const & data) final;
         void set_usage(DataUsage usage) final;
         BufferTarget get_target() const final;
         DataUsage get_usage() const final;

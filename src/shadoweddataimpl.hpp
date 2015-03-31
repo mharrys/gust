@@ -15,6 +15,7 @@ namespace gst
 
         ShadowedData & operator=(bool data) final;
         ShadowedData & operator=(int data) final;
+        ShadowedData & operator=(unsigned int data) final;
         ShadowedData & operator=(float data) final;
         ShadowedData & operator=(glm::vec2 const & data) final;
         ShadowedData & operator=(glm::vec3 const & data) final;
@@ -22,25 +23,15 @@ namespace gst
         ShadowedData & operator=(glm::mat3 const & data) final;
         ShadowedData & operator=(glm::mat4 const & data) final;
 
-        void set_bool(bool data) final;
-        void set_int(int data) final;
-        void set_unsigned_int(unsigned int data) final;
-        void set_float(float data) final;
-        void set_vec2(glm::vec2 const & data) final;
-        void set_vec3(glm::vec3 const & data) final;
-        void set_vec4(glm::vec4 const & data) final;
-        void set_mat3(glm::mat3 const & data) final;
-        void set_mat4(glm::mat4 const & data) final;
-
-        void set_unsigned_char_array(std::vector<unsigned char> const & int_array_data) final;
-        void set_int_array(std::vector<int> const & int_array_data) final;
-        void set_unsigned_int_array(std::vector<unsigned int> const & int_array_data) final;
-        void set_float_array(std::vector<float> const & float_array_data) final;
-        void set_vec2_array(std::vector<glm::vec2> const & array_data) final;
-        void set_vec3_array(std::vector<glm::vec3> const & array_data) final;
-        void set_vec4_array(std::vector<glm::vec4> const & array_data) final;
-        void set_mat3_array(std::vector<glm::mat3> const & array_data) final;
-        void set_mat4_array(std::vector<glm::mat4> const & array_data) final;
+        void set_uchar(std::vector<unsigned char> const & int_array_data) final;
+        void set_int(std::vector<int> const & data) final;
+        void set_uint(std::vector<unsigned int> const & data) final;
+        void set_float(std::vector<float> const & data) final;
+        void set_vec2(std::vector<glm::vec2> const & data) final;
+        void set_vec3(std::vector<glm::vec3> const & data) final;
+        void set_vec4(std::vector<glm::vec4> const & data) final;
+        void set_mat3(std::vector<glm::mat3> const & data) final;
+        void set_mat4(std::vector<glm::mat4> const & data) final;
 
         DataType get_type() const final;
         unsigned int get_count() const final;
