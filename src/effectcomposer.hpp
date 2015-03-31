@@ -37,6 +37,9 @@ namespace gst
         // Setup and run post-process filter. This will override texture unit
         // 0 during render.
         void render_filter(Filter & filter);
+        // Setup and run post-process filter. This will use specified texture
+        // as read on texture unit 0 during render.
+        void render_filter(Filter & filter, std::shared_ptr<Texture2D> texture);
         // Copy current processing state to specified texture. It is expected
         // that the specified texture is of the same size as the renderer.
         void render_to_texture(std::shared_ptr<Texture2D> texture);
@@ -54,6 +57,7 @@ namespace gst
         void swap();
         void set_resolution(Filter & filter, Resolution size);
         void set_read(Filter & filter);
+        void set_read(Filter & filter, std::shared_ptr<Texture2D> texture);
 
         Renderer renderer;
         Resolution size;

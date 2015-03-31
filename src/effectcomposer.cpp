@@ -51,6 +51,19 @@ void gst::EffectComposer::render_filter(Filter & filter)
     filter.get_textures()[0] = temp;
 }
 
+void gst::EffectComposer::render_filter(Filter & filter, std::shared_ptr<Texture2D> texture)
+{
+    const auto temp = filter.get_textures()[0];
+
+    set_resolution(filter, size);
+    set_read(filter, texture);
+
+    renderer.render(screen, filter, targets[write]);
+    swap();
+
+    filter.get_textures()[0] = temp;
+}
+
 void gst::EffectComposer::render_to_texture(std::shared_ptr<Texture2D> texture)
 {
     const auto temp = targets[write]->get_color_attachment();
@@ -119,5 +132,12 @@ void gst::EffectComposer::set_read(Filter & filter)
     const auto unit = 0;
     const auto attachment = targets[read]->get_color_attachment();
     filter.get_textures()[unit] = std::static_pointer_cast<Texture>(attachment.get_resource());
+    filter.get_uniform(read_annotation) = unit;
+}
+
+void gst::EffectComposer::set_read(Filter & filter, std::shared_ptr<Texture2D> texture)
+{
+    const auto unit = 0;
+    filter.get_textures()[unit] = texture;
     filter.get_uniform(read_annotation) = unit;
 }
