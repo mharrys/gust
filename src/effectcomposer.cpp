@@ -106,6 +106,24 @@ void gst::EffectComposer::set_size(Resolution size)
     renderer.set_viewport(size);
 }
 
+void gst::EffectComposer::set_color_format(TextureFormat format)
+{
+    for (auto target : targets ) {
+        const auto color_attachment = target->get_color_attachment();
+        auto texture = std::static_pointer_cast<Texture2D>(color_attachment.get_resource());
+        texture->set_internal_format(format);
+    }
+}
+
+void gst::EffectComposer::set_depth_format(RenderbufferFormat format)
+{
+    for (auto target : targets ) {
+        const auto depth_attachment = target->get_depth_attachment();
+        auto renderbuffer = std::static_pointer_cast<Renderbuffer>(depth_attachment.get_resource());
+        renderbuffer->set_format(format);
+    }
+}
+
 void gst::EffectComposer::set_resolution_annotation(std::string const & resolution_annotation)
 {
     this->resolution_annotation = resolution_annotation;

@@ -2,9 +2,11 @@
 #define EFFECTCOMPOSER_HPP_INCLUDED
 
 #include "filter.hpp"
+#include "renderbuffer.hpp"
 #include "renderer.hpp"
 #include "resolution.hpp"
 #include "scene.hpp"
+#include "texture.hpp"
 
 #include <array>
 #include <memory>
@@ -49,6 +51,10 @@ namespace gst
         // framebuffers which will in effect invalidate any previous
         // processing.
         void set_size(Resolution size);
+        // Set format on color attachments.
+        void set_color_format(TextureFormat format);
+        // Set format on depth attachments.
+        void set_depth_format(RenderbufferFormat format);
         // Set resolution annotation.
         void set_resolution_annotation(std::string const & resolution_annotation);
         // Set read annotation.
