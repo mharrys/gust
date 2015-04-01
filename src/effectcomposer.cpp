@@ -85,6 +85,14 @@ void gst::EffectComposer::render_to_screen()
     renderer.render(screen, copy);
 }
 
+void gst::EffectComposer::render_to_screen(std::shared_ptr<Texture2D> texture)
+{
+    set_resolution(copy, size);
+    set_read(copy, texture);
+
+    renderer.render(screen, copy);
+}
+
 void gst::EffectComposer::set_size(Resolution size)
 {
     if (this->size == size) {

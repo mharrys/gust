@@ -47,6 +47,8 @@ namespace gst
         void render_to_texture(std::shared_ptr<Texture2D> texture);
         // Copy read to screen.
         void render_to_screen();
+        // Copy texture to screen.
+        void render_to_screen(std::shared_ptr<Texture2D> texture);
         // Set size of render. This will resize both the read and write
         // framebuffers which will in effect invalidate any previous
         // processing.
