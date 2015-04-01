@@ -1,8 +1,14 @@
 #include "image.hpp"
 
-gst::Image::Image(Resolution size, std::vector<unsigned char> const & data)
+#include "shadoweddata.hpp"
+
+gst::Image::Image(
+    Resolution size,
+    unsigned int components,
+    std::unique_ptr<ShadowedData> data)
     : size(size),
-      data(data)
+      components(components),
+      data(std::move(data))
 {
 }
 
@@ -11,7 +17,32 @@ gst::Resolution gst::Image::get_size() const
     return size;
 }
 
-std::vector<unsigned char> gst::Image::get_data() const
+unsigned int gst::Image::get_width() const
 {
-    return data;
+    return size.get_width();
+}
+
+unsigned int gst::Image::get_height() const
+{
+    return size.get_height();
+}
+
+unsigned int gst::Image::get_components() const
+{
+    return components;
+}
+
+gst::ShadowedData const & gst::Image::get_data() const
+{
+    return *data;
+}
+
+unsigned char const * gst::Image::get_uchar_pixels() const
+{
+    return static_cast<unsigned char const *>(data->get_data());
+}
+
+float const * gst::Image::get_float_pixels() const
+{
+    return static_cast<float const *>(data->get_data());
 }
