@@ -50,3 +50,7 @@ Following are projects that depends on this engine.
 ### [Omnidirectional Shadow Mapping](https://github.com/mharrys/omni)
 
 ![omni](https://github.com/mharrys/omni/raw/master/scrot.png)
+
+### [Bloom](https://github.com/mharrys/bloom)
+
+![bloom](https://github.com/mharrys/bloom/raw/master/scrot.png)
