@@ -236,10 +236,6 @@ int gst::GraphicsSynchronizer::get_cached_uniform_location(
 
 void gst::GraphicsSynchronizer::update(VertexArray & vertex_array)
 {
-    if (!vertex_array.dirty) {
-        return;
-    }
-
     for (auto * vertex_buffer : vertex_array.get_vertex_buffers()) {
         bind(*vertex_buffer);
         update(*vertex_buffer);
@@ -248,11 +244,11 @@ void gst::GraphicsSynchronizer::update(VertexArray & vertex_array)
         }
     }
 
-    auto & index_buffer = vertex_array.get_index_buffer();
-    bind(index_buffer);
-    update(index_buffer);
-
-    vertex_array.dirty = false;
+    auto * index_buffer = vertex_array.get_index_buffer();
+    if (index_buffer) {
+        bind(*index_buffer);
+        update(*index_buffer);
+    }
 }
 
 void gst::GraphicsSynchronizer::attach(

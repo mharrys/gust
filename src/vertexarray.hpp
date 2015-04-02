@@ -26,7 +26,7 @@ namespace gst
         // Return vertex buffers.
         virtual std::vector<VertexBuffer *> get_vertex_buffers() = 0;
         // Return index buffer.
-        virtual IndexBuffer & get_index_buffer() = 0;
+        virtual IndexBuffer * get_index_buffer() = 0;
     };
 }
 

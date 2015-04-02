@@ -11,7 +11,7 @@ namespace gst
         void add_vertex_buffer(std::shared_ptr<VertexBuffer> buffer);
         void set_vertex_buffer(std::vector<std::shared_ptr<VertexBuffer>> buffers);
         std::vector<VertexBuffer *> get_vertex_buffers();
-        IndexBuffer & get_index_buffer();
+        IndexBuffer * get_index_buffer();
     private:
         std::vector<std::shared_ptr<VertexBuffer>> vertex_buffers;
         std::shared_ptr<IndexBuffer> index_buffer;

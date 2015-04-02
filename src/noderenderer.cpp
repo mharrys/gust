@@ -56,7 +56,7 @@ void gst::NodeRenderer::visit(ModelNode & node)
     if (mesh.index) {
         auto count = mesh.index->get_shadowed_data().get_count();
         device->draw_elements(mesh.mode, count);
-    } else {
+    } else if (mesh.positions) {
         auto count = mesh.positions->get_shadowed_data().get_count();
         device->draw_arrays(mesh.mode, 0, count);
     }
