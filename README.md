@@ -54,3 +54,7 @@ Following are projects that depends on this engine.
 ### [Bloom](https://github.com/mharrys/bloom)
 
 ![bloom](https://github.com/mharrys/bloom/raw/master/scrot.png)
+
+### [Rim Lighting](https://github.com/mharrys/rim)
+
+![rim](https://github.com/mharrys/rim/raw/master/scrot.png)
