@@ -8,6 +8,7 @@
 
 namespace gst
 {
+    class Image;
     class ShadowedData;
 
     // The responsibility of this class is to mirror a 2-dimensional texture.
@@ -15,6 +16,8 @@ namespace gst
     public:
         // Construct texture with empty data.
         static Texture2D create_empty(Resolution size);
+        // Construct texture from image.
+        static Texture2D create_from_image(Image const & image);
         // Construct empty texture.
         Texture2D() = default;
         // Construct texture of specified size and data.

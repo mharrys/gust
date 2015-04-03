@@ -1,11 +1,35 @@
 #include "texture2d.hpp"
 
+#include "image.hpp"
 #include "shadoweddataimpl.hpp"
 
 gst::Texture2D gst::Texture2D::create_empty(Resolution size)
 {
     auto data = std::unique_ptr<ShadowedData>(new ShadowedDataImpl());
     return Texture2D(size, std::move(data));
+}
+
+gst::Texture2D gst::Texture2D::create_from_image(Image const & image)
+{
+    auto size = image.get_size();
+    auto alpha = image.get_components() == 4;
+    auto type = image.get_data().get_type();
+    auto count = image.get_data().get_count();
+
+    auto data = std::unique_ptr<ShadowedData>(new ShadowedDataImpl());
+    if (type == DataType::UCHAR_ARRAY) {
+        data->set_uchar(image.get_uchar_pixels(), count);
+    } else {
+        data->set_float(image.get_float_pixels(), count);
+    }
+
+    auto texture = Texture2D(size, std::move(data));
+    if (alpha) {
+        texture.set_internal_format(TextureFormat::RGBA);
+        texture.set_source_format(PixelFormat::RGBA);
+    }
+
+    return texture;
 }
 
 gst::Texture2D::Texture2D(Resolution size, std::unique_ptr<ShadowedData> data)
