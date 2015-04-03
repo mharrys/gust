@@ -38,6 +38,12 @@ void gst::EffectComposer::render(Scene & scene)
     swap();
 }
 
+void gst::EffectComposer::render(Scene & scene, Filter & filter)
+{
+    renderer.render(scene, filter, targets[write]);
+    swap();
+}
+
 void gst::EffectComposer::render_filter(Filter & filter)
 {
     const auto temp = filter.get_textures()[0];

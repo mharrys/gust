@@ -36,6 +36,8 @@ namespace gst
             Scene screen);
         // Render scene into framebuffer.
         void render(Scene & scene);
+        // Render scene using specified filter into framebuffer.
+        void render(Scene & scene, Filter & filter);
         // Setup and run post-process filter. This will override texture unit
         // 0 during render.
         void render_filter(Filter & filter);
