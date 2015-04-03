@@ -15,7 +15,8 @@ gst::ShadedPass::ShadedPass(std::shared_ptr<Program> program)
       normal("nm"),
       eye_position("eye_position"),
       light_enabled("enabled"),
-      light_position("position")
+      light_position("position"),
+      skip_light(false)
 {
 }
 
@@ -26,6 +27,10 @@ void gst::ShadedPass::apply(ModelState & model_state)
     uniforms->get_uniform(normal) = model_state.normal;
     uniforms->get_uniform(eye_position) = model_state.eye_position;
     program->merge_uniforms(*uniforms);
+
+    if (skip_light) {
+        return;
+    }
 
     for (auto light_node : model_state.light_nodes) {
         auto & light = light_node.get_light();
@@ -63,4 +68,9 @@ void gst::ShadedPass::set_light_enabled_annotation(std::string const & light_ena
 void gst::ShadedPass::set_light_position_annotation(std::string const & light_position)
 {
     this->light_position = light_position;
+}
+
+void gst::ShadedPass::set_skip_light(bool skip_light)
+{
+    this->skip_light = skip_light;
 }

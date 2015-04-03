@@ -26,6 +26,8 @@ namespace gst
         void set_light_enabled_annotation(std::string const & enabled);
         // Set light position annotation.
         void set_light_position_annotation(std::string const & position);
+        // Set skip light updating enabled/disabled.
+        void set_skip_light(bool skip_light);
     private:
         std::shared_ptr<UniformMap> uniforms;
         std::string model_view;
@@ -34,6 +36,7 @@ namespace gst
         std::string eye_position;
         std::string light_enabled;
         std::string light_position;
+        bool skip_light;
     };
 }
 
