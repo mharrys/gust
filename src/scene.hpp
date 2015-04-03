@@ -8,10 +8,17 @@
 
 namespace gst
 {
+    class OrthoCamera;
+    class PerspectiveCamera;
+
     // The responsibility of this class is to associate a collection of nodes
     // and a camera as a scene.
     class Scene {
     public:
+        // Construct scene with a orthographic camera projection.
+        static Scene create_ortho(OrthoCamera camera);
+        // Construct scene with a perspective camera projection.
+        static Scene create_perspective(PerspectiveCamera camera);
         // Construct empty scene.
         Scene() = default;
         // Construct scene with specified eye.
