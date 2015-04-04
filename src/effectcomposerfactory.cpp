@@ -30,10 +30,7 @@ gst::EffectComposer gst::EffectComposerFactory::create()
     auto model = Model(quad, {}, nullptr);
     auto model_node = std::make_shared<ModelNode>(model);
 
-    auto camera = std::unique_ptr<Camera>(new OrthoCamera());
-    auto eye = std::make_shared<CameraNode>(std::move(camera));
-
-    auto screen = Scene(eye);
+    auto screen = Scene::create_ortho({});
     screen.add(model_node);
     screen.update();
 
