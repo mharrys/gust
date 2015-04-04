@@ -14,7 +14,7 @@ namespace gst
     public:
         ImageFactory(std::shared_ptr<Logger> logger);
         // Return created image.
-        Image create_from_file(std::string const & path);
+        Image create_from_file(std::string const & path, bool alpha);
     private:
         std::shared_ptr<Logger> logger;
     };

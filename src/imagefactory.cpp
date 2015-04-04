@@ -12,16 +12,17 @@ gst::ImageFactory::ImageFactory(std::shared_ptr<Logger> logger)
 {
 }
 
-gst::Image gst::ImageFactory::create_from_file(std::string const & path)
+gst::Image gst::ImageFactory::create_from_file(std::string const & path, bool alpha)
 {
     int width, height, components;
     void * raw_data;
 
     auto hdr = stbi_is_hdr(path.c_str());
+    auto req_comp = alpha ? STBI_rgb_alpha : STBI_rgb;
     if (hdr) {
-        raw_data = stbi_loadf(path.c_str(), &width, &height, &components, 0);
+        raw_data = stbi_loadf(path.c_str(), &width, &height, &components, req_comp);
     } else {
-        raw_data = stbi_load(path.c_str(), &width, &height, &components, STBI_rgb_alpha);
+        raw_data = stbi_load(path.c_str(), &width, &height, &components, req_comp);
     }
 
     if (!raw_data) {
