@@ -58,3 +58,7 @@ Following are projects that depends on this engine.
 ### [Rim Lighting](https://github.com/mharrys/rim)
 
 ![rim](https://github.com/mharrys/rim/raw/master/scrot.png)
+
+### [Billboarding](https://github.com/mharrys/billboarding)
+
+![billboarding](https://github.com/mharrys/billboarding/raw/master/scrot.png)
