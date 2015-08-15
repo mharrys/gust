@@ -41,12 +41,9 @@ testing.
 
 Setup
 -----
-Before you can run the tests you need to download and compile the testing
-framework, when this is done you need to export the following two environment
-variables.
-
-    export GMOCK_DIR=/path/to/gmock/dir
-    export GTEST_DIR=/path/to/gtest/dir
+In order to run the tests you need to have gmock setup on your system. For
+example, download and compile gmock and place the libraries in
+`/usr/local/lib{64}/` and include directories in `/usr/local/include/`.
 
 Run all tests
 -------------

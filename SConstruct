@@ -1,17 +1,9 @@
 import os
 
-gmock_dir = os.environ.get('GMOCK_DIR')
-gtest_dir = os.environ.get('GTEST_DIR')
-
-gmock_lib = os.path.join(gmock_dir, 'build')
-gmock_inc = os.path.join(gmock_dir, 'include')
-gtest_inc = os.path.join(gtest_dir, 'include')
-
 env = Environment(
     CC='g++',
     CCFLAGS='-std=c++11 -pedantic -Wall -Wextra -O3',
-    CPPPATH=['lib', 'src', 'test', gmock_inc, gtest_inc],
-    LIBPATH=[gmock_lib],
+    CPPPATH=['lib', 'src', 'test'],
     LIBS=['gmock', 'pthread'],
 )
 
