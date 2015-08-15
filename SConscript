@@ -8,7 +8,8 @@ platform = ARGUMENTS.get('platform', 'desktop')
 if platform == 'desktop':
     cpppath += ['src/platform/desktop']
     source += Glob(cpppath[-1] + '/*.cpp')
-    libs += ['GL', 'GLEW', 'SDL2']
+    libs += ['GL', 'GLEW']
+    env.ParseConfig('sdl2-config --cflags --libs')
 else:
     Exit('error: Unsupported platform "%s"' % platform)
 
