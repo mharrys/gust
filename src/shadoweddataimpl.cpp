@@ -20,55 +20,39 @@ void gst::ShadowedDelete::operator()(void * p) const
         delete static_cast<bool *>(p);
         break;
     case DataType::INT:
+    case DataType::INT_ARRAY:
         delete static_cast<int *>(p);
         break;
     case DataType::UINT:
+    case DataType::UINT_ARRAY:
         delete static_cast<unsigned int *>(p);
         break;
     case DataType::FLOAT:
+    case DataType::FLOAT_ARRAY:
         delete static_cast<float *>(p);
         break;
     case DataType::VEC2:
+    case DataType::VEC2_ARRAY:
         delete static_cast<glm::vec2 *>(p);
         break;
     case DataType::VEC3:
+    case DataType::VEC3_ARRAY:
         delete static_cast<glm::vec3 *>(p);
         break;
     case DataType::VEC4:
+    case DataType::VEC4_ARRAY:
         delete static_cast<glm::vec4 *>(p);
         break;
     case DataType::MAT3:
+    case DataType::MAT3_ARRAY:
         delete static_cast<glm::mat3 *>(p);
         break;
     case DataType::MAT4:
+    case DataType::MAT4_ARRAY:
         delete static_cast<glm::mat4 *>(p);
         break;
     case DataType::UCHAR_ARRAY:
-        delete[] static_cast<unsigned char *>(p);
-        break;
-    case DataType::INT_ARRAY:
-        delete[] static_cast<int *>(p);
-        break;
-    case DataType::UINT_ARRAY:
-        delete[] static_cast<unsigned int *>(p);
-        break;
-    case DataType::FLOAT_ARRAY:
-        delete[] static_cast<float *>(p);
-        break;
-    case DataType::VEC2_ARRAY:
-        delete[] static_cast<glm::vec2 *>(p);
-        break;
-    case DataType::VEC3_ARRAY:
-        delete[] static_cast<glm::vec3 *>(p);
-        break;
-    case DataType::VEC4_ARRAY:
-        delete[] static_cast<glm::vec4 *>(p);
-        break;
-    case DataType::MAT3_ARRAY:
-        delete[] static_cast<glm::mat3 *>(p);
-        break;
-    case DataType::MAT4_ARRAY:
-        delete[] static_cast<glm::mat4 *>(p);
+        delete static_cast<unsigned char *>(p);
         break;
     }
 }
