@@ -1,10 +1,82 @@
 #include "shadoweddataimpl.hpp"
 
+gst::ShadowedDelete::ShadowedDelete()
+    : type(DataType::NONE)
+{
+}
+
+gst::ShadowedDelete::ShadowedDelete(DataType type)
+    : type(type)
+{
+}
+
+void gst::ShadowedDelete::operator()(void * p) const
+{
+    switch (type) {
+    case DataType::NONE:
+        // ignore
+        break;
+    case DataType::BOOL:
+        delete static_cast<bool *>(p);
+        break;
+    case DataType::INT:
+        delete static_cast<int *>(p);
+        break;
+    case DataType::UINT:
+        delete static_cast<unsigned int *>(p);
+        break;
+    case DataType::FLOAT:
+        delete static_cast<float *>(p);
+        break;
+    case DataType::VEC2:
+        delete static_cast<glm::vec2 *>(p);
+        break;
+    case DataType::VEC3:
+        delete static_cast<glm::vec3 *>(p);
+        break;
+    case DataType::VEC4:
+        delete static_cast<glm::vec4 *>(p);
+        break;
+    case DataType::MAT3:
+        delete static_cast<glm::mat3 *>(p);
+        break;
+    case DataType::MAT4:
+        delete static_cast<glm::mat4 *>(p);
+        break;
+    case DataType::UCHAR_ARRAY:
+        delete[] static_cast<unsigned char *>(p);
+        break;
+    case DataType::INT_ARRAY:
+        delete[] static_cast<int *>(p);
+        break;
+    case DataType::UINT_ARRAY:
+        delete[] static_cast<unsigned int *>(p);
+        break;
+    case DataType::FLOAT_ARRAY:
+        delete[] static_cast<float *>(p);
+        break;
+    case DataType::VEC2_ARRAY:
+        delete[] static_cast<glm::vec2 *>(p);
+        break;
+    case DataType::VEC3_ARRAY:
+        delete[] static_cast<glm::vec3 *>(p);
+        break;
+    case DataType::VEC4_ARRAY:
+        delete[] static_cast<glm::vec4 *>(p);
+        break;
+    case DataType::MAT3_ARRAY:
+        delete[] static_cast<glm::mat3 *>(p);
+        break;
+    case DataType::MAT4_ARRAY:
+        delete[] static_cast<glm::mat4 *>(p);
+        break;
+    }
+}
+
 gst::ShadowedDataImpl::ShadowedDataImpl()
     : type(DataType::NONE),
       count(0),
-      size_bytes(0),
-      data(nullptr)
+      size_bytes(0)
 {
 }
 

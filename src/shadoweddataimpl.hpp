@@ -9,6 +9,15 @@
 
 namespace gst
 {
+    class ShadowedDelete : public std::default_delete<void> {
+    public:
+        ShadowedDelete();
+        ShadowedDelete(DataType type);
+        void operator()(void * p) const;
+    private:
+        DataType type;
+    };
+
     class ShadowedDataImpl : public ShadowedData {
     public:
         ShadowedDataImpl();
@@ -51,7 +60,7 @@ namespace gst
         DataType type;
         unsigned int count;
         unsigned int size_bytes;
-        std::unique_ptr<void> data;
+        std::unique_ptr<void, ShadowedDelete> data;
     };
 }
 
@@ -63,7 +72,10 @@ void gst::ShadowedDataImpl::set_data(T const * new_data, unsigned int new_count,
         type = new_type;
         count = new_count;
         size_bytes = new_size_bytes;
-        data = std::unique_ptr<T>(new T[count]);
+        data = std::unique_ptr<void, ShadowedDelete>(
+            new T[count],
+            ShadowedDelete(new_type)
+        );
     }
     std::memcpy(data.get(), new_data, size_bytes);
 }
@@ -77,7 +89,10 @@ void gst::ShadowedDataImpl::set_glm_data(std::vector<T> const & new_data, DataTy
         type = new_type;
         count = new_count;
         size_bytes = new_size_bytes;
-        data = std::unique_ptr<float>(new float[count * components]);
+        data = std::unique_ptr<void, ShadowedDelete>(
+            new float[count * components],
+            ShadowedDelete(new_type)
+        );
     }
     std::memcpy(data.get(), &new_data[0], size_bytes);
 }
