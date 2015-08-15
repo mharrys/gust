@@ -1,7 +1,7 @@
 #include "perspectivecamera.hpp"
 
 gst::PerspectiveCamera::PerspectiveCamera()
-    : PerspectiveCamera(45.0f, 1.0, 0.1f, 1000.0f)
+    : PerspectiveCamera(glm::radians(45.0f), 1.0, 0.1f, 1000.0f)
 {
 }
 

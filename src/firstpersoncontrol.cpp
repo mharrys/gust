@@ -35,7 +35,7 @@ void gst::FirstPersonControl::rotate(float dt, Input const & input, Spatial & sp
     // -90 <= pitch <= 90
     pitch_angle += mouse_movement.y * speed;
     pitch_angle = glm::clamp(pitch_angle, -90.0f, 90.0f);
-    glm::quat pitch = glm::angleAxis(pitch_angle, X_UNIT);
+    glm::quat pitch = glm::angleAxis(glm::radians(pitch_angle), X_UNIT);
 
     // -360 <= yaw <= 360
     yaw_angle += mouse_movement.x * speed;
@@ -44,7 +44,7 @@ void gst::FirstPersonControl::rotate(float dt, Input const & input, Spatial & sp
     } else if (yaw_angle > 360.0f) {
         yaw_angle -= 360.0f;
     }
-    glm::quat yaw = glm::angleAxis(yaw_angle, Y_UNIT);
+    glm::quat yaw = glm::angleAxis(glm::radians(yaw_angle), Y_UNIT);
 
     spatial.orientation = glm::normalize(yaw * pitch);
 }

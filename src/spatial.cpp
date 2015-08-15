@@ -44,5 +44,5 @@ void gst::Spatial::rotate_z(float angle_deg)
 
 void gst::Spatial::rotate(float angle_deg, glm::vec3 axis)
 {
-    orientation = glm::rotate(orientation, angle_deg, axis);
+    orientation = glm::rotate(orientation, glm::radians(angle_deg), axis);
 }
